@@ -4,35 +4,50 @@ import matplotlib.pyplot as plt
 from brian2 import *
 
 
-def plot_stuff(M_spikes, M, name='', observation_list=[0], figsize=(10,7)):
+def plot_stuff(STM, SPM, name='', observation_list=[0], Vt=-0.045, figsize=(10,7), savefig_=None):
     figure(figsize=figsize)
     #plotting spikes of cells on raster plot.
     subplot(2,2,1)
     title(f'{name} spikes')
-    plot(M_spikes.t/ms, M_spikes.i, '.k')
+    plot(SPM.t/ms, SPM.i, '.k')
     
     #observation_list = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     observation_list = observation_list
 
     #plotting voltage
     subplot(2,2,2)
-    if 'Vm' in M.variables:
+    if 'Vm' in STM.variables:
         title('Vm')
         for i in observation_list:
-            plot(M.t/ms, M.Vm[i])
+            plot(STM.t/ms, STM.Vm[i])
+        axhline(Vt, ls='--', alpha=0.4)
 
     subplot(2,2,3)
-    if 'ge' in M.variables:
+    if 'ge' in STM.variables:
         title('ge')
         for i in observation_list:
-            plot(M.t/ms, M.ge[i])
+            plot(STM.t/ms, STM.ge[i])
+    elif 'gE' in STM.variables:
+        title('gE')
+        for i in observation_list:
+            plot(STM.t/ms, STM.gE[i])
+    if len(observation_list) < 5:
+        legend(observation_list, fontsize=11)
 
     subplot(2,2,4)
-    if 'gi' in M.variables:
+    if 'gi' in STM.variables:
         title('gi')
         for i in observation_list:
-            plot(M.t/ms, M.gi[i])
+            plot(STM.t/ms, STM.gi[i])
+    elif 'gI' in STM.variables:
+        title('gI')
+        for i in observation_list:
+            plot(STM.t/ms, STM.gI[i])
+    if len(observation_list) < 5:
+        legend(observation_list, fontsize=11)
 
+    if savefig_:
+        savefig(savefig_)
     show()
 
 
@@ -75,3 +90,41 @@ def plot_connectivity_matrix(W_matrix, title=''):
     cax = fig.add_axes([1.02, 0.05, 0.02, 0.9])
     fig.colorbar(s, ax=ax, cax=cax)
     plt.show()
+
+
+def plot_heading(h, headings, SPM_HEADING, T_outbound, time_step, N=8, figsize=(10,5), savefig_=None):
+    figure(figsize=figsize)
+    bins = numpy.linspace(-np.pi, np.pi, N+1)
+    plt.plot(h)
+    for b in bins:
+        plt.axhline(b, ls='dashed', color='r', alpha=0.5)
+    ylabel('angle[-pi, pi]')
+    xlabel('steps')
+    plt.savefig('plots/path.png')
+    plt.show()
+
+    figure(figsize=(10,5))
+    plot(SPM_HEADING.t/ms, SPM_HEADING.i, '.k', markersize=6)
+    plot(np.array(range(0, T_outbound*time_step, time_step)), np.argmax(headings,axis=1),'xr', markersize=3, alpha=0.2)
+    plot(np.array(range(0, T_outbound*time_step, time_step)), N+np.argmax(headings,axis=1),'xr', markersize=3, alpha=0.2)
+    ylabel('neuron index')
+    xlabel('ms')
+    if savefig_:
+        plt.savefig(savefig_)
+    plt.show()
+
+
+def plot_flow(flow, SPM_FLOW, figsize=(10,5), savefig_=None):
+    figure(figsize=figsize)
+    plt.plot(flow[:,0], label='L')
+    plt.plot(flow[:,1], label='R')
+    plt.legend()
+    plt.savefig('plots/flow.png')
+    plt.show()
+
+    figure(figsize=(10,5))
+    plot(SPM_FLOW.t/ms, SPM_FLOW.i, '.k', markersize=6)
+    yticks([0,1],['L','R'])
+    if savefig_:
+        plt.savefig(savefig_)
+    show()
