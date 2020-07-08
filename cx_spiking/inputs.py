@@ -1,10 +1,11 @@
 import os
 
 import numpy as np
-from scipy.stats import norm
+import scipy
+
+from brian2 import * 
 
 import trials
-
 
 def generate_route(T_outbound, vary_speed, route_file='', load_route=True):
     if load_route and os.path.exists(route_file):
@@ -20,10 +21,11 @@ def generate_route(T_outbound, vary_speed, route_file='', load_route=True):
 
 
 def save_route(route_file, h, v, save_route=True):
-    if save_route and not os.path.exists(route_file):
+    if (os.path.exists(route_file)):
+        print(f'{route_file} exists - not overwriting it')
+    elif save_route and not os.path.exists(route_file):
         print("Saving route...")
         np.savez_compressed(route_file, h=h, v=v)
-
 
 def normalise_range(data, vmin=5, vmax=100):
     d = np.where(data >= 0, data, 0)
@@ -34,7 +36,7 @@ def normalise_range(data, vmin=5, vmax=100):
 def compute_headings(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
     T_outbound = h.shape[0]
 
-    rv = norm(loc=loc, scale=scale)
+    rv = scipy.stats.norm(loc=loc, scale=scale)
     x = np.linspace(rv.ppf(0.01), rv.ppf(0.99), N, endpoint=True)
     pdf = rv.pdf(x)
 
@@ -83,3 +85,23 @@ def compute_flow(heading, velocity, baseline=50, vmin=0, vmax=50, preferred_angl
 
     flow = flow + baseline
     return flow
+
+
+def get_spikes_rates(SPM, N, T_outbound, time_step):
+    spikes_t = SPM.t/ms
+    spikes_i = SPM.i
+    
+    spikes_out = np.zeros((N, T_outbound))
+    bins = np.arange(0, (T_outbound+1)*time_step, time_step)
+    
+    for i in range(N):
+        spikes = spikes_t[spikes_i == i]
+        spikes_count, _ = np.histogram(spikes, bins=bins)
+        spikes_out[i,:] = spikes_count
+
+    return spikes_out
+
+
+def to_Hertz(data, time_step):
+    # convert milliseconds to seconds
+    return data/(time_step / 1000)
