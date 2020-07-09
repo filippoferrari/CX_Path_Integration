@@ -1,31 +1,68 @@
+import numpy as np
 from brian2 import *
 
 
-features = get_features(model_spikes, data_spikes, dt)
-errors = get_errors(features) * float(normalization)
+def compute_gamma_factor(exp_monitor, target_monitor, time, 
+                         dt=defaultclock.dt, delta=1*ms, rate_correction=True):
+    r'''
+    Return mean gamma factor
 
+    Parameters
+    ----------
+    exp_monitor: SpikeMonitor
+        spike monitor of the model population
+    target_monitor: SpikeMonitor
+        spike monitor of the target population
+    time: brain2 ms
+        time of simulation in milliseconds
+    dt: brain2 ms
+        timestep of simulation
+    delta: brain2 ms
+        time window for coincident spikes
+    rate_correction: boolean (True)
+        if True the error term is more accurate 
+        check brian2modelfitting docs for more details
 
-def get_features(traces, output, dt, delta, total_time, 
-                 rate_correction=True, normalization=1):
+    Returns
+    -------
+    mean gamma factor: scalar
+        average of gamma factor for each neuron in the population
+    '''
+
+    input_spikes = get_spikes(exp_monitor)
+    output_spikes = get_spikes(target_monitor)
+
     all_gf = []
-    for one_sample in traces:
-        gf_for_sample = []
-        for model_response, target_response in zip(one_sample, output):
-            gf = get_gamma_factor(model_response, target_response,
-                                  delta, total_time, dt,
-                                  rate_correction=rate_correction)
-            gf_for_sample.append(gf)
-        all_gf.append(gf_for_sample)
-    return array(all_gf) * float(normalization)
+    for model, target in zip(input_spikes, output_spikes):
+        gf = get_gamma_factor(model, target, delta, time, dt, 
+                              rate_correction=rate_correction)
+        all_gf.append(gf)
+
+    return np.array(all_gf).mean()
 
 
-def get_errors(features):
-    errors = features.mean(axis=1)
-    return errors
+def get_spikes(monitor):
+    r'''
+    Return list of lists with spike times
+
+    Parameters
+    ----------
+    monitor: SpikeMonitor
+        monitor of the neural population
+    
+    Returns
+    -------
+    spikes: list of list
+        list of spike times for each neuron
+    '''
+    N = len(monitor.count)
+    spikes_t = np.array(monitor.t)
+    spikes = [spikes_t[monitor.i == i] for i in range(N)]
+    return spikes
 
 
 def get_gamma_factor(model, data, delta, time, dt, rate_correction=True):
-    r"""
+    r'''
     Calculate gamma factor between model and target spike trains,
     with precision delta.
 
@@ -60,7 +97,7 @@ def get_gamma_factor(model, data, delta, time, dt, rate_correction=True):
         as expected from two homogeneous Poisson processes of the same rate.
         It can also take negative values if there are fewer coincidences
         than expected by chance.
-    """
+    '''
     model = np.array(model)
     data = np.array(data)
 
@@ -84,8 +121,7 @@ def get_gamma_factor(model, data, delta, time, dt, rate_correction=True):
         coincidences = 0
     else:
         indices = [np.amin(np.abs(model - data[i])) <= delta_diff for i in np.arange(data_length)]
-        coincidences = np.
-        np.sum(indices)
+        coincidences = np.sum(indices)
 
     # Normalization of the coincidences count
     NCoincAvg = 2 * delta * data_length * data_rate
