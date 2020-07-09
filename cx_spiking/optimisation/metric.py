@@ -3,7 +3,7 @@ from brian2 import *
 
 
 def compute_gamma_factor(exp_monitor, target_monitor, time, 
-                         dt=defaultclock.dt, delta=1*ms, rate_correction=True):
+                         dt_=defaultclock.dt, delta=1*ms, rate_correction=True):
     r'''
     Return mean gamma factor
 
@@ -15,7 +15,7 @@ def compute_gamma_factor(exp_monitor, target_monitor, time,
         spike monitor of the target population
     time: brain2 ms
         time of simulation in milliseconds
-    dt: brain2 ms
+    dt_: brain2 ms
         timestep of simulation
     delta: brain2 ms
         time window for coincident spikes
@@ -34,7 +34,7 @@ def compute_gamma_factor(exp_monitor, target_monitor, time,
 
     all_gf = []
     for model, target in zip(input_spikes, output_spikes):
-        gf = get_gamma_factor(model, target, delta, time, dt, 
+        gf = get_gamma_factor(model, target, delta, time, dt_, 
                               rate_correction=rate_correction)
         all_gf.append(gf)
 
@@ -61,7 +61,7 @@ def get_spikes(monitor):
     return spikes
 
 
-def get_gamma_factor(model, data, delta, time, dt, rate_correction=True):
+def get_gamma_factor(model, data, delta, time, dt_, rate_correction=True):
     r'''
     Calculate gamma factor between model and target spike trains,
     with precision delta.
@@ -74,7 +74,7 @@ def get_gamma_factor(model, data, delta, time, dt, rate_correction=True):
         data trace
     delta: `~brian2.units.fundamentalunits.Quantity`
         time window
-    dt: `~brian2.units.fundamentalunits.Quantity`
+    dt_: `~brian2.units.fundamentalunits.Quantity`
         time step
     time: `~brian2.units.fundamentalunits.Quantity`
         total time of the simulation
@@ -101,9 +101,9 @@ def get_gamma_factor(model, data, delta, time, dt, rate_correction=True):
     model = np.array(model)
     data = np.array(data)
 
-    model = np.array(np.rint(model / dt), dtype=int)
-    data = np.array(np.rint(data / dt), dtype=int)
-    delta_diff = int(np.rint(delta / dt))
+    model = np.array(np.rint(model / dt_), dtype=int)
+    data = np.array(np.rint(data / dt_), dtype=int)
+    delta_diff = int(np.rint(delta / dt_))
 
     model_length = len(model)
     data_length = len(data)
