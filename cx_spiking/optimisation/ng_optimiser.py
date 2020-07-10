@@ -27,3 +27,12 @@ def set_optimiser(instruments, method='DE', budget=100):
 def run_optimiser(optim, function, verbosity=0):
     recommendation = optim.minimize(function, verbosity=verbosity)  # best value
     return optim, recommendation
+
+
+def run_optimisers(instruments, function, methods=['DE'], budget=100, verbosity=0):
+    out = {}
+    for method in methods:
+        optim = set_optimiser(instruments, method=method, budget=budget)
+        optim_min, recommendation = run_optimiser(optim, function, verbosity=verbosity)
+        out[method] = (optim_min, recommendation)
+    return out

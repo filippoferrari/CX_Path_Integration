@@ -50,7 +50,8 @@ def compute_headings(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
 
     for t in range(T_outbound):
         # Shift angle
-        angle_shift = N//2 + digitized[t]
+        # angle_shift = N//2 + digitized[t]
+        angle_shift = digitized[t]
         headings[t,:] = np.roll(pdf, angle_shift)
     
     # Normalize between 5-100 Hz, the headings represents rate

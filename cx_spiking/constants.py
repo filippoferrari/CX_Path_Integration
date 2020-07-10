@@ -24,7 +24,7 @@ N_MOTOR = 2
 ###############################################################################
 
 # Neuron specification
-EL = -52 * mV # resting potential (mV)
+#EL = -52 * mV # resting potential (mV)
 Vt = -45 * mV # spike threshold (mV)
 Vr = -52 * mV # reset potential (mV)
 
@@ -41,28 +41,40 @@ eqs = '''
       EE : volt
       EI : volt
       gL : siemens
+      tauE : second
+      tauI : second
       '''
 
 threshold_eqs = 'Vm >= Vt'
 reset_eqs = 'Vm = Vr'
 
 
-params = {'EL' : [EL],
-          'Vm' : [EL],
-          'EE' : [0*mV],
-          'EI' : [-80*mV],
-          'gL' : [1*10**-6 * siemens],
-          'gE' : '(randn() * 1.5 + 4) * 10.*nS',
-          'gI' : '(randn() * 12 + 20) * 10.*nS',
-          #'tauE' : [1*ms],
-          #'tauI' : [2*ms]
-         }
+neuron_params = {
+    'EL' : [-52 * mV],
+    'Vm' : [-52 * mV],
+    'EE' : [0 * mV],
+    'EI' : [-80 * mV],
+    'gL' : [1*10**-6 * siemens],
+    'gE' : '(randn() * 1.5 + 4) * 10.*nS',
+    'gI' : '(randn() * 12 + 20) * 10.*nS',
+    'tauE' : [1 * ms],
+    'tauI' : [2 * ms]
+}
 
 
-synapses_model = '''w : 1'''
+synapses_model = '''
+                 w : 1
+                 wE : siemens
+                 wI : siemens
+                 '''
+
 synapses_eqs_ex = '''gE += wE * w'''
 synapses_eqs_in = '''gI += wI * w'''
 
+synapses_params = {
+    'wE' : [200 * nS],
+    'wI' : [200 * nS]
+    }
 
 ###############################################################################
 ###                             CONNECTIVITY MATRICES
