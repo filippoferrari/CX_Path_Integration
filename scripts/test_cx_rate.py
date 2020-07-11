@@ -7,6 +7,9 @@ import trials
 import analysis
 import plotter
 
+import cx_spiking.inputs
+
+
 T_outbound = 1500
 T_inbound = 1500
 noise = 0.1
@@ -22,3 +25,5 @@ h, v, log, cpu4_snapshot = trials.run_trial(logging=True,
                                             cx=cx,
                                             route=(h[:T_outbound], v[:T_outbound]))
 
+
+headings = cx_spiking.inputs.compute_headings(h, N=N_TL2//2, loc=0, scale=0.8, vmin=5, vmax=100)

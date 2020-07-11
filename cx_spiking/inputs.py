@@ -33,7 +33,49 @@ def normalise_range(data, vmin=5, vmax=100):
     return d
     
 
-def compute_headings(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
+def compute_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
+    r'''
+    Convert headings from Stone's simulator to spike rates
+    that can be fed into a brian2 PoissonGroup
+
+    Parameters
+    ----------
+    h: headings
+        headings generated from Stone's simulator
+    N: number of directions
+        8 representing the cardinal directions (N, NE, E, SE, S, SW, W, NW)
+    sigma: standard deviation 
+        of a Gaussian distribution
+    vmin: hertz
+        minimum value for rescaling the rates
+    vmax: hertz
+        maximum value for rescaling the rates
+
+    Returns
+    -------
+    headings: numpy array(n_steps * n_neurons)
+        each row represents the rate for the neurons
+    '''
+    T_outbound = h.shape[0]
+    headings = np.zeros((len(h), N))
+
+    # Normal(mu, sigma) is equivalent to vonMises(mu, 1./sigma**2)
+    kappa = 1. / sigma**2
+    # Fixed locations of angles
+    x = np.linspace(0-np.pi, 0+np.pi, N+1, endpoint=True)
+
+    for step in range(T_outbound):
+        samples = scipy.stats.vonmises.pdf(x, kappa, loc=h[step])
+        headings[step,:] = np.roll(samples[:N], -int(np.ceil(N/2)))
+
+    # Normalize between 5-100 Hz, the headings represents rate
+    if vmin >= 0 and vmax > 0 and vmax > vmin:
+        headings = normalise_range(headings, vmin=vmin, vmax=vmax)
+
+    return headings
+
+
+def compute_headings_old(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
     T_outbound = h.shape[0]
 
     rv = scipy.stats.norm(loc=loc, scale=scale)
@@ -61,13 +103,33 @@ def compute_headings(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
     return headings, digitized    
 
 
-def compute_flow(heading, velocity, baseline=50, vmin=0, vmax=50, preferred_angle=np.pi/4):
-    '''
-    Calculate optic flow depending on preference angles. [L, R]
-    Preferred angle is 45 degrees
-    From central_complex.py, line 45
-    Baseline is 50 Hz
-    Flow values are in [baseline + vmin, baseline + vmax]
+def compute_flow(heading, velocity, preferred_angle=np.pi/4, baseline=50, vmin=0, vmax=50):
+    r'''
+    Calculate optic flow based on a preferred angle of +-45 degrees
+    Set a baseline and add the rescaled values between [vmin,vmax]
+
+    Code from Stone's - central_complex.py, line 45
+
+    Parameters
+    ----------
+    heading: headings
+        headings generated from Stone's simulator
+    velocity: velocity
+        velocity generated from Stone's simulator
+    preferred_angle: radians
+        preferred angle for optic flow, +- around 0
+    baseline: hertz 
+        baseline for the velocity rates
+    vmin: hertz
+        minimum value for rescaling the rates
+    vmax: hertz
+        maximum value for rescaling the rates
+
+    Returns
+    -------
+    flow: numpy array(n_steps * 2)
+        values are in [baseline + vmin, baseline + vmax]
+        each row is stored as [L, R]
     '''
     flow = np.zeros((velocity.shape[0], 2))
     for i in range(velocity.shape[0]):
@@ -76,10 +138,8 @@ def compute_flow(heading, velocity, baseline=50, vmin=0, vmax=50, preferred_angl
                       [np.sin(heading[i] - preferred_angle),
                        np.cos(heading[i] - preferred_angle)]])
         flow[i,:] = np.dot(A, velocity[i,:])
-        
     # Clip in [0,1] as in Stone et al.
     flow = np.clip(flow, 0, 1)
-    
     
     if vmin >= 0 and vmax > 0 and vmax > vmin:
         flow = normalise_range(flow, vmin=vmin, vmax=vmax)
