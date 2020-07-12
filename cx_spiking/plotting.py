@@ -130,20 +130,24 @@ def plot_flow(flow, SPM_FLOW, figsize=(10,5), savefig_=None):
     show()
 
 
-def plot_rate_cx_log(matrix, max_rate, figsize=(10,5)):
+def plot_rate_cx_log(matrix, max_rate, figsize=(10,5), savefig_=None):
     figure(figsize=figsize)
     plt.pcolormesh(max_rate*matrix, vmin=0, vmax=max_rate,
                    cmap='viridis', rasterized=True)    
     plt.colorbar()
+    if savefig_:
+        plt.savefig(savefig_)
     plt.show()
 
 
-def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, figsize=(10,5)):
+def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, figsize=(10,5), savefig_=None):
     plt.figure(figsize=figsize)
     plt.pcolormesh(max_rate*matrix, vmin=0, vmax=max_rate,
                    cmap='viridis', rasterized=True)
 
     plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
     plt.colorbar()
+    if savefig_:
+        plt.savefig(savefig_)
     plt.show()
 
