@@ -24,7 +24,12 @@ def set_optimiser(instruments, method='DE', budget=100):
     return optim
 
 
+def print_candidate_and_value(optimizer, candidate, value):
+    print(candidate, value)
+
+
 def run_optimiser(optim, function, verbosity=0):
+    optim.register_callback("tell", print_candidate_and_value)
     recommendation = optim.minimize(function, verbosity=verbosity)  # best value
     return optim, recommendation
 
