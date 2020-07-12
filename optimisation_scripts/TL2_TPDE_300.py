@@ -123,8 +123,8 @@ def run_simulation(tauE_, tauI_, wE_, wI_, G, S, target_spike_monitor,
 
 
 # Values to optimise
-bounds = [[0,5],     # tauE [ms]
-          [0,5],     # tauI [ms]
+bounds = [[0.1,5],     # tauE [ms]
+          [0.1,5],     # tauI [ms]
           [200,1000], # wE   [nS]
           [200,1000]] # wI   [nS]
 
@@ -148,7 +148,7 @@ args = [
 
 # Set instruments
 instruments = ng_optimiser.set_instrumentation(bounds, args)
-optim = ng_optimiser.set_optimiser(instruments, method='DE', budget=300)
+optim = ng_optimiser.set_optimiser(instruments, method='TwoPointsDE', budget=300)
 
 optim_min, recommendation = ng_optimiser.run_optimiser(optim, run_simulation, verbosity=2)
 

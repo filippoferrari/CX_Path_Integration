@@ -120,8 +120,8 @@ def run_simulation(tauE_, tauI_, wE_, wI_, G, S, target_spike_monitor,
 
 
 # Values to optimise
-bounds = [[0,5],     # tauE [ms]
-          [0,5],     # tauI [ms]
+bounds = [[0.1,5],     # tauE [ms]
+          [0.1,5],     # tauI [ms]
           [200,1000], # wE   [nS]
           [200,1000]] # wI   [nS]
 
