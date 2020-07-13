@@ -166,3 +166,4 @@ dmypy.json
 */plots/*
 */data/*
 !notebooks/data/route.npz
+!optimisation_scripts/plots/*
