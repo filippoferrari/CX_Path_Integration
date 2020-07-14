@@ -1,6 +1,10 @@
 import numpy as np
 import nevergrad as ng
 
+# from brian2 import *
+
+# import cx_spiking.optimisation.metric as metric
+# import cx_spiking.network_creation as nc
 
 def set_instrumentation(bounds, args):
     instruments = []
@@ -41,3 +45,39 @@ def run_optimisers(instruments, function, methods=['DE'], budget=100, verbosity=
         optim_min, recommendation = run_optimiser(optim, function, verbosity=verbosity)
         out[method] = (optim_min, recommendation)
     return out
+
+
+
+'''
+Tried to move functions here, but too messy
+keep them in the same context of the script
+'''
+# def run_simulation_TL2(tauE_, wE_, tauI_, wI_, network, Group, Synapses, Target,
+#                        time, dt_, delta, rate_correction): 
+#     network.restore('initialised') 
+
+#     # set the parameters 
+#     Group.set_states({'tauE' : tauE_*ms,
+#                       'tauI' : tauI_*ms})
+#     print(f'taueE: {tauE_} - tauI {tauI_}')
+
+#     Synapses.set_states({'wE' : wE_*nS,
+#                          'wI' : wI_*nS})
+#     print(f'wE: {wE_} - wI {wI_}')
+
+#     print(Group)
+#     print(Synapses)
+#     print(Target)
+    
+#     _, model_spike_monitor = nc.add_monitors(Group)
+#     target_spike_monitor = SpikeMonitor(Target, name='TL2_target_spike_monitor')
+#     print(target_spike_monitor)
+    
+#     run(time)
+
+#     gf = metric.compute_gamma_factor(model_spike_monitor, target_spike_monitor, time, 
+#                                      dt_=dt_, delta=delta, rate_correction=rate_correction)
+    
+#     print(f'Gamma factor: {gf}')
+
+#     return gf
