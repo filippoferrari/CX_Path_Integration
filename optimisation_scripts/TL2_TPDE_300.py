@@ -195,4 +195,4 @@ S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, params=sy
 run(T_outbound*time_step*ms)
 
 cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, SPM_TL2, 
-                                            time_step, figsize=(13,8), savefig_='TL2_TPDE_optimised.pdf')
+                                            time_step, figsize=(13,8), savefig_='plots/TL2_TPDE_optimised.pdf')
