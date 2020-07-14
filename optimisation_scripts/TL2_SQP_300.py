@@ -93,10 +93,36 @@ store()
 ######################################
 ### OPTIMISER
 ######################################
+def run_simulation_TL2(tauE_, wE_, tauI_, wI_, Group, Synapses, Target,
+                       time, dt_, delta, rate_correction): 
+    restore('initialised') 
+
+    # set the parameters 
+    Group.set_states({'tauE' : tauE_*ms,
+                      'tauI' : tauI_*ms})
+    print(f'taueE: {tauE_} - tauI {tauI_}')
+
+    Synapses.set_states({'wE' : wE_*nS,
+                         'wI' : wI_*nS})
+    print(f'wE: {wE_} - wI {wI_}')
+
+    _, model_spike_monitor = nc.add_monitors(Group)
+    target_spike_monitor = SpikeMonitor(Target, name='TL2_target_spike_monitor')
+    
+    run(time)
+
+    gf = metric.compute_gamma_factor(model_spike_monitor, target_spike_monitor, time, 
+                                     dt_=dt_, delta=delta, rate_correction=rate_correction)
+    
+    print(f'Gamma factor: {gf}')
+
+    return gf
+
+
 # Values to optimise
 bounds = [[0.1,5],     # tauE [ms]
           [200,1000]]  # wE   [nS]
-        #   [0.1,5],    # tauI [ms]
+        #   [0.1,5],     # tauI [ms]
         #   [200,1000]] # wI   [nS]
 
 
@@ -109,7 +135,7 @@ args = [
         300,                     # wI - useless for this optimisation
         G_TL2,                   # neuron group to optimise
         S_P_HEADING_TL2,         # synapses to optimise
-        P_TL2,           # target spike monitor
+        P_TL2,                   # target population
         T_outbound*time_step*ms, # simulation time
         defaultclock.dt,         # simulation time step
         delta,                   # time window for gamma factor
@@ -117,13 +143,12 @@ args = [
        ]
 
 
-simulation = ng_optimiser.run_simulation_TL2
 
 # Set instruments
 instruments = ng_optimiser.set_instrumentation(bounds, args)
 optim = ng_optimiser.set_optimiser(instruments, method='SQP', budget=300)
 
-optim_min, recommendation = ng_optimiser.run_optimiser(optim, simulation, verbosity=2)
+optim_min, recommendation = ng_optimiser.run_optimiser(optim, run_simulation_TL2, verbosity=2)
 
 candidate = optim_min.provide_recommendation()
 
