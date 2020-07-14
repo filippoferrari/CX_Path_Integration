@@ -120,6 +120,7 @@ def gen_TB1_TB1_weights(weight=1.):
     return weight * W
 
 W_HEADING_TL2 = np.eye(N_TL2)
+W_FLOW_TN2 = np.eye(N_TN2)
 W_TL2_CL1 = np.eye(N_TL2)
 W_CL1_TB1 = np.tile(np.eye(N_TB1), 2)
 W_TB1_TB1 = gen_TB1_TB1_weights()
