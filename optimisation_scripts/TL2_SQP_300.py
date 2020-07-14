@@ -68,15 +68,14 @@ h_stimulus = TimedArray(headings*Hz, dt=1.*time_step*ms)
 P_HEADING = PoissonGroup(N_TL2, rates='h_stimulus(t,i)')
 
 # Neuron group
-G_TL2 = nc.generate_neuron_groups(N_TL2, eqs, threshold_eqs, reset_eqs, neuron_params, name='TL2')
+G_TL2 = nc.generate_neuron_groups(N_TL2, eqs, threshold_eqs, reset_eqs, neuron_params, name='TL2_source_network')
 
 # Add monitors
-STM_TL2, SPM_TL2 = nc.add_monitors(G_TL2, name='TL2')
+#STM_TL2, SPM_TL2 = nc.add_monitors(G_TL2, name='TL2_source')
 
 # Connect heading to TL2
 S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=synapses_model, 
                                       params=synapses_params, on_pre=synapses_eqs_ex)
-
 
 #### Target
 TL2_spike_rates = 90 # Hz
@@ -85,9 +84,9 @@ TL2_spike_rates = 90 # Hz
 # transpose since log is neuron_index*time_step but we want the opposite
 TL2_stimulus = TimedArray(TL2_spike_rates*cx_log.tl2.T*Hz, dt=1.*time_step*ms)
 P_TL2 = PoissonGroup(N_TL2, rates='TL2_stimulus(t,i)')
-SPM_TL2_IDEAL = SpikeMonitor(P_TL2, name='TL2_target')
+# SPM_TL2_IDEAL = SpikeMonitor(P_TL2, name='TL2_target')
 
-store()
+store('initialised')
 
 
 ######################################
