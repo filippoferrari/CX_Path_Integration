@@ -23,7 +23,7 @@ N_MOTOR = 2
 ###                             EQUATIONS
 ###############################################################################
 
-# Neuron specification
+#### Neuron specification
 #EL = -52 * mV # resting potential (mV)
 Vt = -45 * mV # spike threshold (mV)
 Vr = -52 * mV # reset potential (mV)
@@ -49,6 +49,20 @@ threshold_eqs = 'Vm >= Vt'
 reset_eqs = 'Vm = Vr'
 
 
+#### Synapses
+synapses_eqs_ex = '''gE += wE * w'''
+synapses_eqs_in = '''gI += wI * w'''
+
+synapses_model = '''
+                 w : 1
+                 wE : siemens
+                 wI : siemens
+                 '''
+
+###############################################################################
+###                             PARAMETERS
+###############################################################################
+### Default 
 neuron_params = {
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
@@ -61,20 +75,31 @@ neuron_params = {
     'tauI' : [2 * ms]
 }
 
-
-synapses_model = '''
-                 w : 1
-                 wE : siemens
-                 wI : siemens
-                 '''
-
-synapses_eqs_ex = '''gE += wE * w'''
-synapses_eqs_in = '''gI += wI * w'''
-
 synapses_params = {
     'wE' : [200 * nS],
     'wI' : [200 * nS]
-    }
+}
+
+
+### TL2
+TL2_neuron_params = {
+    'EL' : [-52 * mV],
+    'Vm' : [-52 * mV],
+    'EE' : [0 * mV],
+    'EI' : [-80 * mV],
+    'gL' : [1*10**-6 * siemens],
+    'gE' : '(randn() * 1.5 + 4) * 10.*nS',
+    'gI' : '(randn() * 12 + 20) * 10.*nS',
+    'tauE' : [4.805567977984205 * ms],
+    'tauI' : [2 * ms]
+}
+
+TL2_synapses_params = {
+    'wE' : [222.85976322314087 * nS],
+    'wI' : [200 * nS]
+}
+
+
 
 ###############################################################################
 ###                             CONNECTIVITY MATRICES
