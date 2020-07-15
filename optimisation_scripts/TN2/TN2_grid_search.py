@@ -131,9 +131,9 @@ delta = 1*ms
 rate_correction = True
 
 
-for t, tauE in enumerate(tauE_s):
-    for w, wE in enumerate(wE_s):
-        gamma_factors[t,w] = run_simulation_TN2(tauE, wE, 1, 300, G_TN2,
+for t, tauE_ in enumerate(tauE_s):
+    for w, wE_ in enumerate(wE_s):
+        gamma_factors[t,w] = run_simulation_TN2(tauE_, wE_, 1, 300, G_TN2,
                                                S_P_FLOW_TN2, P_TN2, T_outbound*time_step*ms, 
                                                defaultclock.dt, delta, rate_correction)
 
