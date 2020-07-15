@@ -127,9 +127,9 @@ gamma_factors = np.zeros((len(tauE_s), len(wE_s)))
 delta = 1*ms
 rate_correction = True
 
-for t, tauE in enumerate(tauE_s):
-    for w, wE in enumerate(wE_s):
-        gamma_factors[t,w] = run_simulation_TL2(tauE, wE, 1, 300, G_TL2,
+for t, tauE_ in enumerate(tauE_s):
+    for w, wE_ in enumerate(wE_s):
+        gamma_factors[t,w] = run_simulation_TL2(tauE_, wE_, 1, 300, G_TL2,
                                                S_P_HEADING_TL2, P_TL2, T_outbound*time_step*ms, 
                                                defaultclock.dt, delta, rate_correction)
 
@@ -138,7 +138,7 @@ np.savetxt('outputs/TL2_gamma_factors_grid_search.csv', gamma_factors, delimiter
 candidate = np.argwhere(gamma_factors == np.min(gamma_factors))[0]
 
 print('Final Candidate')
-print(candidate, gamma_factors[candidate[0]], gamma_factors[candidate[[1]])
+print(candidate, gamma_factors[candidate[0]], gamma_factors[candidate[1]])
 
 ######################################
 ### TEST
@@ -183,4 +183,4 @@ cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, SPM_TL2
                                             time_step, figsize=(13,8), savefig_='plots/TL2_grid_search.pdf')
 
 cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauE_s, wE_s, 
-                                       figsize=(11,7), savefig_='plots/TL2_gamma_factors_grid_search.pdf'):
+                                       figsize=(11,7), savefig_='plots/TL2_gamma_factors_grid_search.pdf')

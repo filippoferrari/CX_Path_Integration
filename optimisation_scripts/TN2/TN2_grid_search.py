@@ -188,4 +188,4 @@ run(T_outbound*time_step*ms)
 cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tn2, TN2_spike_rates, SPM_TN2, 
                                             time_step, figsize=(13,8), savefig_='plots/TN2_grid_search.pdf')
 cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauE_s, wE_s, 
-                                       figsize=(11,7), savefig_='plots/TN2_gamma_factors_grid_search.pdf'):
+                                       figsize=(11,7), savefig_='plots/TN2_gamma_factors_grid_search.pdf')
