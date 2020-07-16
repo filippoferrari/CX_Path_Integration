@@ -157,11 +157,11 @@ f_stimulus = TimedArray(flow*Hz, dt=1.*time_step*ms)
 P_FLOW = PoissonGroup(N_TN2, rates='f_stimulus(t,i)')
 
 
-params_TL2 = neuron_params
-synapses_TL2 = synapses_params
+params_TN2 = neuron_params
+synapses_TN2 = synapses_params
 
-params_TL2['tauE'] = tauE_s[candidate[0]] * ms
-synapses_TL2['wE'] = wE_s[candidate[1]] * nS
+params_TN2['tauE'] = tauE_s[candidate[0]] * ms
+synapses_TN2['wE'] = wE_s[candidate[1]] * nS
 
 # params_TL2['tauI'] = 1 * ms
 # synapses_TL2['wI'] = 300 * nS
