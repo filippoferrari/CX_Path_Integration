@@ -199,4 +199,4 @@ S_P_FLOW_TN2 = nc.connect_synapses(P_FLOW, G_TN2, W_FLOW_TN2, params=synapses_TN
 run(T_outbound*time_step*ms)
 
 cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tn2, TN2_spike_rates, SPM_TN2, 
-                                            time_step, figsize=(13,8), savefig_='plots/TN2_TPDE_optimised.pdf')
+                                            time_step, figsize=(13,8), savefig_='plots/TN2_TPDE_1000_optimised.pdf')
