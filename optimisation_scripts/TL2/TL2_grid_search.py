@@ -127,9 +127,9 @@ gamma_factors = np.zeros((len(tauE_s), len(wE_s)))
 delta = 1*ms
 rate_correction = True
 
-for t, tauE_ in enumerate(tauE_s):
-    for w, wE_ in enumerate(wE_s):
-        gamma_factors[t,w] = run_simulation_TL2(tauE_, wE_, 1, 300, G_TL2,
+for t_, tauE_ in enumerate(tauE_s):
+    for w_, wE_ in enumerate(wE_s):
+        gamma_factors[t_,w_] = run_simulation_TL2(tauE_, wE_, 1, 300, G_TL2,
                                                S_P_HEADING_TL2, P_TL2, T_outbound*time_step*ms, 
                                                defaultclock.dt, delta, rate_correction)
 
