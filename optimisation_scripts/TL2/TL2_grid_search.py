@@ -119,8 +119,8 @@ def run_simulation_TL2(tauE_, wE_, tauI_, wI_, Group, Synapses, Target,
     return gf
 
 
-tauE_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
-wE_s = [200, 250, 300, 350, 400, 500, 600, 700, 800, 850, 900, 950, 1000] # nS
+#tauE_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
+#wE_s = [200, 250, 300, 350, 400, 500, 600, 700, 800, 850, 900, 950, 1000] # nS
 
 gamma_factors = np.zeros((len(tauE_s), len(wE_s)))
 
