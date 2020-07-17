@@ -21,6 +21,17 @@ N_MOTOR = 2
 tauE_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
 wE_s = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000] # nS
 
+
+TL2_spike_rates = 90 # Hz
+
+TN2_spike_rates_min = 50 # Hz
+TN2_spike_rates_max = 160 # Hz
+
+CL1_spike_rates = 50 # Hz
+
+
+
+
 ###############################################################################
 ###                             EQUATIONS
 ###############################################################################
@@ -96,13 +107,13 @@ TL2_neuron_params = {
     'tauI' : [2 * ms]
 }
 
-TL2_synapses_params = {
+H_TL2_synapses_params = {
     'wE' : [900 * nS],
     'wI' : [200 * nS]
 }
 
 ### TN2
-TL2_neuron_params = {
+TN2_neuron_params = {
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
@@ -114,7 +125,7 @@ TL2_neuron_params = {
     'tauI' : [2 * ms]
 }
 
-TL2_synapses_params = {
+F_TN2_synapses_params = {
     'wE' : [750 * nS],
     'wI' : [200 * nS]
 }
