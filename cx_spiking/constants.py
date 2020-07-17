@@ -92,16 +92,32 @@ TL2_neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [4.805567977984205 * ms],
+    'tauE' : [0.5 * ms],
     'tauI' : [2 * ms]
 }
 
 TL2_synapses_params = {
-    'wE' : [222.85976322314087 * nS],
+    'wE' : [900 * nS],
     'wI' : [200 * nS]
 }
 
+### TN2
+TL2_neuron_params = {
+    'EL' : [-52 * mV],
+    'Vm' : [-52 * mV],
+    'EE' : [0 * mV],
+    'EI' : [-80 * mV],
+    'gL' : [1*10**-6 * siemens],
+    'gE' : '(randn() * 1.5 + 4) * 10.*nS',
+    'gI' : '(randn() * 12 + 20) * 10.*nS',
+    'tauE' : [1 * ms],
+    'tauI' : [2 * ms]
+}
 
+TL2_synapses_params = {
+    'wE' : [750 * nS],
+    'wI' : [200 * nS]
+}
 
 ###############################################################################
 ###                             CONNECTIVITY MATRICES
