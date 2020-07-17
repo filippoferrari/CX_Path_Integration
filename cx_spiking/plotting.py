@@ -152,16 +152,19 @@ def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, figsize=(10,5)
     plt.show()
 
 
-def plot_gamma_factors(gamma_factors, tauE_s, wE_s, figsize=(11,7), savefig_=None):
+def plot_gamma_factors(gamma_factors, tau_s, w_s,  
+                       title='', xlabel='wE (nS)', ylabel='tauE (ms)', 
+                       figsize=(11,7), savefig_=None):
     c = np.argwhere(gamma_factors == np.min(gamma_factors))[0]
     
-    plt.figure(figsize=(11,7))
+    plt.figure(figsize=figsize)
     plt.pcolormesh(gamma_factors,cmap='viridis', rasterized=True)
     plt.plot(c[1]+0.5, c[0]+0.5, 'rx')
-    plt.xlabel('wE (nS)')
-    plt.ylabel('tauE (ms)')
-    plt.yticks(np.arange(len(tauE_s))+0.5, tauE_s)
-    plt.xticks(np.arange(len(wE_s))+0.5, wE_s)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.yticks(np.arange(len(tau_s))+0.5, tau_s)
+    plt.xticks(np.arange(len(w_s))+0.5, w_s)
     plt.colorbar()
     if savefig_:
         plt.savefig(savefig_)
