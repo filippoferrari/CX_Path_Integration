@@ -21,17 +21,22 @@ import cx_spiking.network_creation as nc
 import cx_spiking.optimisation.metric as metric
 import cx_spiking.optimisation.ng_optimiser as ng_optimiser
 
+import itertools
+import multiprocessing
+
 
 print('****** Imports completed *******')
 
-# parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--index', required=True, type=int, default=0)
+
 # parser.add_argument('-m', '--method', required=True, type=str, default='TwoPointsDE', help='Optimiser [DE, PSO, SQP, TwoPointsDE]')
 # parser.add_argument('-b', '--budget', required=True, type=int, default=300, help='Budget for the optimiser')
-# args = parser.parse_args()
+args = parser.parse_args()
 
 # method = args.method
 # budget = args.budget
-
+print(f'args index = {args.index}   -   tauE = {tauE_s[args.index]}')
 # print(f'method {method} - budget {budget}')
 
 ######################################
@@ -91,6 +96,8 @@ S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=syn
                                       params=H_TL2_synapses_params, on_pre=synapses_eqs_ex)
 S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, W_TL2_CL1, model=synapses_model, 
                                 params=TL2_CL1_synapses_params, on_pre=synapses_eqs_ex)
+S_CL1_TB1 = nc.connect_synapses(G_CL1, G_TB1, W_CL1_TB1, model=synapses_model, 
+                                params=synapses_params, on_pre=synapses_eqs_ex)
 S_TB1_TB1 = nc.connect_synapses(G_TB1, G_TB1, W_TB1_TB1, model=synapses_model, 
                                 params=synapses_params, on_pre=synapses_eqs_in)
 
@@ -108,7 +115,9 @@ store('initialised')
 ######################################
 ### OPTIMISER
 ######################################
-def run_simulation_TB1(tauE_, wE_, tauI_, wI_, Group, Synapses, Target,
+def run_simulation_TB1(tauE_, wE_, tauI_, wI_, 
+                       Group, Target,
+                       pre_Synapses, post_Synapses,
                        time, dt_, delta, rate_correction): 
     restore('initialised') 
 
@@ -117,8 +126,10 @@ def run_simulation_TB1(tauE_, wE_, tauI_, wI_, Group, Synapses, Target,
                       'tauI' : tauI_*ms})
     print(f'taueE: {tauE_} - tauI {tauI_}')
 
-    Synapses.set_states({'wE' : wE_*nS,
-                         'wI' : wI_*nS})
+    pre_Synapses.set_states({'wE' : wE_*nS,
+                             'wI' : wI_*nS})
+    post_Synapses.set_states({'wE' : wE_*nS,
+                              'wI' : wI_*nS})
     print(f'wE: {wE_} - wI {wI_}')
 
     _, model_spike_monitor = nc.add_monitors(Group)
@@ -133,80 +144,111 @@ def run_simulation_TB1(tauE_, wE_, tauI_, wI_, Group, Synapses, Target,
 
     return gf
 
-gamma_factors = np.zeros((len(tauE_s), len(wE_s)))
+gamma_factors = np.zeros((len(tauE_s), len(wE_s), len(tauI_s), len(wI_s)))
 
 delta = 1*ms
 rate_correction = True
 
-for t_, tauI_ in enumerate(tauI_s):
-    for w_, wI_ in enumerate(wI_s):
-        gamma_factors[t_,w_] = run_simulation_TB1(1, 200, tauI_, wI_, G_TB1,
-                                                  S_TB1_TB1, P_TB1, T_outbound*time_step*ms, 
-                                                  defaultclock.dt, delta, rate_correction)
+# paramlist = list(itertools.product(tauE_s,wE_s,tauI_s,wI_s))
 
-np.savetxt('outputs/TB1_gamma_factors_grid_search.csv', gamma_factors, delimiter=',')
+# def func(params):
+#     gf = run_simulation_TB1(params[0], params[0], params[0], params[0], 
+#                             G_TB1, P_TB1,
+#                             S_CL1_TB1, S_TB1_TB1, 
+#                             T_outbound*time_step*ms, 
+#                             defaultclock.dt, delta, rate_correction)
+#     return gf
+
+# pool = multiprocessing.Pool(processes=5)
+
+#Distribute the parameter sets evenly across the cores
+#res  = pool.map(func, paramlist)
+
+tauE_ = tauE_s[args.index]
+for we_, wE_ in enumerate(wE_s):
+    for ti_, tauI_ in enumerate(tauI_s):
+        for wi_, wI_ in enumerate(wI_s):
+            gamma_factors[args.index, we_, ti_, wi_] = run_simulation_TB1(tauE_, wE_, tauI_, wI_, 
+                                                                    G_TB1, P_TB1,
+                                                                    S_CL1_TB1, S_TB1_TB1, 
+                                                                    T_outbound*time_step*ms, 
+                                                                    defaultclock.dt, delta, rate_correction)
+
+with open(f'outputs/TB1_gamma_factors_grid_search_{args.index}.npz', 'wb') as f:
+    np.save(f, gamma_factors)
+#np.savetxt('outputs/TB1_gamma_factors_grid_search.csv', gamma_factors, delimiter=',')
 
 candidate = np.argwhere(gamma_factors == np.min(gamma_factors))[0]
 
 print('Final Candidate')
-print(candidate, gamma_factors[candidate[0]], gamma_factors[candidate[1]])
+print(candidate, gamma_factors[candidate[0], candidate[1], candidate[2], candidate[3]])
+print(tauE_s[candidate[0]], wE_s[candidate[1]], tauI_s[candidate[2]], wI_s[candidate[3]])
 
-######################################
-### TEST
-######################################
+# ######################################
+# ### TEST
+# ######################################
 
-start_scope()
+# start_scope()
 
-time_step = 20 # ms
-
-
-params_TB1 = neuron_params
-synapses_TB1 = synapses_params
-
-params_TB1['tauI'] = tauE_s[candidate[0]] * ms
-synapses_TB1['wI'] = wE_s[candidate[1]] * nS
-
-# params_CL1['tauI'] = 1 * ms
-# synapses_CL1['wI'] = 300 * nS
-
-print(params_TB1)
-print(synapses_TB1)
+# time_step = 20 # ms
 
 
-h_stimulus = TimedArray(headings*Hz, dt=1.*time_step*ms)
-P_HEADING = PoissonGroup(N_TL2, rates='h_stimulus(t,i)')
+# params_TB1 = neuron_params
+# synapses_CL1_TB1 = synapses_params
+# synapses_TB1_TB1 = synapses_params
+
+# params_TB1['tauE'] = tauE_s[candidate[0]] * ms
+# synapses_CL1_TB1['wE'] = wE_s[candidate[1]] * nS
+
+# params_TB1['tauI'] = tauE_s[candidate[2]] * ms
+# synapses_TB1_TB1['wI'] = wE_s[candidate[3]] * nS
+
+# # params_CL1['tauI'] = 1 * ms
+# # synapses_CL1['wI'] = 300 * nS
+
+# print(f'params_TB1 {params_TB1}')
+# print(f'synapses_CL1_TB1 {synapses_CL1_TB1}')
+# print(f'synapses_TB1_TB1 {synapses_TB1_TB1}')
 
 
-# Neuron group
-G_TL2 = nc.generate_neuron_groups(N_TL2, eqs, threshold_eqs, reset_eqs, TL2_neuron_params, name='TL2_test')
-G_CL1 = nc.generate_neuron_groups(N_CL1, eqs, threshold_eqs, reset_eqs, CL1_neuron_params, name='CL1_test')
-G_TB1 = nc.generate_neuron_groups(N_TB1, eqs, threshold_eqs, reset_eqs, params_TB1, name='TB1_test')
-
-# Add monitors
-STM_TL2, SPM_TL2 = nc.add_monitors(G_TL2, name='TL2_test')
-STM_CL1, SPM_CL1 = nc.add_monitors(G_CL1, name='CL1_test')
-STM_TB1, SPM_TB1 = nc.add_monitors(G_TB1, name='TB1_test')
+# h_stimulus = TimedArray(headings*Hz, dt=1.*time_step*ms)
+# P_HEADING = PoissonGroup(N_TL2, rates='h_stimulus(t,i)')
 
 
-# Connect heading to TL2
-S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=synapses_model, 
-                                      params=H_TL2_synapses_params, on_pre=synapses_eqs_ex)
-S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, W_TL2_CL1, model=synapses_model, 
-                                params=TL2_CL1_synapses_params, on_pre=synapses_eqs_ex)
-S_TB1_TB1 = nc.connect_synapses(G_TB1, G_TB1, W_TB1_TB1, model=synapses_model, 
-                                params=synapses_TB1, on_pre=synapses_eqs_in)
+# # Neuron group
+# G_TL2 = nc.generate_neuron_groups(N_TL2, eqs, threshold_eqs, reset_eqs, TL2_neuron_params, name='TL2_test')
+# G_CL1 = nc.generate_neuron_groups(N_CL1, eqs, threshold_eqs, reset_eqs, CL1_neuron_params, name='CL1_test')
+# G_TB1 = nc.generate_neuron_groups(N_TB1, eqs, threshold_eqs, reset_eqs, params_TB1, name='TB1_test')
+
+# # Add monitors
+# STM_TL2, SPM_TL2 = nc.add_monitors(G_TL2, name='TL2_test')
+# STM_CL1, SPM_CL1 = nc.add_monitors(G_CL1, name='CL1_test')
+# STM_TB1, SPM_TB1 = nc.add_monitors(G_TB1, name='TB1_test')
 
 
-# Run simulation
-run(T_outbound*time_step*ms)
+# # Connect heading to TL2
+# S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=synapses_model, 
+#                                       params=H_TL2_synapses_params, on_pre=synapses_eqs_ex)
+# S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, W_TL2_CL1, model=synapses_model, 
+#                                 params=TL2_CL1_synapses_params, on_pre=synapses_eqs_ex)                            
+# S_CL1_TB1 = nc.connect_synapses(G_CL1, G_TB1, W_CL1_TB1, model=synapses_model, 
+#                                 params=synapses_CL1_TB1, on_pre=synapses_eqs_ex)
+# S_TB1_TB1 = nc.connect_synapses(G_TB1, G_TB1, W_TB1_TB1, model=synapses_model, 
+#                                 params=synapses_TB1_TB1, on_pre=synapses_eqs_in)
 
-cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, SPM_TL2, 
-                                            time_step, figsize=(13,8), savefig_='plots/TL2_grid_search.pdf')
-cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.cl1, CL1_spike_rates, SPM_CL1, 
-                                            time_step, figsize=(13,8), savefig_=f'plots/CL1_grid_search.pdf')
-cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tb1, TB1_spike_rates, SPM_TB1, 
-                                            time_step, figsize=(13,8), savefig_=f'plots/TB1_grid_search.pdf')
-cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauI_s, wI_s, 
-                                       title='TB1', xlabel='wI (nS)', ylabel='tauI (ms)', 
-                                       figsize=(11,7), savefig_='plots/TB1_gamma_factors_grid_search.pdf')
+
+# # Run simulation
+# run(T_outbound*time_step*ms)
+
+# cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, SPM_TL2, 
+#                                             time_step, figsize=(13,8), savefig_='plots/TL2_grid_search.pdf')
+# cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.cl1, CL1_spike_rates, SPM_CL1, 
+#                                             time_step, figsize=(13,8), savefig_=f'plots/CL1_grid_search.pdf')
+# cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tb1, TB1_spike_rates, SPM_TB1, 
+#                                             time_step, figsize=(13,8), savefig_=f'plots/TB1_grid_search.pdf')
+# #cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauI_s, wI_s, 
+# #                                       title='TB1', xlabel='wI (nS)', ylabel='tauI (ms)', 
+# #                                       figsize=(11,7), savefig_='plots/TB1_gamma_factors_grid_search.pdf')
                                
+
+print('***********  DONE  ***********')
