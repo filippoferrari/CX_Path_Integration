@@ -138,8 +138,8 @@ rate_correction = True
 for t_, tauE_ in enumerate(tauE_s):
     for w_, wE_ in enumerate(wE_s):
         gamma_factors[t_,w_] = run_simulation_CL1(tauE_, wE_, 1, 300, G_CL1,
-                                               S_TL2_CL1, P_CL1, T_outbound*time_step*ms, 
-                                               defaultclock.dt, delta, rate_correction)
+                                                  S_TL2_CL1, P_CL1, T_outbound*time_step*ms, 
+                                                  defaultclock.dt, delta, rate_correction)
 
 np.savetxt('outputs/CL1_gamma_factors_grid_search.csv', gamma_factors, delimiter=',')
 
@@ -176,7 +176,7 @@ P_HEADING = PoissonGroup(N_TL2, rates='h_stimulus(t,i)')
 
 # Neuron group
 G_TL2 = nc.generate_neuron_groups(N_TL2, eqs, threshold_eqs, reset_eqs, TL2_neuron_params, name='TL2_test')
-G_CL1 = nc.generate_neuron_groups(N_CL1, eqs, threshold_eqs, reset_eqs, neuron_params, name='CL1_test')
+G_CL1 = nc.generate_neuron_groups(N_CL1, eqs, threshold_eqs, reset_eqs, params_CL1, name='CL1_test')
 
 # Add monitors
 STM_TL2, SPM_TL2 = nc.add_monitors(G_TL2, name='TL2_test')
@@ -186,7 +186,7 @@ STM_CL1, SPM_CL1 = nc.add_monitors(G_CL1, name='CL1_test')
 S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=synapses_model, 
                                       params=H_TL2_synapses_params, on_pre=synapses_eqs_ex)
 S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, W_TL2_CL1, model=synapses_model, 
-                                params=synapses_params, on_pre=synapses_eqs_ex)
+                                params=synapses_CL1, on_pre=synapses_eqs_ex)
 
 
 # Run simulation
@@ -199,3 +199,4 @@ cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.cl1, CL1_spike_rates, SPM_CL1
 cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauE_s, wE_s, 
                                        figsize=(11,7), savefig_='plots/CL1_gamma_factors_grid_search.pdf')
                                
+print('*******************  DONE  *******************')

@@ -18,17 +18,17 @@ N_PONTINE = 16
 
 N_MOTOR = 2
 
-# tauE_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
-# wE_s = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000] # nS
-# tauI_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
-# wI_s = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000] # nS
+tauE_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
+wE_s = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000] # nS
+tauI_s = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] # ms
+wI_s = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000] # nS
 
 
 
-tauE_s = [0.1, 0.5, 1, 1.5, 2] # ms
-wE_s = [500, 600, 700, 800, 900, 1000] # nS
-tauI_s = [0.1, 0.5, 1, 1.5, 2] # ms
-wI_s = [500, 600, 700, 800, 900, 1000] # nS
+tauE_s_full = [0.1, 0.5, 1, 1.5, 2] # ms
+wE_s_full = [500, 600, 700, 800, 900, 1000] # nS
+tauI_s_full = [0.1, 0.5, 1, 1.5, 2] # ms
+wI_s_full = [500, 600, 700, 800, 900, 1000] # nS
 
 
 
@@ -115,13 +115,14 @@ TL2_neuron_params = {
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
     'tauE' : [0.5 * ms],
-    'tauI' : [2 * ms]
+    'tauI' : [2 * ms] # default
 }
 
 H_TL2_synapses_params = {
     'wE' : [900 * nS],
-    'wI' : [200 * nS]
+    'wI' : [200 * nS] # default
 }
+
 
 ### TN2
 TN2_neuron_params = {
@@ -133,13 +134,14 @@ TN2_neuron_params = {
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
     'tauE' : [1 * ms],
-    'tauI' : [2 * ms]
+    'tauI' : [2 * ms] # default
 }
 
 F_TN2_synapses_params = {
     'wE' : [750 * nS],
-    'wI' : [200 * nS]
+    'wI' : [200 * nS] # default
 }
+
 
 ### CL1
 CL1_neuron_params = {
@@ -151,14 +153,37 @@ CL1_neuron_params = {
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
     'tauE' : [1 * ms],
-    'tauI' : [2 * ms]
+    'tauI' : [2 * ms] # default
 }
 
 TL2_CL1_synapses_params = {
     'wE' : [500 * nS],
-    'wI' : [200 * nS]
+    'wI' : [200 * nS] # default
 }
 
+
+### TB1
+TB1_neuron_params = {
+    'EL' : [-52 * mV],
+    'Vm' : [-52 * mV],
+    'EE' : [0 * mV],
+    'EI' : [-80 * mV],
+    'gL' : [1*10**-6 * siemens],
+    'gE' : '(randn() * 1.5 + 4) * 10.*nS',
+    'gI' : '(randn() * 12 + 20) * 10.*nS',
+    'tauE' : [0.5 * ms],
+    'tauI' : [0.5 * ms]
+}
+
+CL1_TB1_synapses_params = {
+    'wE' : [300 * nS],
+    'wI' : [200 * nS] # default
+}
+
+TB1_TB1_synapses_params = {
+    'wE' : [200 * nS], # default
+    'wI' : [300 * nS] 
+}
 
 ###############################################################################
 ###                             CONNECTIVITY MATRICES
@@ -180,7 +205,8 @@ def gen_TB1_TB1_weights(weight=1.):
 
 W_HEADING_TL2 = np.eye(N_TL2)
 W_FLOW_TN2 = np.eye(N_TN2)
-W_TL2_CL1 = np.eye(N_TL2)
+# Act as if CL1 cells were inverting TL2 output
+W_TL2_CL1 = np.roll(np.eye(N_TL2),4, axis=1)
 W_CL1_TB1 = np.tile(np.eye(N_TB1), 2)
 W_TB1_TB1 = gen_TB1_TB1_weights()
 W_TB1_CPU1A = np.tile(np.eye(N_TB1), (2, 1))[1:N_CPU1A+1, :]
