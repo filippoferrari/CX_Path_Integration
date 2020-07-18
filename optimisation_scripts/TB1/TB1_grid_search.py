@@ -90,7 +90,7 @@ G_TB1 = nc.generate_neuron_groups(N_TB1, eqs, threshold_eqs, reset_eqs, neuron_p
 S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=synapses_model, 
                                       params=H_TL2_synapses_params, on_pre=synapses_eqs_ex)
 S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, W_TL2_CL1, model=synapses_model, 
-                                params=synapses_params, on_pre=synapses_eqs_ex)
+                                params=TL2_CL1_synapses_params, on_pre=synapses_eqs_ex)
 S_TB1_TB1 = nc.connect_synapses(G_TB1, G_TB1, W_TB1_TB1, model=synapses_model, 
                                 params=synapses_params, on_pre=synapses_eqs_in)
 
@@ -192,7 +192,7 @@ STM_TB1, SPM_TB1 = nc.add_monitors(G_TB1, name='TB1_test')
 S_P_HEADING_TL2 = nc.connect_synapses(P_HEADING, G_TL2, W_HEADING_TL2, model=synapses_model, 
                                       params=H_TL2_synapses_params, on_pre=synapses_eqs_ex)
 S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, W_TL2_CL1, model=synapses_model, 
-                                params=synapses_params, on_pre=synapses_eqs_ex)
+                                params=TL2_CL1_synapses_params, on_pre=synapses_eqs_ex)
 S_TB1_TB1 = nc.connect_synapses(G_TB1, G_TB1, W_TB1_TB1, model=synapses_model, 
                                 params=synapses_TB1, on_pre=synapses_eqs_in)
 
