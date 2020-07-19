@@ -36,7 +36,7 @@ args = parser.parse_args()
 
 # method = args.method
 # budget = args.budget
-print(f'args index = {args.index}   -   tauE = {tauE_s[args.index]}')
+print(f'args index = {args.index}   -   tauE = {tauE_s_full[args.index]}')
 # print(f'method {method} - budget {budget}')
 
 ######################################
@@ -88,6 +88,10 @@ G_TL2 = nc.generate_neuron_groups(N_TL2, eqs, threshold_eqs, reset_eqs, TL2_neur
 G_CL1 = nc.generate_neuron_groups(N_CL1, eqs, threshold_eqs, reset_eqs, CL1_neuron_params, name='CL1_source_network')
 G_TB1 = nc.generate_neuron_groups(N_TB1, eqs, threshold_eqs, reset_eqs, neuron_params, name='TB1_source_network')
 
+
+print(f'TL2_neuron_params {TL2_neuron_params}')
+print(f'CL1_neuron_params {CL1_neuron_params}')
+
 # Add monitors
 #STM_TL2, SPM_TL2 = nc.add_monitors(G_TL2, name='TL2_source')
 
@@ -100,6 +104,9 @@ S_CL1_TB1 = nc.connect_synapses(G_CL1, G_TB1, W_CL1_TB1, model=synapses_model,
                                 params=synapses_params, on_pre=synapses_eqs_ex)
 S_TB1_TB1 = nc.connect_synapses(G_TB1, G_TB1, W_TB1_TB1, model=synapses_model, 
                                 params=synapses_params, on_pre=synapses_eqs_in)
+
+print(f'H_TL2_synapses_params {H_TL2_synapses_params}')
+print(f'TL2_CL1_synapses_params {TL2_CL1_synapses_params}')
 
 
 #### Target
@@ -144,12 +151,12 @@ def run_simulation_TB1(tauE_, wE_, tauI_, wI_,
 
     return gf
 
-gamma_factors = np.zeros((len(tauE_s), len(wE_s), len(tauI_s), len(wI_s)))
+gamma_factors = np.zeros((len(tauE_s_full), len(wE_s_full), len(tauI_s_full), len(wI_s_full)))
 
 delta = 1*ms
 rate_correction = True
 
-# paramlist = list(itertools.product(tauE_s,wE_s,tauI_s,wI_s))
+# paramlist = list(itertools.product(tauE_s_full,wE_s_full,tauI_s_full,wI_s_full))
 
 # def func(params):
 #     gf = run_simulation_TB1(params[0], params[0], params[0], params[0], 
@@ -164,10 +171,10 @@ rate_correction = True
 #Distribute the parameter sets evenly across the cores
 #res  = pool.map(func, paramlist)
 
-tauE_ = tauE_s[args.index]
-for we_, wE_ in enumerate(wE_s):
-    for ti_, tauI_ in enumerate(tauI_s):
-        for wi_, wI_ in enumerate(wI_s):
+tauE_ = tauE_s_full[args.index]
+for we_, wE_ in enumerate(wE_s_full):
+    for ti_, tauI_ in enumerate(tauI_s_full):
+        for wi_, wI_ in enumerate(wI_s_full):
             gamma_factors[args.index, we_, ti_, wi_] = run_simulation_TB1(tauE_, wE_, tauI_, wI_, 
                                                                     G_TB1, P_TB1,
                                                                     S_CL1_TB1, S_TB1_TB1, 
@@ -182,7 +189,7 @@ candidate = np.argwhere(gamma_factors == np.min(gamma_factors))[0]
 
 print('Final Candidate')
 print(candidate, gamma_factors[candidate[0], candidate[1], candidate[2], candidate[3]])
-print(tauE_s[candidate[0]], wE_s[candidate[1]], tauI_s[candidate[2]], wI_s[candidate[3]])
+print(tauE_s_full[candidate[0]], wE_s_full[candidate[1]], tauI_s_full[candidate[2]], wI_s_full[candidate[3]])
 
 # ######################################
 # ### TEST
@@ -197,11 +204,11 @@ print(tauE_s[candidate[0]], wE_s[candidate[1]], tauI_s[candidate[2]], wI_s[candi
 # synapses_CL1_TB1 = synapses_params
 # synapses_TB1_TB1 = synapses_params
 
-# params_TB1['tauE'] = tauE_s[candidate[0]] * ms
-# synapses_CL1_TB1['wE'] = wE_s[candidate[1]] * nS
+# params_TB1['tauE'] = tauE_s_full[candidate[0]] * ms
+# synapses_CL1_TB1['wE'] = wE_s_full[candidate[1]] * nS
 
-# params_TB1['tauI'] = tauE_s[candidate[2]] * ms
-# synapses_TB1_TB1['wI'] = wE_s[candidate[3]] * nS
+# params_TB1['tauI'] = tauE_s_full[candidate[2]] * ms
+# synapses_TB1_TB1['wI'] = wE_s_full[candidate[3]] * nS
 
 # # params_CL1['tauI'] = 1 * ms
 # # synapses_CL1['wI'] = 300 * nS
@@ -246,7 +253,7 @@ print(tauE_s[candidate[0]], wE_s[candidate[1]], tauI_s[candidate[2]], wI_s[candi
 #                                             time_step, figsize=(13,8), savefig_=f'plots/CL1_grid_search.pdf')
 # cx_spiking.plotting.plot_rate_cx_log_spikes(cx_log.tb1, TB1_spike_rates, SPM_TB1, 
 #                                             time_step, figsize=(13,8), savefig_=f'plots/TB1_grid_search.pdf')
-# #cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauI_s, wI_s, 
+# #cx_spiking.plotting.plot_gamma_factors(gamma_factors, tauI_s_full, wI_s_full, 
 # #                                       title='TB1', xlabel='wI (nS)', ylabel='tauI (ms)', 
 # #                                       figsize=(11,7), savefig_='plots/TB1_gamma_factors_grid_search.pdf')
                                

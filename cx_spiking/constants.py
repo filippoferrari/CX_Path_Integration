@@ -152,12 +152,12 @@ CL1_neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [1 * ms],
+    'tauE' : [1.5 * ms],
     'tauI' : [2 * ms] # default
 }
 
 TL2_CL1_synapses_params = {
-    'wE' : [500 * nS],
+    'wE' : [450 * nS],
     'wI' : [200 * nS] # default
 }
 
@@ -206,6 +206,7 @@ def gen_TB1_TB1_weights(weight=1.):
 W_HEADING_TL2 = np.eye(N_TL2)
 W_FLOW_TN2 = np.eye(N_TN2)
 # Act as if CL1 cells were inverting TL2 output
+# by shifting it by 180 degrees 
 W_TL2_CL1 = np.roll(np.eye(N_TL2),4, axis=1)
 W_CL1_TB1 = np.tile(np.eye(N_TB1), 2)
 W_TB1_TB1 = gen_TB1_TB1_weights()
