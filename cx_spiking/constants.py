@@ -172,16 +172,16 @@ TB1_neuron_params = {
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
     'tauE' : [0.5 * ms],
-    'tauI' : [0.5 * ms]
+    'tauI' : [1 * ms]
 }
 
 CL1_TB1_synapses_params = {
-    'wE' : [300 * nS],
+    'wE' : [600 * nS],
     'wI' : [200 * nS] # default
 }
 
 TB1_TB1_synapses_params = {
-    'wE' : [200 * nS], # default
+    'wE' : [700 * nS], # default
     'wI' : [300 * nS] 
 }
 

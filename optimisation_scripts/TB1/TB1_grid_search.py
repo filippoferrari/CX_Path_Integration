@@ -36,6 +36,12 @@ args = parser.parse_args()
 
 # method = args.method
 # budget = args.budget
+
+tauE_s_full = [0.1, 0.5, 1, 1.5, 2] # ms
+wE_s_full = [550, 600, 650, 700, 750] # nS
+tauI_s_full = [0.1, 0.5, 1, 1.5, 2] # ms
+wI_s_full = [550, 600, 650, 700, 750] # nS
+
 print(f'args index = {args.index}   -   tauE = {tauE_s_full[args.index]}')
 # print(f'method {method} - budget {budget}')
 
