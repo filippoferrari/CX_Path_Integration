@@ -307,7 +307,7 @@ for we_, wE_ in enumerate(wE_s_full):
                                                                           T_outbound*time_step*ms, 
                                                                           defaultclock.dt, delta, rate_correction)
 
-with open(f'outputs/TB1_gamma_factors_grid_search_{args.index}.npz', 'wb') as f:
+with open(f'outputs/NET_gamma_factors_grid_search_{args.index}.npz', 'wb') as f:
     np.save(f, gamma_factors)
 #np.savetxt('outputs/TB1_gamma_factors_grid_search.csv', gamma_factors, delimiter=',')
 
