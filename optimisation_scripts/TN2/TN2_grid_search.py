@@ -78,14 +78,14 @@ S_P_FLOW_TN2 = nc.connect_synapses(P_FLOW, G_TN2, W_FLOW_TN2, model=synapses_mod
                                    params=synapses_params, on_pre=synapses_eqs_ex)
 
 #### Target
-TN2_spike_rates_min = 50 # Hz
-TN2_spike_rates_max = 160 # Hz
+# TN2_spike_rates_min = 50 # Hz
+# TN2_spike_rates_max = 160 # Hz
 
-rescaled_tn2 = cx_log.tn2.T * (TN2_spike_rates_max - TN2_spike_rates_min) + TN2_spike_rates_min
+# rescaled_tn2 = cx_log.tn2.T * (TN2_spike_rates_max - TN2_spike_rates_min) + TN2_spike_rates_min
 
 # Scale spike rates from rate-based CX in the right range
 # transpose since log is neuron_index*time_step but we want the opposite
-TN2_stimulus = TimedArray(rescaled_tn2*Hz, dt=1.*time_step*ms)
+TN2_stimulus = TimedArray(TN2_spike_rates_max*cx_log.tn2.T*Hz, dt=1.*time_step*ms)
 P_TN2 = PoissonGroup(N_TN2, rates='TN2_stimulus(t,i)')
 
 
