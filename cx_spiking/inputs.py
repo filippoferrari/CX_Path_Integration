@@ -6,6 +6,7 @@ import scipy
 from brian2 import * 
 
 import trials
+from cx_spiking.constants import *
 
 def generate_route(T_outbound, vary_speed, route_file='', load_route=True):
     if load_route and os.path.exists(route_file):
@@ -166,3 +167,13 @@ def get_spikes_rates(SPM, N, T_outbound, time_step):
 def to_Hertz(data, time_step):
     # convert milliseconds to seconds
     return data/(time_step / 1000)
+
+
+def compute_motors(cpu1):
+    cpu1a = cpu1[1:-1]
+    cpu1b = np.array([cpu1[-1], cpu1[0]])
+    motor = np.dot(W_CPU1A_MOTOR, cpu1a)
+    motor += np.dot(W_CPU1B_MOTOR, cpu1b)
+    # Consistent with Stone's code
+    motor = motor[[1,0],:]
+    return motor

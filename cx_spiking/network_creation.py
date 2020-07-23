@@ -5,15 +5,22 @@ import cx_spiking.plotting
 
 
 def generate_neuron_groups(N, eqs, threshold_eqs, reset_eqs, 
-                           params, name='', method='euler'):
-    ng = NeuronGroup(N=N, model=eqs, threshold=threshold_eqs, reset=reset_eqs, method='euler', name=name)
+                           params, name=None, method='euler'):
+    if name:
+        ng = NeuronGroup(N=N, model=eqs, threshold=threshold_eqs, reset=reset_eqs, method=method, name=name)
+    else:
+        ng = NeuronGroup(N=N, model=eqs, threshold=threshold_eqs, reset=reset_eqs, method=method)
     ng.set_states(params)
     return ng
 
 
-def add_monitors(N_group, variables_to_record=['Vm', 'gE', 'gI'], name=''):
-    state_monitor = StateMonitor(N_group, variables_to_record, record=True, name=f'{name}_stm')
-    spike_monitor = SpikeMonitor(N_group, name=f'{name}_spm')
+def add_monitors(N_group, variables_to_record=['Vm', 'gE', 'gI'], name=None):
+    if name:
+        state_monitor = StateMonitor(N_group, variables_to_record, record=True, name=f'{name}_stm')
+        spike_monitor = SpikeMonitor(N_group, name=f'{name}_spm')
+    else:
+        state_monitor = StateMonitor(N_group, variables_to_record, record=True)
+        spike_monitor = SpikeMonitor(N_group)       
     return state_monitor, spike_monitor
 
 

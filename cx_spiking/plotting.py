@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from brian2 import *
-
+from brian2tools import *
 
 def plot_stuff(STM, SPM, name='', observation_list=[0], Vt=-0.045, figsize=(10,7), savefig_=None):
     figure(figsize=figsize)
@@ -140,13 +140,29 @@ def plot_rate_cx_log(matrix, max_rate, figsize=(10,5), savefig_=None):
     plt.show()
 
 
-def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, figsize=(10,5), savefig_=None):
+def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, title=None, figsize=(10,5), savefig_=None):
     plt.figure(figsize=figsize)
-    plt.pcolormesh(max_rate*matrix, vmin=0, vmax=max_rate,
+    plt.pcolormesh(max_rate*matrix, vmin=min_rate, vmax=max_rate*matrix.max(),
                    cmap='viridis', rasterized=True)
 
     plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
     plt.colorbar()
+    if title:
+        plt.title(title)
+    if savefig_:
+        plt.savefig(savefig_)
+    plt.show()
+
+
+def plot_motors_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, title=None, figsize=(10,5), savefig_=None):
+    plt.figure(figsize=figsize)
+    plt.pcolormesh(matrix, vmin=min_rate, vmax=max_rate,
+                   cmap='viridis', rasterized=True)
+
+    plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
+    plt.colorbar()
+    if title:
+        plt.title(title)
     if savefig_:
         plt.savefig(savefig_)
     plt.show()
@@ -166,6 +182,16 @@ def plot_gamma_factors(gamma_factors, tau_s, w_s,
     plt.yticks(np.arange(len(tau_s))+0.5, tau_s)
     plt.xticks(np.arange(len(w_s))+0.5, w_s)
     plt.colorbar()
+    if savefig_:
+        plt.savefig(savefig_)
+    plt.show()
+
+
+def plot_raster_plot(spm, title=None, figsize=(15,5), savefig_=None):
+    plt.figure(figsize=figsize)
+    if title:
+        plt.title(title)
+    brian_plot(spm)
     if savefig_:
         plt.savefig(savefig_)
     plt.show()
