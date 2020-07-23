@@ -167,3 +167,4 @@ dmypy.json
 */data/*
 !notebooks/data/route.npz
 !optimisation_scripts/plots/*
+*/fitted_model_*
