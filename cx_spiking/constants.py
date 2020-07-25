@@ -40,7 +40,7 @@ TN2_spike_rates_max = 160 # Hz
 
 CL1_spike_rates = 50 # Hz
 
-TB1_spike_rates = 30 # Hz
+TB1_spike_rates = 50 # Hz
 
 
 ###############################################################################
