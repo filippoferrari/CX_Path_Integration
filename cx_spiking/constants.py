@@ -95,13 +95,13 @@ neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [1 * ms],
-    'tauI' : [2 * ms]
+    'tauE' : [0.5 * ms],
+    'tauI' : [0.5 * ms]
 }
 
 synapses_params = {
-    'wE' : [200 * nS],
-    'wI' : [200 * nS]
+    'wE' : [800 * nS],
+    'wI' : [600 * nS]
 }
 
 
@@ -172,17 +172,17 @@ TB1_neuron_params = {
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
     'tauE' : [0.5 * ms],
-    'tauI' : [0.5 * ms]
+    'tauI' : [1 * ms]
 }
 
 CL1_TB1_synapses_params = {
-    'wE' : [550 * nS],
+    'wE' : [800 * nS],
     'wI' : [200 * nS] # default
 }
 
 TB1_TB1_synapses_params = {
     'wE' : [700 * nS], # default
-    'wI' : [550 * nS] 
+    'wI' : [700 * nS] 
 }
 
 ###############################################################################
