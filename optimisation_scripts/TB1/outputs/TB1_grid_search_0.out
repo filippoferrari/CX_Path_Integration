@@ -1,387 +1,552 @@
 ****** Imports completed *******
-args index = 0   -   tauE = 0.1
+args index = 0   -   tauE = 0.5
 Load route from /afs/inf.ed.ac.uk/user/s15/s1556895/MSc/CX_Path_Integration/notebooks/data/route.npz
 /afs/inf.ed.ac.uk/user/s15/s1556895/MSc/CX_Path_Integration/notebooks/data/route.npz exists - not overwriting it
 TL2_neuron_params {'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [0.5 * msecond], 'tauI': [2. * msecond]}
 CL1_neuron_params {'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [1.5 * msecond], 'tauI': [2. * msecond]}
 H_TL2_synapses_params {'wE': [0.9 * usiemens], 'wI': [200. * nsiemens]}
 TL2_CL1_synapses_params {'wE': [0.45 * usiemens], 'wI': [200. * nsiemens]}
-taueE: 0.1 - tauI 0.1
-wE: 550 - wI 550
-Gamma factor: 3.0599421309489694
-taueE: 0.1 - tauI 0.1
-wE: 550 - wI 600
-Gamma factor: 3.0602308292950497
-taueE: 0.1 - tauI 0.1
-wE: 550 - wI 650
-Gamma factor: 3.0605113234755494
-taueE: 0.1 - tauI 0.1
-wE: 550 - wI 700
-Gamma factor: 3.061813532846647
-taueE: 0.1 - tauI 0.1
-wE: 550 - wI 750
-Gamma factor: 3.0601918671685806
-taueE: 0.1 - tauI 0.5
-wE: 550 - wI 550
-Gamma factor: 3.059556791853757
-taueE: 0.1 - tauI 0.5
-wE: 550 - wI 600
-Gamma factor: 3.060700788180911
-taueE: 0.1 - tauI 0.5
-wE: 550 - wI 650
-Gamma factor: 3.0607400116274865
-taueE: 0.1 - tauI 0.5
-wE: 550 - wI 700
-Gamma factor: 3.0594751853225164
-taueE: 0.1 - tauI 0.5
-wE: 550 - wI 750
-Gamma factor: 3.0599297244426875
-taueE: 0.1 - tauI 1
-wE: 550 - wI 550
-Gamma factor: 3.0613777319545785
-taueE: 0.1 - tauI 1
-wE: 550 - wI 600
-Gamma factor: 3.0619789861527487
-taueE: 0.1 - tauI 1
-wE: 550 - wI 650
-Gamma factor: 3.0598983831229876
-taueE: 0.1 - tauI 1
-wE: 550 - wI 700
-Gamma factor: 3.060386288555676
-taueE: 0.1 - tauI 1
-wE: 550 - wI 750
-Gamma factor: 3.059618960221677
-taueE: 0.1 - tauI 1.5
-wE: 550 - wI 550
-Gamma factor: 3.0604806192336063
-taueE: 0.1 - tauI 1.5
-wE: 550 - wI 600
-Gamma factor: 3.0599160935006036
-taueE: 0.1 - tauI 1.5
-wE: 550 - wI 650
-Gamma factor: 3.061113371600081
-taueE: 0.1 - tauI 1.5
-wE: 550 - wI 700
-Gamma factor: 3.0596501853855678
-taueE: 0.1 - tauI 1.5
-wE: 550 - wI 750
-Gamma factor: 3.0577520174620236
-taueE: 0.1 - tauI 2
-wE: 550 - wI 550
-Gamma factor: 3.058489780875388
-taueE: 0.1 - tauI 2
-wE: 550 - wI 600
-Gamma factor: 3.059133101782448
-taueE: 0.1 - tauI 2
-wE: 550 - wI 650
-Gamma factor: 3.0594497232772766
-taueE: 0.1 - tauI 2
-wE: 550 - wI 700
-Gamma factor: 3.0610029484107546
-taueE: 0.1 - tauI 2
-wE: 550 - wI 750
-Gamma factor: 3.061697816598473
-taueE: 0.1 - tauI 0.1
-wE: 600 - wI 550
-Gamma factor: 3.0605358383721466
-taueE: 0.1 - tauI 0.1
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 400
+Gamma factor: 2.9523307682645354
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 500
+Gamma factor: 2.954744859883811
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 600
+Gamma factor: 2.9552419510800902
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 700
+Gamma factor: 2.940402646411519
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 800
+Gamma factor: 2.9248758449626386
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 900
+Gamma factor: 2.949013383983743
+taueE: 0.5 - tauI 1
+wE: 300 - wI 400
+Gamma factor: 2.9338578927589936
+taueE: 0.5 - tauI 1
+wE: 300 - wI 500
+Gamma factor: 2.9468350074404923
+taueE: 0.5 - tauI 1
+wE: 300 - wI 600
+Gamma factor: 2.9454555476909086
+taueE: 0.5 - tauI 1
+wE: 300 - wI 700
+Gamma factor: 2.937956987125691
+taueE: 0.5 - tauI 1
+wE: 300 - wI 800
+Gamma factor: 2.9441985324413698
+taueE: 0.5 - tauI 1
+wE: 300 - wI 900
+Gamma factor: 2.9532390229642034
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 400
+Gamma factor: 2.957209066298289
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 500
+Gamma factor: 2.931139426144024
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 600
+Gamma factor: 2.9255094500145913
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 700
+Gamma factor: 2.9383459737283246
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 800
+Gamma factor: 2.94670604746043
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 900
+Gamma factor: 2.9427770467563885
+taueE: 0.5 - tauI 2
+wE: 300 - wI 400
+Gamma factor: 2.938862716886658
+taueE: 0.5 - tauI 2
+wE: 300 - wI 500
+Gamma factor: 2.9318969237419705
+taueE: 0.5 - tauI 2
+wE: 300 - wI 600
+Gamma factor: 2.9522358358605096
+taueE: 0.5 - tauI 2
+wE: 300 - wI 700
+Gamma factor: 2.9563273455429853
+taueE: 0.5 - tauI 2
+wE: 300 - wI 800
+Gamma factor: 2.9543804386705568
+taueE: 0.5 - tauI 2
+wE: 300 - wI 900
+Gamma factor: 2.954838333293271
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 400
+Gamma factor: 2.9512378236334103
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 500
+Gamma factor: 2.9666515774356697
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 600
+Gamma factor: 2.9599523760969753
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 700
+Gamma factor: 2.93860077111219
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 800
+Gamma factor: 2.948021623682715
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 900
+Gamma factor: 2.9410349666436817
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 400
+Gamma factor: 2.673622251209072
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 500
+Gamma factor: 2.6877756499784784
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 600
+Gamma factor: 2.665309538757365
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 700
+Gamma factor: 2.6654098406211633
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 800
+Gamma factor: 2.7034293271797907
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 900
+Gamma factor: 2.6388866827678576
+taueE: 0.5 - tauI 1
+wE: 400 - wI 400
+Gamma factor: 2.6709737465836776
+taueE: 0.5 - tauI 1
+wE: 400 - wI 500
+Gamma factor: 2.6819793162477295
+taueE: 0.5 - tauI 1
+wE: 400 - wI 600
+Gamma factor: 2.709735853800516
+taueE: 0.5 - tauI 1
+wE: 400 - wI 700
+Gamma factor: 2.69622579413341
+taueE: 0.5 - tauI 1
+wE: 400 - wI 800
+Gamma factor: 2.6959003324344293
+taueE: 0.5 - tauI 1
+wE: 400 - wI 900
+Gamma factor: 2.692065715983172
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 400
+Gamma factor: 2.675595008488846
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 500
+Gamma factor: 2.708032543604489
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 600
+Gamma factor: 2.70658945966674
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 700
+Gamma factor: 2.6773249172136655
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 800
+Gamma factor: 2.6928116969574063
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 900
+Gamma factor: 2.6870579270765993
+taueE: 0.5 - tauI 2
+wE: 400 - wI 400
+Gamma factor: 2.681004683838318
+taueE: 0.5 - tauI 2
+wE: 400 - wI 500
+Gamma factor: 2.707498199845407
+taueE: 0.5 - tauI 2
+wE: 400 - wI 600
+Gamma factor: 2.7006229844579828
+taueE: 0.5 - tauI 2
+wE: 400 - wI 700
+Gamma factor: 2.682919255468602
+taueE: 0.5 - tauI 2
+wE: 400 - wI 800
+Gamma factor: 2.6683314052062177
+taueE: 0.5 - tauI 2
+wE: 400 - wI 900
+Gamma factor: 2.6919807592864204
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 400
+Gamma factor: 2.692811834289815
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 500
+Gamma factor: 2.6724421109127197
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 600
+Gamma factor: 2.6714903796870177
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 700
+Gamma factor: 2.6830975111975053
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 800
+Gamma factor: 2.7184127243899137
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 900
+Gamma factor: 2.6958732953893128
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 400
+Gamma factor: 2.1395542259430327
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 500
+Gamma factor: 2.103722010090717
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 600
+Gamma factor: 2.088138784040364
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 700
+Gamma factor: 2.103054996211359
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 800
+Gamma factor: 2.0650765922498073
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 900
+Gamma factor: 2.0274029448973225
+taueE: 0.5 - tauI 1
+wE: 500 - wI 400
+Gamma factor: 2.1397361920679363
+taueE: 0.5 - tauI 1
+wE: 500 - wI 500
+Gamma factor: 2.1387340035211713
+taueE: 0.5 - tauI 1
+wE: 500 - wI 600
+Gamma factor: 2.1120799252014013
+taueE: 0.5 - tauI 1
+wE: 500 - wI 700
+Gamma factor: 2.1590742786672865
+taueE: 0.5 - tauI 1
+wE: 500 - wI 800
+Gamma factor: 2.087116435035987
+taueE: 0.5 - tauI 1
+wE: 500 - wI 900
+Gamma factor: 2.1198064468806397
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 400
+Gamma factor: 2.1216956654135686
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 500
+Gamma factor: 2.1158053096902276
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 600
+Gamma factor: 2.1653130976768673
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 700
+Gamma factor: 2.116074640189323
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 800
+Gamma factor: 2.239754779432343
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 900
+Gamma factor: 2.130600398873018
+taueE: 0.5 - tauI 2
+wE: 500 - wI 400
+Gamma factor: 2.1400815719862285
+taueE: 0.5 - tauI 2
+wE: 500 - wI 500
+Gamma factor: 2.160824689408109
+taueE: 0.5 - tauI 2
+wE: 500 - wI 600
+Gamma factor: 2.1638341640383474
+taueE: 0.5 - tauI 2
+wE: 500 - wI 700
+Gamma factor: 2.177666664140564
+taueE: 0.5 - tauI 2
+wE: 500 - wI 800
+Gamma factor: 2.1697176205317175
+taueE: 0.5 - tauI 2
+wE: 500 - wI 900
+Gamma factor: 2.240900272110497
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 400
+Gamma factor: 2.1620872198546257
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 500
+Gamma factor: 2.153858645447452
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 600
+Gamma factor: 2.191262649192295
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 700
+Gamma factor: 2.2050750191365944
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 800
+Gamma factor: 2.2264068836164275
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 900
+Gamma factor: 2.240981287546996
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 400
+Gamma factor: 1.699122684091643
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 500
+Gamma factor: 1.6892435630550062
+taueE: 0.5 - tauI 0.5
 wE: 600 - wI 600
-Gamma factor: 3.0607042724845623
-taueE: 0.1 - tauI 0.1
-wE: 600 - wI 650
-Gamma factor: 3.0581056360313292
-taueE: 0.1 - tauI 0.1
+Gamma factor: 1.6418082989285079
+taueE: 0.5 - tauI 0.5
 wE: 600 - wI 700
-Gamma factor: 3.0595909663545893
-taueE: 0.1 - tauI 0.1
-wE: 600 - wI 750
-Gamma factor: 3.0607941852271985
-taueE: 0.1 - tauI 0.5
-wE: 600 - wI 550
-Gamma factor: 3.0593494313381013
-taueE: 0.1 - tauI 0.5
+Gamma factor: 1.6908324712330616
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 800
+Gamma factor: 1.6742975339453896
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 900
+Gamma factor: 1.7608935519331952
+taueE: 0.5 - tauI 1
+wE: 600 - wI 400
+Gamma factor: 1.6799625026968936
+taueE: 0.5 - tauI 1
+wE: 600 - wI 500
+Gamma factor: 1.6845452363912317
+taueE: 0.5 - tauI 1
 wE: 600 - wI 600
-Gamma factor: 3.0592619994112793
-taueE: 0.1 - tauI 0.5
-wE: 600 - wI 650
-Gamma factor: 3.0595927078083167
-taueE: 0.1 - tauI 0.5
+Gamma factor: 1.751083274185417
+taueE: 0.5 - tauI 1
 wE: 600 - wI 700
-Gamma factor: 3.055742418207214
-taueE: 0.1 - tauI 0.5
-wE: 600 - wI 750
-Gamma factor: 3.0566329595160298
-taueE: 0.1 - tauI 1
-wE: 600 - wI 550
-Gamma factor: 3.055911783911456
-taueE: 0.1 - tauI 1
+Gamma factor: 1.7189922996951024
+taueE: 0.5 - tauI 1
+wE: 600 - wI 800
+Gamma factor: 1.7571118026083212
+taueE: 0.5 - tauI 1
+wE: 600 - wI 900
+Gamma factor: 1.7808507288863487
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 400
+Gamma factor: 1.7481147298153414
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 500
+Gamma factor: 1.7696197315641056
+taueE: 0.5 - tauI 1.5
 wE: 600 - wI 600
-Gamma factor: 3.0609144759585845
-taueE: 0.1 - tauI 1
-wE: 600 - wI 650
-Gamma factor: 3.05705465105551
-taueE: 0.1 - tauI 1
+Gamma factor: 1.7646295659733062
+taueE: 0.5 - tauI 1.5
 wE: 600 - wI 700
-Gamma factor: 3.0602185032984073
-taueE: 0.1 - tauI 1
-wE: 600 - wI 750
-Gamma factor: 3.059524745016545
-taueE: 0.1 - tauI 1.5
-wE: 600 - wI 550
-Gamma factor: 3.0582372385448116
-taueE: 0.1 - tauI 1.5
+Gamma factor: 1.8117591193556637
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 800
+Gamma factor: 1.688760708096359
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 900
+Gamma factor: 1.7836919037056616
+taueE: 0.5 - tauI 2
+wE: 600 - wI 400
+Gamma factor: 1.772597287936326
+taueE: 0.5 - tauI 2
+wE: 600 - wI 500
+Gamma factor: 1.7993342416592057
+taueE: 0.5 - tauI 2
 wE: 600 - wI 600
-Gamma factor: 3.059864859837613
-taueE: 0.1 - tauI 1.5
-wE: 600 - wI 650
-Gamma factor: 3.060367291304443
-taueE: 0.1 - tauI 1.5
+Gamma factor: 1.8183331552250355
+taueE: 0.5 - tauI 2
 wE: 600 - wI 700
-Gamma factor: 3.0579872148617078
-taueE: 0.1 - tauI 1.5
-wE: 600 - wI 750
-Gamma factor: 3.0591057277031566
-taueE: 0.1 - tauI 2
-wE: 600 - wI 550
-Gamma factor: 3.059848128131553
-taueE: 0.1 - tauI 2
+Gamma factor: 1.843342582880912
+taueE: 0.5 - tauI 2
+wE: 600 - wI 800
+Gamma factor: 1.8138954644128353
+taueE: 0.5 - tauI 2
+wE: 600 - wI 900
+Gamma factor: 1.8279986590956432
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 400
+Gamma factor: 1.7726566185232326
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 500
+Gamma factor: 1.8115002923289034
+taueE: 0.5 - tauI 2.5
 wE: 600 - wI 600
-Gamma factor: 3.060111588410417
-taueE: 0.1 - tauI 2
-wE: 600 - wI 650
-Gamma factor: 3.0600132185818767
-taueE: 0.1 - tauI 2
+Gamma factor: 1.844422204963131
+taueE: 0.5 - tauI 2.5
 wE: 600 - wI 700
-Gamma factor: 3.056316746690443
-taueE: 0.1 - tauI 2
-wE: 600 - wI 750
-Gamma factor: 3.0597687252115184
-taueE: 0.1 - tauI 0.1
-wE: 650 - wI 550
-Gamma factor: 3.054397078640129
-taueE: 0.1 - tauI 0.1
-wE: 650 - wI 600
-Gamma factor: 3.060666164846496
-taueE: 0.1 - tauI 0.1
-wE: 650 - wI 650
-Gamma factor: 3.058083495956085
-taueE: 0.1 - tauI 0.1
-wE: 650 - wI 700
-Gamma factor: 3.052995130827892
-taueE: 0.1 - tauI 0.1
-wE: 650 - wI 750
-Gamma factor: 3.056802855682807
-taueE: 0.1 - tauI 0.5
-wE: 650 - wI 550
-Gamma factor: 3.0576869023463877
-taueE: 0.1 - tauI 0.5
-wE: 650 - wI 600
-Gamma factor: 3.0614332384550265
-taueE: 0.1 - tauI 0.5
-wE: 650 - wI 650
-Gamma factor: 3.057655483745437
-taueE: 0.1 - tauI 0.5
-wE: 650 - wI 700
-Gamma factor: 3.0553819454293154
-taueE: 0.1 - tauI 0.5
-wE: 650 - wI 750
-Gamma factor: 3.0560476709816635
-taueE: 0.1 - tauI 1
-wE: 650 - wI 550
-Gamma factor: 3.0590039060729968
-taueE: 0.1 - tauI 1
-wE: 650 - wI 600
-Gamma factor: 3.0570944899024726
-taueE: 0.1 - tauI 1
-wE: 650 - wI 650
-Gamma factor: 3.0592161031796774
-taueE: 0.1 - tauI 1
-wE: 650 - wI 700
-Gamma factor: 3.0583865814538145
-taueE: 0.1 - tauI 1
-wE: 650 - wI 750
-Gamma factor: 3.057240504563783
-taueE: 0.1 - tauI 1.5
-wE: 650 - wI 550
-Gamma factor: 3.058171715030562
-taueE: 0.1 - tauI 1.5
-wE: 650 - wI 600
-Gamma factor: 3.05584687715574
-taueE: 0.1 - tauI 1.5
-wE: 650 - wI 650
-Gamma factor: 3.0563613936611493
-taueE: 0.1 - tauI 1.5
-wE: 650 - wI 700
-Gamma factor: 3.0569966202362173
-taueE: 0.1 - tauI 1.5
-wE: 650 - wI 750
-Gamma factor: 3.056653660723307
-taueE: 0.1 - tauI 2
-wE: 650 - wI 550
-Gamma factor: 3.057800802369666
-taueE: 0.1 - tauI 2
-wE: 650 - wI 600
-Gamma factor: 3.0524405348067347
-taueE: 0.1 - tauI 2
-wE: 650 - wI 650
-Gamma factor: 3.056756848685089
-taueE: 0.1 - tauI 2
-wE: 650 - wI 700
-Gamma factor: 3.056756145675938
-taueE: 0.1 - tauI 2
-wE: 650 - wI 750
-Gamma factor: 3.057985226862386
-taueE: 0.1 - tauI 0.1
-wE: 700 - wI 550
-Gamma factor: 3.0523531941239526
-taueE: 0.1 - tauI 0.1
+Gamma factor: 1.929404523765045
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 800
+Gamma factor: 1.852224533910097
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 900
+Gamma factor: 1.915806681121322
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 400
+Gamma factor: 1.426563278120002
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 500
+Gamma factor: 1.37545155815874
+taueE: 0.5 - tauI 0.5
 wE: 700 - wI 600
-Gamma factor: 3.0539149543527486
-taueE: 0.1 - tauI 0.1
-wE: 700 - wI 650
-Gamma factor: 3.0459248394895884
-taueE: 0.1 - tauI 0.1
+Gamma factor: 1.3979542231625404
+taueE: 0.5 - tauI 0.5
 wE: 700 - wI 700
-Gamma factor: 3.0514162727434764
-taueE: 0.1 - tauI 0.1
-wE: 700 - wI 750
-Gamma factor: 3.0552445550091196
-taueE: 0.1 - tauI 0.5
-wE: 700 - wI 550
-Gamma factor: 3.0530834109320346
-taueE: 0.1 - tauI 0.5
+Gamma factor: 1.4584271527831887
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 800
+Gamma factor: 1.4827167622348005
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 900
+Gamma factor: 1.4361552157283493
+taueE: 0.5 - tauI 1
+wE: 700 - wI 400
+Gamma factor: 1.444496769308885
+taueE: 0.5 - tauI 1
+wE: 700 - wI 500
+Gamma factor: 1.4085573783061973
+taueE: 0.5 - tauI 1
 wE: 700 - wI 600
-Gamma factor: 3.051635501395215
-taueE: 0.1 - tauI 0.5
-wE: 700 - wI 650
-Gamma factor: 3.053344337586294
-taueE: 0.1 - tauI 0.5
+Gamma factor: 1.4524996297374786
+taueE: 0.5 - tauI 1
 wE: 700 - wI 700
-Gamma factor: 3.054559627790597
-taueE: 0.1 - tauI 0.5
-wE: 700 - wI 750
-Gamma factor: 3.0521880235138683
-taueE: 0.1 - tauI 1
-wE: 700 - wI 550
-Gamma factor: 3.0521158522731437
-taueE: 0.1 - tauI 1
+Gamma factor: 1.58906966993441
+taueE: 0.5 - tauI 1
+wE: 700 - wI 800
+Gamma factor: 1.4735686104609318
+taueE: 0.5 - tauI 1
+wE: 700 - wI 900
+Gamma factor: 1.53615872216659
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 400
+Gamma factor: 1.5118824700440865
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 500
+Gamma factor: 1.4398255331885201
+taueE: 0.5 - tauI 1.5
 wE: 700 - wI 600
-Gamma factor: 3.0534241293200868
-taueE: 0.1 - tauI 1
-wE: 700 - wI 650
-Gamma factor: 3.053597723413722
-taueE: 0.1 - tauI 1
+Gamma factor: 1.5683272773203778
+taueE: 0.5 - tauI 1.5
 wE: 700 - wI 700
-Gamma factor: 3.0526425646461224
-taueE: 0.1 - tauI 1
-wE: 700 - wI 750
-Gamma factor: 3.0570585598044633
-taueE: 0.1 - tauI 1.5
-wE: 700 - wI 550
-Gamma factor: 3.05920655309456
-taueE: 0.1 - tauI 1.5
+Gamma factor: 1.5280604806889748
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 800
+Gamma factor: 1.4751666782738884
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 900
+Gamma factor: 1.5918431900285082
+taueE: 0.5 - tauI 2
+wE: 700 - wI 400
+Gamma factor: 1.5165911830765233
+taueE: 0.5 - tauI 2
+wE: 700 - wI 500
+Gamma factor: 1.4876010123418615
+taueE: 0.5 - tauI 2
 wE: 700 - wI 600
-Gamma factor: 3.051667138818046
-taueE: 0.1 - tauI 1.5
-wE: 700 - wI 650
-Gamma factor: 3.055191774165956
-taueE: 0.1 - tauI 1.5
+Gamma factor: 1.5272063997144056
+taueE: 0.5 - tauI 2
 wE: 700 - wI 700
-Gamma factor: 3.054159985810668
-taueE: 0.1 - tauI 1.5
-wE: 700 - wI 750
-Gamma factor: 3.0594025489100365
-taueE: 0.1 - tauI 2
-wE: 700 - wI 550
-Gamma factor: 3.0507957217136505
-taueE: 0.1 - tauI 2
+Gamma factor: 1.5563709822954213
+taueE: 0.5 - tauI 2
+wE: 700 - wI 800
+Gamma factor: 1.585806393678172
+taueE: 0.5 - tauI 2
+wE: 700 - wI 900
+Gamma factor: 1.577034291697434
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 400
+Gamma factor: 1.4752690936913164
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 500
+Gamma factor: 1.5331745389834806
+taueE: 0.5 - tauI 2.5
 wE: 700 - wI 600
-Gamma factor: 3.056324272674554
-taueE: 0.1 - tauI 2
-wE: 700 - wI 650
-Gamma factor: 3.0546808454672494
-taueE: 0.1 - tauI 2
+Gamma factor: 1.537850656646416
+taueE: 0.5 - tauI 2.5
 wE: 700 - wI 700
-Gamma factor: 3.0514141139028097
-taueE: 0.1 - tauI 2
-wE: 700 - wI 750
-Gamma factor: 3.0545114889293146
-taueE: 0.1 - tauI 0.1
-wE: 750 - wI 550
-Gamma factor: 3.049536727752578
-taueE: 0.1 - tauI 0.1
-wE: 750 - wI 600
-Gamma factor: 3.050245053993007
-taueE: 0.1 - tauI 0.1
-wE: 750 - wI 650
-Gamma factor: 3.053227202699361
-taueE: 0.1 - tauI 0.1
-wE: 750 - wI 700
-Gamma factor: 3.0449762253999966
-taueE: 0.1 - tauI 0.1
-wE: 750 - wI 750
-Gamma factor: 3.048544114001917
-taueE: 0.1 - tauI 0.5
-wE: 750 - wI 550
-Gamma factor: 3.0497977953742064
-taueE: 0.1 - tauI 0.5
-wE: 750 - wI 600
-Gamma factor: 3.048399041017456
-taueE: 0.1 - tauI 0.5
-wE: 750 - wI 650
-Gamma factor: 3.0524218882438303
-taueE: 0.1 - tauI 0.5
-wE: 750 - wI 700
-Gamma factor: 3.0519969556308753
-taueE: 0.1 - tauI 0.5
-wE: 750 - wI 750
-Gamma factor: 3.0517206156137826
-taueE: 0.1 - tauI 1
-wE: 750 - wI 550
-Gamma factor: 3.051390522190132
-taueE: 0.1 - tauI 1
-wE: 750 - wI 600
-Gamma factor: 3.0418005557664607
-taueE: 0.1 - tauI 1
-wE: 750 - wI 650
-Gamma factor: 3.049562941711379
-taueE: 0.1 - tauI 1
-wE: 750 - wI 700
-Gamma factor: 3.0501751445707717
-taueE: 0.1 - tauI 1
-wE: 750 - wI 750
-Gamma factor: 3.0513471095465183
-taueE: 0.1 - tauI 1.5
-wE: 750 - wI 550
-Gamma factor: 3.0504010088763325
-taueE: 0.1 - tauI 1.5
-wE: 750 - wI 600
-Gamma factor: 3.0531709264875464
-taueE: 0.1 - tauI 1.5
-wE: 750 - wI 650
-Gamma factor: 3.0469582663473673
-taueE: 0.1 - tauI 1.5
-wE: 750 - wI 700
-Gamma factor: 3.051842177986602
-taueE: 0.1 - tauI 1.5
-wE: 750 - wI 750
-Gamma factor: 3.0508699126845302
-taueE: 0.1 - tauI 2
-wE: 750 - wI 550
-Gamma factor: 3.051234806866959
-taueE: 0.1 - tauI 2
-wE: 750 - wI 600
-Gamma factor: 3.051512166725533
-taueE: 0.1 - tauI 2
-wE: 750 - wI 650
-Gamma factor: 3.0494558090772284
-taueE: 0.1 - tauI 2
-wE: 750 - wI 700
-Gamma factor: 3.0473506692910743
-taueE: 0.1 - tauI 2
-wE: 750 - wI 750
-Gamma factor: 3.0481515819118123
+Gamma factor: 1.557815022492063
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 800
+Gamma factor: 1.5972731394004314
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 900
+Gamma factor: 1.5991233783919403
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 400
+Gamma factor: 1.3569193078018058
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 500
+Gamma factor: 1.363105283944829
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 600
+Gamma factor: 1.3727384240393974
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 700
+Gamma factor: 1.414813889469059
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 800
+Gamma factor: 1.36171970532837
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 900
+Gamma factor: 1.4033811222532464
+taueE: 0.5 - tauI 1
+wE: 800 - wI 400
+Gamma factor: 1.397607480857745
+taueE: 0.5 - tauI 1
+wE: 800 - wI 500
+Gamma factor: 1.3639289453202035
+taueE: 0.5 - tauI 1
+wE: 800 - wI 600
+Gamma factor: 1.335487089214834
+taueE: 0.5 - tauI 1
+wE: 800 - wI 700
+Gamma factor: 1.2756183210063794
+taueE: 0.5 - tauI 1
+wE: 800 - wI 800
+Gamma factor: 1.3642998192916067
+taueE: 0.5 - tauI 1
+wE: 800 - wI 900
+Gamma factor: 1.441411529765261
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 400
+Gamma factor: 1.4032424935878542
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 500
+Gamma factor: 1.373198182057524
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 600
+Gamma factor: 1.3196857410682394
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 700
+Gamma factor: 1.385268050091344
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 800
+Gamma factor: 1.4572853730364264
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 900
+Gamma factor: 1.3473301052271074
+taueE: 0.5 - tauI 2
+wE: 800 - wI 400
+Gamma factor: 1.2875676963971916
+taueE: 0.5 - tauI 2
+wE: 800 - wI 500
+Gamma factor: 1.4121563712330878
+taueE: 0.5 - tauI 2
+wE: 800 - wI 600
+Gamma factor: 1.38330964349057
+taueE: 0.5 - tauI 2
+wE: 800 - wI 700
+Gamma factor: 1.3753969893490978
+taueE: 0.5 - tauI 2
+wE: 800 - wI 800
+Gamma factor: 1.4262083725169272
+taueE: 0.5 - tauI 2
+wE: 800 - wI 900
+Gamma factor: 1.3603970553994091
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 400
+Gamma factor: 1.441690840160128
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 500
+Gamma factor: 1.3745226854905999
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 600
+Gamma factor: 1.3621352081835174
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 700
+Gamma factor: 1.36307235235636
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 800
+Gamma factor: 1.3861204195670076
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 900
+Gamma factor: 1.3607817965526547
 Final Candidate
 [1 0 0 0] 0.0
-0.5 550 0.1 550
+1 300 0.5 400
 ***********  DONE  ***********
