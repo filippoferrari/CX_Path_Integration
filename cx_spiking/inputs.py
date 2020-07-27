@@ -69,7 +69,7 @@ def compute_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
         samples = scipy.stats.vonmises.pdf(x, kappa, loc=h[step])
         headings[step,:] = np.roll(samples[:N], -int(np.ceil(N/2)))
 
-    # Normalize between 5-100 Hz, the headings represents rate
+    # Normalize between 5-100 Hz, the headings represent rate
     if vmin >= 0 and vmax > 0 and vmax > vmin:
         headings = normalise_range(headings, vmin=vmin, vmax=vmax)
 
