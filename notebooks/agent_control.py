@@ -5,6 +5,7 @@ from brian2 import *
 from brian2tools import *
 
 import matplotlib.pyplot as plt
+import scipy
 
 import cx_rate
 import trials
@@ -93,22 +94,31 @@ SPM_TB1 = SpikeMonitor(G_TB1)
 SPM_TN2 = SpikeMonitor(G_TN2)
 
 
+######################################
+### NETWORK OPERATIONS
+######################################
+global ref_angles, heading_angles, velocities 
 
-global heading_angles, velocities
+# reference angles are at the middle of each pi/4 receptive field
+# so that [0,0,0,1,1,0,0,0] corresponds to an angle of 0
+ref_angles = np.linspace(-np.pi+np.pi/8, np.pi+np.pi/8, N_TB1, endpoint=False)
+
 heading_angles = np.zeros(T_outbound)
 velocities = np.zeros((T_outbound, 2))
 
+
 def extract_spike_counts(SPM, t, time_step):
     spike_trains = SPM.spike_trains()
-    neurons = np.zeros(len(SPM.spike_trains()))
+    neurons = np.zeros(len(SPM.spike_trains()), dtype=int)
     for idx in range(len(spike_trains)):
         spike_train = spike_trains[idx]
         neurons[idx] = len(spike_train[(spike_train > t-time_step*ms) & (spike_train < t)])
     return neurons
 
+
 @network_operation(dt=time_step*ms)
 def extract_heading(t):
-    global heading_angles
+    global ref_angles, heading_angles
 
     timestep = int((t/ms) / time_step)
     
@@ -118,18 +128,17 @@ def extract_heading(t):
     neurons = extract_spike_counts(SPM_TB1, t, time_step)    
     
     if np.sum(neurons) > 0:
-        #angle = np.ma.average(np.arange(N_TB1), weights=neurons)## - int(N_TB1//2)
-        #print(neurons, angle)
-        # angle = (angle - 0) / (N_TB1 - 0) * (np.pi - (-np.pi))
-        #heading_angles[timestep] = angle
-        angle = np.argmax(neurons)
-        angle = (angle - 0) / (N_TB1 - 0) * (np.pi - (-np.pi)) - np.pi
-        heading_angles[timestep] = angle
+        # trick to get the correct weighted average of where the heading is
+        # create a list with all the angles between [-pi,pi] repeated by their count
+        # so [0,2,0,0,1,0,0,1] will be [-1.963, -1.963, 0.392, 2.748] and then compute
+        # circular mean between [-pi, pi]
+        tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons[i])]
+        # -pi/8 because we center the neurons at the center of their pi/4 receptive fields
+        heading_angles[timestep] = scipy.stats.circmean(tmp, low=-np.pi, high=np.pi) - np.pi/8        
     else:
         heading_angles[timestep] = heading_angles[timestep-1]
-    #print(neurons, mean, std, np.ma.average(np.arange(N_TB1), weights=neurons))
-    #print()
-    
+
+
 @network_operation(dt=time_step*ms)
 def extract_velocity(t):
     global velocities
@@ -141,7 +150,6 @@ def extract_velocity(t):
     neurons_responses = extract_spike_counts(SPM_TN2, t, time_step)
 
     velocities[timestep] = neurons_responses
-
 
 global bee_plot, bee_x, bee_y, ref_angles
 
