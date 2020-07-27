@@ -99,12 +99,12 @@ SPM_TN2 = SpikeMonitor(G_TN2)
 ######################################
 global ref_angles, heading_angles, velocities 
 
-# reference angles are at the middle of each pi/4 receptive field
-# so that [0,0,0,1,1,0,0,0] corresponds to an angle of 0
 ref_angles = np.linspace(-np.pi+np.pi/8, np.pi+np.pi/8, N_TB1, endpoint=False)
+max_velocity = 12 
 
 heading_angles = np.zeros(T_outbound)
 velocities = np.zeros((T_outbound, 2))
+
 
 
 def extract_spike_counts(SPM, t, time_step):
@@ -116,14 +116,29 @@ def extract_spike_counts(SPM, t, time_step):
     return neurons
 
 
+def circular_weighted_mean(weights, angles):
+    x = y = 0.
+    for angle, weight in zip(angles, weights):
+        x += math.cos(math.radians(angle)) * weight
+        y += math.sin(math.radians(angle)) * weight
+    mean = math.degrees(math.atan2(y, x))
+    return mean
+
+
+def make_angle(theta):
+    return (theta + np.pi) % (2.0 * np.pi) - np.pi
+
+
 @network_operation(dt=time_step*ms)
 def extract_heading(t):
     global ref_angles, heading_angles
 
-    timestep = int((t/ms) / time_step)
+    timestep = int((t/ms + 0.5) / time_step)
     
     if t < time_step*ms:
-        heading_angles[timestep] = 4 # range is [0,8] to represent [-pi,pi]
+        neurons = [0,0,0,1,1,0,0,0]
+        tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons[i])]
+        heading_angles[timestep] = make_angle(scipy.stats.circmean(tmp, low=-np.pi, high=np.pi))
         return
     neurons = extract_spike_counts(SPM_TB1, t, time_step)    
     
@@ -134,57 +149,93 @@ def extract_heading(t):
         # circular mean between [-pi, pi]
         tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons[i])]
         # -pi/8 because we center the neurons at the center of their pi/4 receptive fields
-        heading_angles[timestep] = scipy.stats.circmean(tmp, low=-np.pi, high=np.pi) - np.pi/8        
+        heading_angles[timestep] = make_angle(scipy.stats.circmean(tmp, low=-np.pi, high=np.pi) - np.pi/8)
     else:
         heading_angles[timestep] = heading_angles[timestep-1]
 
 
 @network_operation(dt=time_step*ms)
 def extract_velocity(t):
-    global velocities
+    global velocities, max_velocity
     
-    timestep = int((t/ms) / time_step)
+    timestep = int((t/ms + 0.5) / time_step)
     if t < time_step*ms:
         velocities[timestep] = [0,0]
         return
     neurons_responses = extract_spike_counts(SPM_TN2, t, time_step)
+    neurons_responses = np.clip(neurons_responses, 0, max_velocity)
+    velocities[timestep] = neurons_responses / max_velocity
 
-    velocities[timestep] = neurons_responses
 
-global bee_plot, bee_x, bee_y, ref_angles
+######################################
+### PLOTTING
+######################################
+live_plot = False
 
+global bee_plot, bee_x, bee_y, bee_coords
+
+bee_coords = np.zeros((T_outbound,2))
 bee_x = 0
 bee_y = 0
 
-ref_angles = np.linspace(-np.pi, 0+np.pi, N_TB1, endpoint=False)
+map_size = 800
 
-f = plt.figure(1)
-plt.axis([-1000,1000,-1000,1000])
+if live_plot:
+    f = plt.figure(1)
+    plt.axis([-map_size,map_size,-map_size,map_size])
 
-bee_plot = plot(bee_x, bee_y, 'ko') # Vehicle
+    #bee_plot = plt.plot(bee_coords[0,0], bee_coords[0,1], 'ko') # Vehicle
+
+    plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
 
 @network_operation(dt=time_step*ms)
 def plot_bee(t):
-    global bee_plot, bee_x, bee_y, ref_angles, heading_angles, velocities 
+    global bee_plot, bee_x, bee_y, bee_coords, heading_angles, velocities, map_size
     
     if t < time_step*ms:
         return
 
-    timestep = int((t/ms) / time_step)
+    # 0.5 added for numerical stability, python integer rounds down
+    # sometimes t/ms = x.99999 and it gets rounded to x-1
+    timestep = int((t/ms + 0.5) / time_step)
+    
+    
+    speed = 1 + np.clip(np.linalg.norm(velocities[timestep]), 0, 1) 
     
     angle = heading_angles[timestep]
-    x_comp = np.cos(angle)
-    y_comp = np.sin(angle)
-    bee_x += x_comp
-    bee_y += y_comp
-    #print(angle, x_comp, y_comp, bee_x, bee_y)
-    bee_plot = plt.plot(bee_x, bee_y, 'ko')    
+    # x should be cos and y should be sin 
+    # keep compatibility with stone's code (plotter.py : line 79)
+    x_comp = np.sin(angle) * speed
+    y_comp = np.cos(angle) * speed
 
-    plt.axis([-1000,1000,-1000,1000])
-    plt.draw()
-    plt.pause(0.01)
+    bee_x = bee_coords[timestep-1,0] + x_comp
+    bee_y = bee_coords[timestep-1,1] + y_comp
+    bee_coords[timestep,0] = bee_x 
+    bee_coords[timestep,1] = bee_y 
+
+    if live_plot:
+        bee_plot = plt.plot([bee_coords[timestep-1,0], bee_coords[timestep,0]], 
+                            [bee_coords[timestep-1,1], bee_coords[timestep,1]], 
+                            'k', lw=0.5)    
+
+
+        plt.axis([-map_size,map_size,-map_size,map_size])
+        # plt.title(f'{timestep} - {speed} - {angle}', fontsize=9)
+        plt.draw()
+        plt.pause(0.01)
 
 
 run((T_outbound)*time_step*ms, report='text')
 
-show()
+if live_plot:
+    plt.show()
+else:
+    f = plt.figure(1)
+    plt.axis([-map_size,map_size,-map_size,map_size])
+
+    #bee_plot = plt.plot(bee_coords[0,0], bee_coords[0,1], 'ko') # Vehicle
+
+    plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
+
+    plt.plot(bee_coords[:,0], bee_coords[:,1], 'k', lw=0.5)
+    plt.show()
