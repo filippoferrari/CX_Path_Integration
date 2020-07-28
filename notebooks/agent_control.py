@@ -1,5 +1,6 @@
 import sys
 import os
+import argparse 
 
 from brian2 import *
 from brian2tools import *
@@ -19,6 +20,16 @@ import cx_spiking.network_creation as nc
 
 import cx_spiking.optimisation.metric as metric
 import cx_spiking.optimisation.ng_optimiser as ng_optimiser
+
+print('****** Imports completed *******')
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--live_plot', default=False, action="store_true")
+args = parser.parse_args()
+
+live_plot = args.live_plot
+
+print(f'Live plot: {live_plot}')
 
 
 ######################################
@@ -170,7 +181,7 @@ def extract_velocity(t):
 ######################################
 ### PLOTTING
 ######################################
-live_plot = False
+map_size = 800
 
 global bee_plot, bee_x, bee_y, bee_coords
 
@@ -178,19 +189,10 @@ bee_coords = np.zeros((T_outbound,2))
 bee_x = 0
 bee_y = 0
 
-map_size = 800
-
-if live_plot:
-    f = plt.figure(1)
-    plt.axis([-map_size,map_size,-map_size,map_size])
-
-    #bee_plot = plt.plot(bee_coords[0,0], bee_coords[0,1], 'ko') # Vehicle
-
-    plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
 
 @network_operation(dt=time_step*ms)
-def plot_bee(t):
-    global bee_plot, bee_x, bee_y, bee_coords, heading_angles, velocities, map_size
+def update_bee_position(t):
+    global bee_x, bee_y, bee_coords, heading_angles, velocities
     
     if t < time_step*ms:
         return
@@ -198,10 +200,10 @@ def plot_bee(t):
     # 0.5 added for numerical stability, python integer rounds down
     # sometimes t/ms = x.99999 and it gets rounded to x-1
     timestep = int((t/ms + 0.5) / time_step)
-    
-    
+
+    # Compute speed component
     speed = 1 + np.clip(np.linalg.norm(velocities[timestep]), 0, 1) 
-    
+
     angle = heading_angles[timestep]
     # x should be cos and y should be sin 
     # keep compatibility with stone's code (plotter.py : line 79)
@@ -213,7 +215,26 @@ def plot_bee(t):
     bee_coords[timestep,0] = bee_x 
     bee_coords[timestep,1] = bee_y 
 
-    if live_plot:
+
+if live_plot:
+    f = plt.figure(1)
+    plt.axis([-map_size,map_size,-map_size,map_size])
+
+    #bee_plot = plt.plot(bee_coords[0,0], bee_coords[0,1], 'ko') # Vehicle
+
+    plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
+
+    @network_operation(dt=time_step*ms)
+    def plot_bee(t):
+        global bee_plot, bee_coords, heading_angles, velocities, map_size
+        
+        if t < time_step*ms:
+            return
+
+        # 0.5 added for numerical stability, python integer rounds down
+        # sometimes t/ms = x.99999 and it gets rounded to x-1
+        timestep = int((t/ms + 0.5) / time_step)
+        
         bee_plot = plt.plot([bee_coords[timestep-1,0], bee_coords[timestep,0]], 
                             [bee_coords[timestep-1,1], bee_coords[timestep,1]], 
                             'k', lw=0.5)    
@@ -225,6 +246,8 @@ def plot_bee(t):
         plt.pause(0.01)
 
 
+scheduling_summary()  
+
 run((T_outbound)*time_step*ms, report='text')
 
 if live_plot:
@@ -232,8 +255,6 @@ if live_plot:
 else:
     f = plt.figure(1)
     plt.axis([-map_size,map_size,-map_size,map_size])
-
-    #bee_plot = plt.plot(bee_coords[0,0], bee_coords[0,1], 'ko') # Vehicle
 
     plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
 
