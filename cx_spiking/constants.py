@@ -124,6 +124,24 @@ H_TL2_synapses_params = {
 }
 
 
+# ### TN2
+# TN2_neuron_params = {
+#     'EL' : [-52 * mV],
+#     'Vm' : [-52 * mV],
+#     'EE' : [0 * mV],
+#     'EI' : [-80 * mV],
+#     'gL' : [1*10**-6 * siemens],
+#     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
+#     'gI' : '(randn() * 12 + 20) * 10.*nS',
+#     'tauE' : [3.5 * ms],
+#     'tauI' : [2 * ms] # default
+# }
+
+# F_TN2_synapses_params = {
+#     'wE' : [250 * nS],
+#     'wI' : [200 * nS] # default
+# }
+
 ### TN2
 TN2_neuron_params = {
     'EL' : [-52 * mV],
@@ -133,12 +151,12 @@ TN2_neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [3.5 * ms],
+    'tauE' : [1 * ms],
     'tauI' : [2 * ms] # default
 }
 
 F_TN2_synapses_params = {
-    'wE' : [250 * nS],
+    'wE' : [750 * nS],
     'wI' : [200 * nS] # default
 }
 
