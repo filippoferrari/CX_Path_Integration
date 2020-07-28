@@ -24,12 +24,15 @@ def add_monitors(N_group, variables_to_record=['Vm', 'gE', 'gI'], name=None):
     return state_monitor, spike_monitor
 
 
-def connect_synapses(G_source, G_target, W_matrix, model, params, on_pre, plot_name=None):
+def connect_synapses(G_source, G_target, W_matrix, model, params, on_pre, name=None, plot_name=None):
     # The connectivity matrix defined by Thomas Stone has sources on 
     # the rows and targets on the columns whereas Brian2 expects 
     # the opposite So you need to transpose it!
     sources, targets = W_matrix.T.nonzero()
-    synapses = Synapses(G_source, G_target, model=model, on_pre=on_pre)
+    if name:
+        synapses = Synapses(G_source, G_target, model=model, on_pre=on_pre, name=name)
+    else:
+        synapses = Synapses(G_source, G_target, model=model, on_pre=on_pre)
     synapses.connect(i=sources, j=targets)
     synapses.w = W_matrix.T[sources, targets]
 

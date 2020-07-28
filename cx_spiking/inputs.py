@@ -58,7 +58,7 @@ def compute_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
         each row represents the rate for the neurons
     '''
     T_outbound = h.shape[0]
-    headings = np.zeros((len(h), N))
+    headings = np.zeros((T_outbound, N))
 
     # Normal(mu, sigma) is equivalent to vonMises(mu, 1./sigma**2)
     kappa = 1. / sigma**2
