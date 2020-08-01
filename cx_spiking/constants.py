@@ -95,13 +95,17 @@ neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [0.5 * ms],
-    'tauI' : [0.5 * ms]
+    # 'tauE' : [1.5 * ms],
+    # 'tauI' : [1.5 * ms]
+    'tauE' : [1.5 * ms],
+    'tauI' : [2.5 * ms]
 }
 
 synapses_params = {
-    'wE' : [800 * nS],
-    'wI' : [600 * nS]
+    # 'wE' : [600 * nS],
+    # 'wI' : [900 * nS]
+    'wE' : [300 * nS],
+    'wI' : [800 * nS]
 }
 
 
@@ -160,6 +164,11 @@ F_TN2_synapses_params = {
     'wI' : [200 * nS] # default
 }
 
+TN2_CPU4_synapses_params = {
+    'wE' : [500 * nS],
+    'wI' : [600 * nS]
+}
+
 
 ### CL1
 CL1_neuron_params = {
@@ -201,6 +210,30 @@ CL1_TB1_synapses_params = {
 TB1_TB1_synapses_params = {
     'wE' : [700 * nS], # default
     'wI' : [700 * nS] 
+}
+
+TB1_CPU4_synapses_params = {
+    'wE' : [500 * nS],
+    'wI' : [600 * nS]
+}
+
+
+### CPU4 
+CPU4_neuron_params = {
+    'EL' : [-52 * mV],
+    'Vm' : [-52 * mV],
+    'EE' : [0 * mV],
+    'EI' : [-80 * mV],
+    'gL' : [1*10**-6 * siemens],
+    'gE' : '(randn() * 1.5 + 4) * 10.*nS',
+    'gI' : '(randn() * 12 + 20) * 10.*nS',
+    'tauE' : [1.5 * ms],
+    'tauI' : [1.5 * ms]
+}
+
+synapses_params = {
+    'wE' : [500 * nS],
+    'wI' : [600 * nS]
 }
 
 ###############################################################################
@@ -285,3 +318,14 @@ W_CPU1A_MOTOR = np.array([
 ])
 W_CPU1B_MOTOR = np.array([[0, 1],
                           [1, 0]])
+
+
+
+
+
+# def normalise_CPU4_accumulator(CPU4_memory, vmin=0.15, vmax=0.6):
+#     L_CPU4 = CPU4_memory[:N_CPU4//2]
+#     R_CPU4 = CPU4_memory[-N_CPU4//2:]
+#     L_n = cx_spiking.inputs.normalise_range(L_CPU4, vmin=vmin, vmax=vmax)
+#     R_n = cx_spiking.inputs.normalise_range(R_CPU4, vmin=vmin, vmax=vmax)
+#     return np.concatenate((L_n, R_n))
