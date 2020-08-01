@@ -140,13 +140,16 @@ def plot_rate_cx_log(matrix, max_rate, figsize=(10,5), savefig_=None):
     plt.show()
 
 
-def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, title=None, figsize=(10,5), savefig_=None):
+def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, 
+                            title=None, figsize=(10,5), savefig_=None, xlim=[]):
     plt.figure(figsize=figsize)
     plt.pcolormesh(max_rate*matrix, vmin=min_rate, vmax=max_rate*matrix.max(),
                    cmap='viridis', rasterized=True)
 
     plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
     plt.colorbar()
+    if len(xlim):
+        plt.xlim(xlim)
     if title:
         plt.title(title)
     if savefig_:
@@ -154,13 +157,16 @@ def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, ti
     plt.show()
 
 
-def plot_motors_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, title=None, figsize=(10,5), savefig_=None):
+def plot_motors_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, 
+                              title=None, figsize=(10,5), savefig_=None, xlim=[]):
     plt.figure(figsize=figsize)
     plt.pcolormesh(matrix, vmin=min_rate, vmax=max_rate,
                    cmap='viridis', rasterized=True)
 
     plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
     plt.colorbar()
+    if len(xlim):
+        plt.xlim(xlim)
     if title:
         plt.title(title)
     if savefig_:
