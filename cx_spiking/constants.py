@@ -42,6 +42,7 @@ CL1_spike_rates = 50 # Hz
 
 TB1_spike_rates = 50 # Hz
 
+CPU_MEMORY_starting_value = 40 # Hz
 
 ###############################################################################
 ###                             EQUATIONS
@@ -67,10 +68,14 @@ eqs = '''
       gL : siemens
       tauE : second
       tauI : second
+      spike_count : integer
       '''
 
-threshold_eqs = 'Vm >= Vt'
-reset_eqs = 'Vm = Vr'
+threshold_eqs = '''Vm >= Vt'''
+reset_eqs = '''
+    Vm = Vr
+    spike_count += 1
+'''
 
 
 #### Synapses
@@ -88,6 +93,7 @@ synapses_model = '''
 ###############################################################################
 ### Default 
 neuron_params = {
+    'spike_count': [0],
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
@@ -111,6 +117,7 @@ synapses_params = {
 
 ### TL2
 TL2_neuron_params = {
+    'spike_count': [0],
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
@@ -130,6 +137,7 @@ H_TL2_synapses_params = {
 
 # ### TN2
 # TN2_neuron_params = {
+#     'spike_count': [0],
 #     'EL' : [-52 * mV],
 #     'Vm' : [-52 * mV],
 #     'EE' : [0 * mV],
@@ -148,6 +156,7 @@ H_TL2_synapses_params = {
 
 ### TN2
 TN2_neuron_params = {
+    'spike_count': [0],
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
@@ -172,6 +181,7 @@ TN2_CPU4_synapses_params = {
 
 ### CL1
 CL1_neuron_params = {
+    'spike_count': [0],
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
@@ -191,6 +201,7 @@ TL2_CL1_synapses_params = {
 
 ### TB1
 TB1_neuron_params = {
+    'spike_count': [0],
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
@@ -220,6 +231,7 @@ TB1_CPU4_synapses_params = {
 
 ### CPU4 
 CPU4_neuron_params = {
+    'spike_count': [0],
     'EL' : [-52 * mV],
     'Vm' : [-52 * mV],
     'EE' : [0 * mV],
