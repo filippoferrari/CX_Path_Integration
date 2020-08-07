@@ -247,11 +247,10 @@ if live_plot:
         plt.pause(0.01)
 
 
-scheduling_summary()  
-
 run((T_outbound)*time_step*ms, report='text')
 
 if live_plot:
+    plt.axis('scaled')
     plt.show()
 else:
     f = plt.figure(1)
@@ -260,4 +259,5 @@ else:
     plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
 
     plt.plot(bee_coords[:,0], bee_coords[:,1], 'k', lw=0.5)
+    plt.axis('scaled')
     plt.show()

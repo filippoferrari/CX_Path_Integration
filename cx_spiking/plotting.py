@@ -147,6 +147,7 @@ def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0,
                    cmap='viridis', rasterized=True)
 
     plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
+    plt.yticks(np.arange(0,matrix.shape[0],2)+0.5, np.arange(0,matrix.shape[0], 2))
     plt.colorbar()
     if len(xlim):
         plt.xlim(xlim)
