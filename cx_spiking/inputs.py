@@ -104,7 +104,7 @@ def compute_headings_old(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
     return headings, digitized    
 
 
-def compute_flow(heading, velocity, preferred_angle=np.pi/4, baseline=50, vmin=0, vmax=50):
+def compute_flow(heading, velocity, preferred_angle=np.pi/4, baseline=50, vmin=0, vmax=50, inbound=False):
     r'''
     Calculate optic flow based on a preferred angle of +-45 degrees
     Set a baseline and add the rescaled values between [vmin,vmax]
@@ -132,18 +132,28 @@ def compute_flow(heading, velocity, preferred_angle=np.pi/4, baseline=50, vmin=0
         values are in [baseline + vmin, baseline + vmax]
         each row is stored as [L, R]
     '''
-    flow = np.zeros((velocity.shape[0], 2))
-    for i in range(velocity.shape[0]):
+    if np.ndim(velocity) == 1:
+        T_outbound = 1
+    else:
+        T_outbound = velocity.shape[0]
+
+    flow = np.zeros((T_outbound, 2))
+    for i in range(T_outbound):
         A = np.array([[np.sin(heading[i] + preferred_angle),
                        np.cos(heading[i] + preferred_angle)],
                       [np.sin(heading[i] - preferred_angle),
                        np.cos(heading[i] - preferred_angle)]])
-        flow[i,:] = np.dot(A, velocity[i,:])
+        if T_outbound == 1:
+            flow[i,:] = np.dot(A, velocity)
+        else:
+            flow[i,:] = np.dot(A, velocity[i,:])
     # Clip in [0,1] as in Stone et al.
     flow = np.clip(flow, 0, 1)
-    
-    if vmin >= 0 and vmax > 0 and vmax > vmin:
+
+    if vmin >= 0 and vmax > 0 and vmax > vmin and not inbound:
         flow = normalise_range(flow, vmin=vmin, vmax=vmax)
+    if inbound:
+        flow = flow * vmax
 
     flow = flow + baseline
     return flow
