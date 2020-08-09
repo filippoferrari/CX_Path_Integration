@@ -425,8 +425,11 @@ def run_simulation_NET(net, cx_log, tauE_, wE_, tauI_, wI_,
 
     net.run(time)
 
-    gf_motor = metric.compute_gamma_factor(model_spike_monitor_motor, target_spike_monitor_motor, time, 
-                                     dt_=dt_, delta=delta, rate_correction=rate_correction)
+    if np.sum(model_spike_monitor_motor.count) == 0 or np.sum(target_spike_monitor_motor.count) == 0:
+        gf_motor = 10000
+    else:
+        gf_motor = metric.compute_gamma_factor(model_spike_monitor_motor, target_spike_monitor_motor, time, 
+                                        dt_=dt_, delta=delta, rate_correction=rate_correction)
 
     motors_rate_model = cx_spiking.inputs.compute_motors(cx_log.cpu1)
     rotations_rate_model = np.sign(motors_rate_model[0,:1500]-motors_rate_model[1,:1500])
