@@ -1,6 +1,7 @@
 import sys
 import os
 import argparse
+import math
 
 from brian2 import *
 from brian2tools import *
@@ -90,7 +91,7 @@ P_FLOW = PoissonGroup(N_TN2, rates=flow_hz[0,:], name='P_FLOW')
 
 #global CPU4_memory_stimulus
 CPU_MEMORY_starting_value = 50 #Hz
-CPU4_memory_stimulus = CPU_MEMORY_starting_value*np.ones((T,N_CPU4)) * Hz
+CPU4_memory_stimulus = CPU_MEMORY_starting_value*np.ones((T_outbound,N_CPU4)) * Hz
 P_CPU4_MEMORY = PoissonGroup(N_CPU4, rates=CPU4_memory_stimulus[0,:], name='P_CPU4_MEMORY')
 
 
@@ -195,7 +196,7 @@ P_MOTOR = PoissonGroup(N_MOTOR, rates='MOTOR_stimulus(t,i)')
 
 
 global CPU4_memory, CPU4_memory_history
-CPU4_memory_history = CPU_MEMORY_starting_value * np.ones((T, N_CPU4))
+CPU4_memory_history = CPU_MEMORY_starting_value * np.ones((T_outbound, N_CPU4))
 CPU4_memory = CPU_MEMORY_starting_value * np.ones(N_CPU4)
 
 
@@ -248,8 +249,8 @@ global ref_angles, heading_angles, velocities
 ref_angles = np.linspace(-np.pi+np.pi/8, np.pi+np.pi/8, N_TB1, endpoint=False)
 max_velocity = 12 
 
-heading_angles = np.zeros(T)
-velocities = np.zeros((T, 2))
+heading_angles = np.zeros(T_outbound)
+velocities = np.zeros((T_outbound, 2))
 
 def circular_weighted_mean(weights, angles):
     x = y = 0.
@@ -321,8 +322,8 @@ def extract_velocity(t):
     G_TN2.spike_count = 0
     
 
-new_heading_dir = np.zeros(T)
-new_velocities = np.zeros((T,2))
+new_heading_dir = np.zeros(T_outbound)
+new_velocities = np.zeros((T_outbound,2))
 
 def get_next_velocity(heading, velocity, rotation, acceleration=0.3, drag=0.15):
     def thrust(theta, acceleration):
