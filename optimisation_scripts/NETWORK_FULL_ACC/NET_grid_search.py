@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import math
+import scipy
 
 from brian2 import *
 from brian2tools import *
