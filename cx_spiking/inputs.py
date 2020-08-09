@@ -22,7 +22,7 @@ def generate_route(T_outbound, vary_speed, route_file='', load_route=True):
 
 
 def save_route(route_file, h, v, save_route=True):
-    if (os.path.exists(route_file)):
+    if save_route and (os.path.exists(route_file)):
         print(f'{route_file} exists - not overwriting it')
     elif save_route and not os.path.exists(route_file):
         print("Saving route...")
@@ -187,3 +187,34 @@ def compute_motors(cpu1):
     # Consistent with Stone's code
     motor = motor[[1,0],:]
     return motor
+
+
+
+
+
+# def decode_cpu4(cpu4):
+#     """Shifts both CPU4 by +1 and -1 column to cancel 45 degree flow
+#     preference. When summed single sinusoid should point home."""
+#     cpu4_reshaped = cpu4.reshape(2, -1)
+#     cpu4_shifted = np.vstack([np.roll(cpu4_reshaped[0], 1),
+#                               np.roll(cpu4_reshaped[1], -1)])
+#     return cpu4_shifted
+
+
+# def decode_position(cpu4_reshaped, cpu4_mem_gain=1):
+#     """Decode position from sinusoid in to polar coordinates.
+#     Amplitude is distance, Angle is angle from nest outwards.
+#     Without offset angle gives the home vector.
+#     Input must have shape of (2, -1)"""
+#     signal = np.sum(cpu4_reshaped, axis=0)
+#     fund_freq = np.fft.fft(signal)[1]
+#     angle = -np.angle(np.conj(fund_freq))
+#     distance = np.absolute(fund_freq) / cpu4_mem_gain
+#     return angle, distance
+
+
+
+
+# HOW TO DECODE ANGLE
+# decode_position(decode_cpu4(CPU4_memory_history[T_outbound-1,:]), 1)
+# math.atan2(bee_coords[T_outbound-1,1], bee_coords[T_outbound-1,0])

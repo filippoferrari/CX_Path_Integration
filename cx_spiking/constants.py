@@ -135,24 +135,6 @@ H_TL2_synapses_params = {
 }
 
 
-# ### TN2
-# TN2_neuron_params = {
-#     'spike_count': [0],
-#     'EL' : [-52 * mV],
-#     'Vm' : [-52 * mV],
-#     'EE' : [0 * mV],
-#     'EI' : [-80 * mV],
-#     'gL' : [1*10**-6 * siemens],
-#     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
-#     'gI' : '(randn() * 12 + 20) * 10.*nS',
-#     'tauE' : [3.5 * ms],
-#     'tauI' : [2 * ms] # default
-# }
-
-# F_TN2_synapses_params = {
-#     'wE' : [250 * nS],
-#     'wI' : [200 * nS] # default
-# }
 
 ### TN2
 TN2_neuron_params = {
@@ -189,13 +171,8 @@ CL1_neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [1 * ms],
+    'tauE' : [1.5 * ms],
     'tauI' : [2 * ms] # default
-}
-
-P_CL1_CL1_synapses_params = {
-    'wE' : [600 * nS],
-    'wI' : [200 * nS] # default
 }
 
 TL2_CL1_synapses_params = {
@@ -248,10 +225,6 @@ CPU4_neuron_params = {
     'tauI' : [1.5 * ms]
 }
 
-# CPU4_CPU4_M_synapses_params = {
-#     'wE' : [500 * nS],
-#     'wI' : [600 * nS]
-# }
 
 ###############################################################################
 ###                             CONNECTIVITY MATRICES
@@ -275,7 +248,24 @@ W_HEADING_TL2 = np.eye(N_TL2)
 W_FLOW_TN2 = np.eye(N_TN2)
 # Act as if CL1 cells were inverting TL2 output
 # by shifting it by 180 degrees 
-W_TL2_CL1 = np.roll(np.eye(N_TL2),4, axis=1)
+W_TL2_CL1 = np.array([
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], 
+])
 W_CL1_TB1 = np.tile(np.eye(N_TB1), 2)
 W_TB1_TB1 = gen_TB1_TB1_weights()
 W_TB1_CPU1A = np.tile(np.eye(N_TB1), (2, 1))[1:N_CPU1A+1, :]
