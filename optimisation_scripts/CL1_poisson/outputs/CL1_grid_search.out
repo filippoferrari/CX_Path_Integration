@@ -1,0 +1,582 @@
+****** Imports completed *******
+Load route from /afs/inf.ed.ac.uk/user/s15/s1556895/MSc/CX_Path_Integration/notebooks/data/route.npz
+/afs/inf.ed.ac.uk/user/s15/s1556895/MSc/CX_Path_Integration/notebooks/data/route.npz exists - not overwriting it
+taueE: 0.1 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 3.2226035453770336
+Candidate(args=(0.1, 200
+taueE: 0.1 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 3.2231760360900763
+Candidate(args=(0.1, 250
+taueE: 0.1 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 3.218720165601297
+Candidate(args=(0.1, 300
+taueE: 0.1 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 3.2231243602601243
+Candidate(args=(0.1, 350
+taueE: 0.1 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 3.220560827771009
+Candidate(args=(0.1, 400
+taueE: 0.1 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 3.223451619027941
+Candidate(args=(0.1, 500
+taueE: 0.1 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 3.22223485012768
+Candidate(args=(0.1, 600
+taueE: 0.1 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 3.2224158680628747
+Candidate(args=(0.1, 700
+taueE: 0.1 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 3.2226149305644194
+Candidate(args=(0.1, 800
+taueE: 0.1 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 3.2207226247904255
+Candidate(args=(0.1, 850
+taueE: 0.1 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 3.2197665455815354
+Candidate(args=(0.1, 900
+taueE: 0.1 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 3.219330094278891
+Candidate(args=(0.1, 950
+taueE: 0.1 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 3.221505147895665
+Candidate(args=(0.1, 1000
+taueE: 0.5 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 3.222410992348561
+Candidate(args=(0.5, 200
+taueE: 0.5 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 3.220345929656798
+Candidate(args=(0.5, 250
+taueE: 0.5 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 3.2230540644313117
+Candidate(args=(0.5, 300
+taueE: 0.5 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 3.202196940643905
+Candidate(args=(0.5, 350
+taueE: 0.5 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 3.1803579706858525
+Candidate(args=(0.5, 400
+taueE: 0.5 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 2.9397003435355904
+Candidate(args=(0.5, 500
+taueE: 0.5 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 2.7746484082832628
+Candidate(args=(0.5, 600
+taueE: 0.5 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 2.5884542239618167
+Candidate(args=(0.5, 700
+taueE: 0.5 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 2.3197669591456016
+Candidate(args=(0.5, 800
+taueE: 0.5 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 2.0506110149119072
+Candidate(args=(0.5, 850
+taueE: 0.5 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 0.0005317222459227042
+Candidate(args=(0.5, 900
+taueE: 0.5 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 0.0014559107317218961
+Candidate(args=(0.5, 950
+taueE: 0.5 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 0.005260744702543826
+Candidate(args=(0.5, 1000
+taueE: 1 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 3.212284712920491
+Candidate(args=(1, 200
+taueE: 1 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 3.1755593774039337
+Candidate(args=(1, 250
+taueE: 1 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 2.9879893329737306
+Candidate(args=(1, 300
+taueE: 1 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 2.775701293544098
+Candidate(args=(1, 350
+taueE: 1 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 2.6089615616346205
+Candidate(args=(1, 400
+taueE: 1 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 2.2136331953868478
+Candidate(args=(1, 500
+taueE: 1 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 0.04186630086343041
+Candidate(args=(1, 600
+taueE: 1 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 0.2927823487479707
+Candidate(args=(1, 700
+taueE: 1 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 0.582057674635693
+Candidate(args=(1, 800
+taueE: 1 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 0.7130705093453715
+Candidate(args=(1, 850
+taueE: 1 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 1.4072625156612248
+Candidate(args=(1, 900
+taueE: 1 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 2.4206717716116377
+Candidate(args=(1, 950
+taueE: 1 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 2.5396588798600974
+Candidate(args=(1, 1000
+taueE: 1.5 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 3.1562291358103893
+Candidate(args=(1.5, 200
+taueE: 1.5 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 2.8714947711763754
+Candidate(args=(1.5, 250
+taueE: 1.5 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 2.6195434990008035
+Candidate(args=(1.5, 300
+taueE: 1.5 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 2.386442747920681
+Candidate(args=(1.5, 350
+taueE: 1.5 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 2.048591993199169
+Candidate(args=(1.5, 400
+taueE: 1.5 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 0.7219312829895075
+Candidate(args=(1.5, 500
+taueE: 1.5 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 0.768103501964027
+Candidate(args=(1.5, 600
+taueE: 1.5 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 2.531859192910037
+Candidate(args=(1.5, 700
+taueE: 1.5 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 2.890658059895541
+Candidate(args=(1.5, 800
+taueE: 1.5 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 3.2360214118069592
+Candidate(args=(1.5, 850
+taueE: 1.5 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 3.420759586007707
+Candidate(args=(1.5, 900
+taueE: 1.5 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 4.815995542938696
+Candidate(args=(1.5, 950
+taueE: 1.5 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 4.968825713991931
+Candidate(args=(1.5, 1000
+taueE: 2 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 3.012145172448262
+Candidate(args=(2, 200
+taueE: 2 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 2.5917890932659846
+Candidate(args=(2, 250
+taueE: 2 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 2.216041679665091
+Candidate(args=(2, 300
+taueE: 2 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 1.8931401194872657
+Candidate(args=(2, 350
+taueE: 2 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 1.0066378265397038
+Candidate(args=(2, 400
+taueE: 2 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 0.9479003429841922
+Candidate(args=(2, 500
+taueE: 2 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 2.8449668438064655
+Candidate(args=(2, 600
+taueE: 2 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 3.5539039173790936
+Candidate(args=(2, 700
+taueE: 2 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 5.21349552488074
+Candidate(args=(2, 800
+taueE: 2 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 5.6325511180216905
+Candidate(args=(2, 850
+taueE: 2 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 6.9806101327445145
+Candidate(args=(2, 900
+taueE: 2 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 7.20967239464526
+Candidate(args=(2, 950
+taueE: 2 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 7.600882021486206
+Candidate(args=(2, 1000
+taueE: 2.5 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 2.7833269130808236
+Candidate(args=(2.5, 200
+taueE: 2.5 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 2.33435935149544
+Candidate(args=(2.5, 250
+taueE: 2.5 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 1.8826447074103505
+Candidate(args=(2.5, 300
+taueE: 2.5 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 1.2488933350012683
+Candidate(args=(2.5, 350
+taueE: 2.5 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 1.3588507451129517
+Candidate(args=(2.5, 400
+taueE: 2.5 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 2.8511612001649906
+Candidate(args=(2.5, 500
+taueE: 2.5 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 3.7093580259786427
+Candidate(args=(2.5, 600
+taueE: 2.5 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 5.6386581741664425
+Candidate(args=(2.5, 700
+taueE: 2.5 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 7.367219540358311
+Candidate(args=(2.5, 800
+taueE: 2.5 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 7.790760205910935
+Candidate(args=(2.5, 850
+taueE: 2.5 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 8.345930243799287
+Candidate(args=(2.5, 900
+taueE: 2.5 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 9.552809581382032
+Candidate(args=(2.5, 950
+taueE: 2.5 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 10.022226723835832
+Candidate(args=(2.5, 1000
+taueE: 3 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 2.5368018213158443
+Candidate(args=(3, 200
+taueE: 3 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 2.008463854038194
+Candidate(args=(3, 250
+taueE: 3 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 1.3970452879204787
+Candidate(args=(3, 300
+taueE: 3 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 1.4016538019969635
+Candidate(args=(3, 350
+taueE: 3 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 1.8603058451735472
+Candidate(args=(3, 400
+taueE: 3 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 3.558691167260079
+Candidate(args=(3, 500
+taueE: 3 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 5.685622787193829
+Candidate(args=(3, 600
+taueE: 3 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 7.6455508509227235
+Candidate(args=(3, 700
+taueE: 3 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 8.985337556083435
+Candidate(args=(3, 800
+taueE: 3 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 10.052290963402642
+Candidate(args=(3, 850
+taueE: 3 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 10.7519290543388
+Candidate(args=(3, 900
+taueE: 3 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 12.058395384326275
+Candidate(args=(3, 950
+taueE: 3 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 12.601041096080076
+Candidate(args=(3, 1000
+taueE: 3.5 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 2.3377861986866
+Candidate(args=(3.5, 200
+taueE: 3.5 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 1.7124034595690771
+Candidate(args=(3.5, 250
+taueE: 3.5 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 0.9063555761186446
+Candidate(args=(3.5, 300
+taueE: 3.5 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 1.8674918339657696
+Candidate(args=(3.5, 350
+taueE: 3.5 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 2.519647219599273
+Candidate(args=(3.5, 400
+taueE: 3.5 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 4.502283654551257
+Candidate(args=(3.5, 500
+taueE: 3.5 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 6.740822273113666
+Candidate(args=(3.5, 600
+taueE: 3.5 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 8.917544634077515
+Candidate(args=(3.5, 700
+taueE: 3.5 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 11.058581836415936
+Candidate(args=(3.5, 800
+taueE: 3.5 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 12.365530615942543
+Candidate(args=(3.5, 850
+taueE: 3.5 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 13.103248834397508
+Candidate(args=(3.5, 900
+taueE: 3.5 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 14.438620523144968
+Candidate(args=(3.5, 950
+taueE: 3.5 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 15.371999612734097
+Candidate(args=(3.5, 1000
+taueE: 4 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 2.11333522914824
+Candidate(args=(4, 200
+taueE: 4 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 1.3230085254699548
+Candidate(args=(4, 250
+taueE: 4 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 1.6834274180054751
+Candidate(args=(4, 300
+taueE: 4 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 2.428903132463967
+Candidate(args=(4, 350
+taueE: 4 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 3.928060315082096
+Candidate(args=(4, 400
+taueE: 4 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 6.1476400705705085
+Candidate(args=(4, 500
+taueE: 4 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 8.521591107485982
+Candidate(args=(4, 600
+taueE: 4 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 10.89944375730758
+Candidate(args=(4, 700
+taueE: 4 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 13.201275835217983
+Candidate(args=(4, 800
+taueE: 4 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 14.672274312606648
+Candidate(args=(4, 850
+taueE: 4 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 15.562574654121164
+Candidate(args=(4, 900
+taueE: 4 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 17.0103893612239
+Candidate(args=(4, 950
+taueE: 4 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 17.975957326885663
+Candidate(args=(4, 1000
+taueE: 4.5 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 1.8503918849331855
+Candidate(args=(4.5, 200
+taueE: 4.5 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 0.9294770309209124
+Candidate(args=(4.5, 250
+taueE: 4.5 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 2.0979590692854915
+Candidate(args=(4.5, 300
+taueE: 4.5 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 3.0837787237108847
+Candidate(args=(4.5, 350
+taueE: 4.5 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 4.553120088045133
+Candidate(args=(4.5, 400
+taueE: 4.5 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 7.145762252948131
+Candidate(args=(4.5, 500
+taueE: 4.5 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 9.91318618615454
+Candidate(args=(4.5, 600
+taueE: 4.5 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 13.035519688114803
+Candidate(args=(4.5, 700
+taueE: 4.5 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 15.599197853143716
+Candidate(args=(4.5, 800
+taueE: 4.5 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 17.090202048789536
+Candidate(args=(4.5, 850
+taueE: 4.5 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 18.21687214488867
+Candidate(args=(4.5, 900
+taueE: 4.5 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 19.666733845989505
+Candidate(args=(4.5, 950
+taueE: 4.5 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 21.0995613202523
+Candidate(args=(4.5, 1000
+taueE: 5 - tauI 1
+wE: 200 - wI 300
+Gamma factor: 1.626138304497396
+Candidate(args=(5, 200
+taueE: 5 - tauI 1
+wE: 250 - wI 300
+Gamma factor: 0.8213472550052938
+Candidate(args=(5, 250
+taueE: 5 - tauI 1
+wE: 300 - wI 300
+Gamma factor: 2.5343708133090663
+Candidate(args=(5, 300
+taueE: 5 - tauI 1
+wE: 350 - wI 300
+Gamma factor: 3.8133784651828746
+Candidate(args=(5, 350
+taueE: 5 - tauI 1
+wE: 400 - wI 300
+Gamma factor: 5.251778632000587
+Candidate(args=(5, 400
+taueE: 5 - tauI 1
+wE: 500 - wI 300
+Gamma factor: 8.293020165136074
+Candidate(args=(5, 500
+taueE: 5 - tauI 1
+wE: 600 - wI 300
+Gamma factor: 11.561138216810217
+Candidate(args=(5, 600
+taueE: 5 - tauI 1
+wE: 700 - wI 300
+Gamma factor: 14.391226319282497
+Candidate(args=(5, 700
+taueE: 5 - tauI 1
+wE: 800 - wI 300
+Gamma factor: 17.613065121828008
+Candidate(args=(5, 800
+taueE: 5 - tauI 1
+wE: 850 - wI 300
+Gamma factor: 18.79991608899795
+Candidate(args=(5, 850
+taueE: 5 - tauI 1
+wE: 900 - wI 300
+Gamma factor: 20.498428230119845
+Candidate(args=(5, 900
+taueE: 5 - tauI 1
+wE: 950 - wI 300
+Gamma factor: 21.920573665448696
+Candidate(args=(5, 950
+taueE: 5 - tauI 1
+wE: 1000 - wI 300
+Gamma factor: 23.282328693723002
+Candidate(args=(5, 1000
+Final Candidate
+[ 1 10] [3.22241099e+00 3.22034593e+00 3.22305406e+00 3.20219694e+00
+ 3.18035797e+00 2.93970034e+00 2.77464841e+00 2.58845422e+00
+ 2.31976696e+00 2.05061101e+00 5.31722246e-04 1.45591073e-03
+ 5.26074470e-03] [ 1.6261383   0.82134726  2.53437081  3.81337847  5.25177863  8.29302017
+ 11.56113822 14.39122632 17.61306512 18.79991609 20.49842823 21.92057367
+ 23.28232869]
