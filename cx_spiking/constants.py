@@ -189,8 +189,13 @@ CL1_neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    'tauE' : [1.5 * ms],
+    'tauE' : [1 * ms],
     'tauI' : [2 * ms] # default
+}
+
+P_CL1_CL1_synapses_params = {
+    'wE' : [600 * nS],
+    'wI' : [200 * nS] # default
 }
 
 TL2_CL1_synapses_params = {
