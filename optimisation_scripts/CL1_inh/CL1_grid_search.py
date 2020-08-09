@@ -90,7 +90,7 @@ S_TL2_CL1 = nc.connect_synapses(G_TL2, G_CL1, np.eye(N_CL1), model=synapses_mode
 # Scale spike rates from rate-based CX in the right range
 # transpose since log is neuron_index*time_step but we want the opposite
 CL1_stimulus = TimedArray(CL1_spike_rates*cx_log.cl1.T*Hz, dt=1.*time_step*ms)
-P_CL1 = PoissonGroup(N_CL1, rates='CL1_stimulus(t,i)')
+P_CL1_TARGET = PoissonGroup(N_CL1, rates='CL1_stimulus(t,i)')
 # SPM_TL2_IDEAL = SpikeMonitor(P_TL2, name='TL2_target')
 
 store('initialised')
@@ -137,7 +137,7 @@ for t_, tauI_ in enumerate(tauI_s):
         gamma_factors[t_,w_] = run_simulation_CL1(1, 600, tauI_, wI_, 
                                                   G_CL1,
                                                   S_TL2_CL1, 
-                                                  P_CL1, 
+                                                  P_CL1_TARGET, 
                                                   T_outbound*time_step*ms, 
                                                   defaultclock.dt, delta, rate_correction)
 
