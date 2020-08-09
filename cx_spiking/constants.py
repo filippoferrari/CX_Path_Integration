@@ -110,7 +110,7 @@ neuron_params = {
 synapses_params = {
     # 'wE' : [600 * nS],
     # 'wI' : [900 * nS]
-    'wE' : [300 * nS],
+    'wE' : [350 * nS],
     'wI' : [800 * nS]
 }
 
@@ -243,10 +243,10 @@ CPU4_neuron_params = {
     'tauI' : [1.5 * ms]
 }
 
-synapses_params = {
-    'wE' : [500 * nS],
-    'wI' : [600 * nS]
-}
+# CPU4_CPU4_M_synapses_params = {
+#     'wE' : [500 * nS],
+#     'wI' : [600 * nS]
+# }
 
 ###############################################################################
 ###                             CONNECTIVITY MATRICES
