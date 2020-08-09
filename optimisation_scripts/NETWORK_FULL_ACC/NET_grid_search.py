@@ -381,7 +381,7 @@ net.store('initialised')
 ######################################
 ### OPTIMISER
 ######################################
-def run_simulation_NET(net, tauE_, wE_, tauI_, wI_, 
+def run_simulation_NET(net, cx_log, tauE_, wE_, tauI_, wI_, 
                            Group, Target,
                            G_CPU1A, G_CPU1B, G_PONTINE, G_MOTOR,
                            S_TB1_CPU1A,                  
@@ -425,8 +425,16 @@ def run_simulation_NET(net, tauE_, wE_, tauI_, wI_,
 
     gf_motor = metric.compute_gamma_factor(model_spike_monitor_motor, target_spike_monitor_motor, time, 
                                      dt_=dt_, delta=delta, rate_correction=rate_correction)
-    
-    print(f'Gamma factor: {gf_motor}')
+
+    motors_rate_model = cx_spiking.inputs.compute_motors(cx_log.cpu1)
+    rotations_rate_model = np.sign(motors_rate_model[0,:1500]-motors_rate_model[1,:1500])
+
+    MOTOR_spikes =  cx_spiking.inputs.get_spikes_rates(target_spike_monitor_motor, 2, 1500, 20)
+    rotations_spike_model = np.sign((MOTOR_spikes[0,:1500]-MOTOR_spikes[1,:1500]))
+
+    measure = np.sum(np.abs(rotations_rate_model-rotations_spike_model))
+
+    print(f'Gamma factor: {gf_motor} - {measure}')
 
     gf = gf_motor
     return gf
@@ -449,7 +457,7 @@ tauE_ = tauE_s_full[args.index]
 for we_, wE_ in enumerate(wE_s_full):
     for ti_, tauI_ in enumerate(tauI_s_full):
         for wi_, wI_ in enumerate(wI_s_full):
-            gamma_factors[args.index, we_, ti_, wi_] = run_simulation_NET(net,
+            gamma_factors[args.index, we_, ti_, wi_] = run_simulation_NET(net, cx_log,
                                                                           tauE_, wE_, tauI_, wI_, 
                                                                           G_MOTOR, P_MOTOR,
                                                                           G_CPU1A, G_CPU1B, G_PONTINE, G_MOTOR, 
