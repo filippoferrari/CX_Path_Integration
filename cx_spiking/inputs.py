@@ -184,8 +184,8 @@ def compute_motors(cpu1):
     cpu1b = np.array([cpu1[-1], cpu1[0]])
     motor = np.dot(W_CPU1A_MOTOR, cpu1a)
     motor += np.dot(W_CPU1B_MOTOR, cpu1b)
-    # Consistent with Stone's code
-    motor = motor[[1,0],:]
+    # Provides same output as Stone's code
+    motor = motor[[0,1],:]
     return motor
 
 
