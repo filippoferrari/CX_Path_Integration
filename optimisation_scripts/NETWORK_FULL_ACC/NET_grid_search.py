@@ -84,11 +84,11 @@ start_scope()
 
 time_step = 20 # ms
 
-headings_hz = headings*Hz
-P_HEADING = PoissonGroup(N_TL2, rates=headings_hz[0,:], name='P_HEADING')
+h_stimulus = TimedArray(headings*Hz, dt=1.*time_step*ms)
+P_HEADING = PoissonGroup(N_TL2, rates='h_stimulus(t,i)')
 
-flow_hz = flow*Hz
-P_FLOW = PoissonGroup(N_TN2, rates=flow_hz[0,:], name='P_FLOW')
+f_stimulus = TimedArray(flow*Hz, dt=1.*time_step*ms)
+P_FLOW = PoissonGroup(N_TN2, rates='f_stimulus(t,i)')
 
 #global CPU4_memory_stimulus
 CPU_MEMORY_starting_value = 50 #Hz
@@ -242,141 +242,15 @@ def CPU4_accumulator(t):
     G_CPU4.spike_count = 0
 
 
-######################################
-### NETWORK OPERATIONS
-######################################
-global ref_angles, heading_angles, velocities 
-
-ref_angles = np.linspace(-np.pi+np.pi/8, np.pi+np.pi/8, N_TB1, endpoint=False)
-max_velocity = 12 
-
-heading_angles = np.zeros(T_outbound)
-velocities = np.zeros((T_outbound, 2))
-
-def circular_weighted_mean(weights, angles):
-    x = y = 0.
-    for angle, weight in zip(angles, weights):
-        x += math.cos(math.radians(angle)) * weight
-        y += math.sin(math.radians(angle)) * weight
-    mean = math.degrees(math.atan2(y, x))
-    return mean
-
-
-def make_angle(theta):
-    return (theta + np.pi) % (2.0 * np.pi) - np.pi
-
-
-def compute_peak(neurons_responses, ref_angles):
-    # trick to get the correct weighted average of where the heading is
-    # create a list with all the angles between [-pi,pi] repeated by their count
-    # so [0,2,0,0,1,0,0,1] will be [-1.963, -1.963, 0.392, 2.748] and then compute
-    # circular mean between [-pi, pi]
-    tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons_responses[i])]
-    # -pi/8 because we center the neurons at the center of their pi/4 receptive fields
-    peak = scipy.stats.circmean(tmp, low=-np.pi, high=np.pi) - np.pi/8
-    return make_angle(peak)
-
-
-@network_operation(dt=time_step*ms, when='start', order=0, name='extract_heading')
-def extract_heading(t):
-    global ref_angles, heading_angles
-
-    timestep = get_agent_timestep(t, time_step)
-    
-    if t < time_step*ms:
-        heading_angles[timestep] = compute_peak([0,0,0,1,1,0,0,0], ref_angles)
-        #neurons = [0,0,0,1,1,0,0,0]
-        #tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons[i])]
-        #heading_angles[timestep] = make_angle(scipy.stats.circmean(tmp, low=-np.pi, high=np.pi))
-        G_TB1.spike_count = 0
-        return
-
-    neurons_responses = G_TB1.spike_count
-
-    if np.sum(neurons_responses) > 0:
-        #tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons_responses[i])]
-        # -pi/8 because we center the neurons at the center of their pi/4 receptive fields
-        #peak = scipy.stats.circmean(tmp, low=-np.pi, high=np.pi) - np.pi/8
-        #heading_angles[timestep] = make_angle(peak)
-        heading_angles[timestep] = compute_peak(neurons_responses, ref_angles)
-    else:
-        heading_angles[timestep] = heading_angles[timestep-1]
-    
-    G_TB1.spike_count = 0
-
-
-@network_operation(dt=time_step*ms, when='start', order=1, name='extract_velocity')
-def extract_velocity(t):
-    global velocities, max_velocity
-    
-    timestep = get_agent_timestep(t, time_step)
-
-    if t < time_step*ms:
-        velocities[timestep] = [0,0]
-        G_TN2.spike_count = 0
-        return
-    neurons_responses = G_TN2.spike_count
-
-    neurons_responses = np.clip(neurons_responses, 0, max_velocity)
-    velocities[timestep] = neurons_responses / max_velocity
-
-    G_TN2.spike_count = 0
-    
-
-new_heading_dir = np.zeros(T_outbound)
-new_velocities = np.zeros((T_outbound,2))
-
-def get_next_velocity(heading, velocity, rotation, acceleration=0.3, drag=0.15):
-    def thrust(theta, acceleration):
-        return np.array([np.sin(theta), np.cos(theta)]) * acceleration
-    v = velocity + thrust(heading, acceleration).flatten()
-    v -= drag * v
-    return np.clip(v, 0, np.inf)
-
-@network_operation(dt=time_step*ms, when='start', order=3, name='update_inputs')  
-def update_inputs(t):
-    timestep = get_agent_timestep(t, time_step)
-
-    #### motor response - rotation
-    #print(extract_spike_counts(SPM_MOTOR, (sim_timestep)*time_step*ms, time_step), G_MOTOR.spike_count)
-    motor_responses = G_MOTOR.spike_count
-    rotation = np.sign(motor_responses[0] - motor_responses[1])
-    #print(motor_responses, rotation)
-    G_MOTOR.spike_count = 0
-    
-    #### heading
-    # previous heading
-    prev_heading = np.array([heading_angles[timestep]])
-    # compute spikes based on old heading and rotation using fixed angle "step" of 22.5 degrees 
-    new_heading = prev_heading + rotation * 0.008 # mean and median rotation found from rate model
-    new_heading_dir[timestep] = new_heading
-    new_headings = cx_spiking.inputs.compute_headings(new_heading, N=N_TL2//2, vmin=5, vmax=100)
-    new_headings = np.tile(new_headings, 2) 
-    # save new heading
-    headings_hz[timestep,:] = new_headings * Hz
-
-    
-    #### velocity
-    velocity = np.array(velocities[timestep,:])
-    updated_v = get_next_velocity(new_heading, velocity, rotation)
-    new_velocities[timestep,:] = updated_v
-    new_flow = cx_spiking.inputs.compute_flow(new_heading, updated_v, baseline=50, 
-                                              vmin=0, vmax=50, inbound=True)
-    flow_hz[timestep,:] = new_flow * Hz
-
-
 @network_operation(dt=time_step*ms, when='start', order=4, name='set_rates')
 def set_rates(t):
     timestep = get_agent_timestep(t, time_step)
 
     if t < time_step*ms:
         return
-    P_HEADING.rates = headings_hz[timestep,:]
-    P_FLOW.rates = flow_hz[timestep,:]
     P_CPU4_MEMORY.rates = CPU4_memory_stimulus[timestep,:]
 
 net = Network(collect())
-net['update_inputs'].active = False
 
 net.store('initialised')
 
@@ -398,6 +272,7 @@ def run_simulation_NET(net, cx_log, tauE_, wE_, tauI_, wI_,
                            time, dt_, delta, rate_correction): 
 
     net.restore('initialised') 
+    global CPU4_memory, CPU4_memory_history, CPU4_memory_stimulus
 
     # set the parameters 
     Group.set_states({'tauE' : tauE_*ms, 'tauI' : tauI_*ms})
@@ -405,27 +280,29 @@ def run_simulation_NET(net, cx_log, tauE_, wE_, tauI_, wI_,
     G_CPU1A.set_states({'tauE' : tauE_*ms, 'tauI' : tauI_*ms})
     G_CPU1B.set_states({'tauE' : tauE_*ms, 'tauI' : tauI_*ms})
     G_PONTINE.set_states({'tauE' : tauE_*ms, 'tauI' : tauI_*ms})
-    G_MOTOR.set_states({'tauE' : tauE_*ms, 'tauI' : tauI_*ms})
+    #G_MOTOR.set_states({'tauE' : tauE_*ms, 'tauI' : tauI_*ms})
 
     S_TB1_CPU1A.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
+    S_TB1_CPU1B.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
     S_CPU4_M_PONTINE.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
     S_CPU4_M_CPU1A.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
-    S_PONTINE_CPU1A.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
-    S_TB1_CPU1B.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
     S_CPU4_M_CPU1B.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
+    S_PONTINE_CPU1A.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
     S_PONTINE_CPU1B.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
     S_CPU1A_MOTOR.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
     S_CPU1B_MOTOR.set_states({'wE' : wE_*nS, 'wI' : wI_*nS})
 
     print(f'wE: {wE_} - wI {wI_}')
 
-    
-    _, model_spike_monitor_motor = nc.add_monitors(Group)
+    model_spike_monitor_motor = SpikeMonitor(Group, name='MOTOR_source_spike_monitor')
     target_spike_monitor_motor = SpikeMonitor(Target, name='MOTOR_target_spike_monitor')
-
+    
+    net.add(model_spike_monitor_motor, target_spike_monitor_motor)
     net.run(time)
-
+    
     if np.sum(model_spike_monitor_motor.count) == 0 or np.sum(target_spike_monitor_motor.count) == 0:
+        print('model count = ', model_spike_monitor_motor.count)
+        print('target count = ', target_spike_monitor_motor.count)
         gf_motor = 10000
     else:
         gf_motor = metric.compute_gamma_factor(model_spike_monitor_motor, target_spike_monitor_motor, time, 
@@ -436,14 +313,14 @@ def run_simulation_NET(net, cx_log, tauE_, wE_, tauI_, wI_,
 
     MOTOR_spikes =  cx_spiking.inputs.get_spikes_rates(target_spike_monitor_motor, 2, 1500, 20)
     rotations_spike_model = np.sign((MOTOR_spikes[0,:1500]-MOTOR_spikes[1,:1500]))
-
+    
     measure = np.sum(np.abs(rotations_rate_model-rotations_spike_model))
 
+    net.remove(model_spike_monitor_motor, target_spike_monitor_motor)
     print(f'Gamma factor: {gf_motor} - {measure}')
 
     gf = gf_motor
     return gf
-
 
 
 tauE_s_full = [0.5, 1, 1.5, 2, 2.5] # ms
