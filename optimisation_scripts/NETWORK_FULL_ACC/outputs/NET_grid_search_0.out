@@ -1,0 +1,680 @@
+****** Imports completed *******
+args index = 0   -   tauE = 0.5
+Load route from /afs/inf.ed.ac.uk/user/s15/s1556895/MSc/CX_Path_Integration/notebooks/data/route.npz
+/afs/inf.ed.ac.uk/user/s15/s1556895/MSc/CX_Path_Integration/notebooks/data/route.npz exists - not overwriting it
+TL2_neuron_params {'spike_count': [0], 'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [0.5 * msecond], 'tauI': [2. * msecond]}
+CL1_neuron_params {'spike_count': [0], 'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [1.5 * msecond], 'tauI': [2. * msecond]}
+TB1_neuron_params {'spike_count': [0], 'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [0.5 * msecond], 'tauI': [1. * msecond]}
+TN2_neuron_params {'spike_count': [0], 'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [1. * msecond], 'tauI': [2. * msecond]}
+CPU4_neuron_params {'spike_count': [0], 'EL': [-52. * mvolt], 'Vm': [-52. * mvolt], 'EE': [0. * volt], 'EI': [-80. * mvolt], 'gL': [1. * usiemens], 'gE': '(randn() * 1.5 + 4) * 10.*nS', 'gI': '(randn() * 12 + 20) * 10.*nS', 'tauE': [1.5 * msecond], 'tauI': [1.5 * msecond]}
+H_TL2_synapses_params {'wE': [0.9 * usiemens], 'wI': [200. * nsiemens]}
+F_TN2_synapses_params {'wE': [0.75 * usiemens], 'wI': [200. * nsiemens]}
+TL2_CL1_synapses_params {'wE': [0.45 * usiemens], 'wI': [200. * nsiemens]}
+CL1_TB1_synapses_params {'wE': [0.8 * usiemens], 'wI': [200. * nsiemens]}
+TN2_CPU4_synapses_params {'wE': [0.5 * usiemens], 'wI': [0.6 * usiemens]}
+TB1_TB1_synapses_params {'wE': [0.7 * usiemens], 'wI': [0.7 * usiemens]}
+TB1_CPU4_synapses_params {'wE': [0.5 * usiemens], 'wI': [0.6 * usiemens]}
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2807, 2810], dtype=int32)>
+Gamma factor: 10000 - 1270.0
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2762, 2812], dtype=int32)>
+Gamma factor: 10000 - 1307.0
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2931, 2790], dtype=int32)>
+Gamma factor: 10000 - 1313.0
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2794, 2808], dtype=int32)>
+Gamma factor: 10000 - 1217.0
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2839, 2806], dtype=int32)>
+Gamma factor: 10000 - 1254.0
+taueE: 0.5 - tauI 0.5
+wE: 300 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2848, 2830], dtype=int32)>
+Gamma factor: 10000 - 1253.0
+taueE: 0.5 - tauI 1
+wE: 300 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2784, 2902], dtype=int32)>
+Gamma factor: 10000 - 1271.0
+taueE: 0.5 - tauI 1
+wE: 300 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2815, 2823], dtype=int32)>
+Gamma factor: 10000 - 1217.0
+taueE: 0.5 - tauI 1
+wE: 300 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2762, 2848], dtype=int32)>
+Gamma factor: 10000 - 1259.0
+taueE: 0.5 - tauI 1
+wE: 300 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2898, 2866], dtype=int32)>
+Gamma factor: 10000 - 1240.0
+taueE: 0.5 - tauI 1
+wE: 300 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2782, 2763], dtype=int32)>
+Gamma factor: 10000 - 1249.0
+taueE: 0.5 - tauI 1
+wE: 300 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2789, 2730], dtype=int32)>
+Gamma factor: 10000 - 1276.0
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2848, 2860], dtype=int32)>
+Gamma factor: 10000 - 1301.0
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2756, 2811], dtype=int32)>
+Gamma factor: 10000 - 1257.0
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2771, 2821], dtype=int32)>
+Gamma factor: 10000 - 1281.0
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2777, 2752], dtype=int32)>
+Gamma factor: 10000 - 1275.0
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2858, 2787], dtype=int32)>
+Gamma factor: 10000 - 1252.0
+taueE: 0.5 - tauI 1.5
+wE: 300 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2768, 2751], dtype=int32)>
+Gamma factor: 10000 - 1269.0
+taueE: 0.5 - tauI 2
+wE: 300 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2784, 2757], dtype=int32)>
+Gamma factor: 10000 - 1285.0
+taueE: 0.5 - tauI 2
+wE: 300 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2816, 2845], dtype=int32)>
+Gamma factor: 10000 - 1245.0
+taueE: 0.5 - tauI 2
+wE: 300 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2801, 2719], dtype=int32)>
+Gamma factor: 10000 - 1215.0
+taueE: 0.5 - tauI 2
+wE: 300 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2889, 2779], dtype=int32)>
+Gamma factor: 10000 - 1262.0
+taueE: 0.5 - tauI 2
+wE: 300 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2838, 2739], dtype=int32)>
+Gamma factor: 10000 - 1282.0
+taueE: 0.5 - tauI 2
+wE: 300 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2781, 2740], dtype=int32)>
+Gamma factor: 10000 - 1253.0
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2751, 2775], dtype=int32)>
+Gamma factor: 10000 - 1310.0
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2703, 2843], dtype=int32)>
+Gamma factor: 10000 - 1242.0
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2887, 2802], dtype=int32)>
+Gamma factor: 10000 - 1264.0
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2789, 2776], dtype=int32)>
+Gamma factor: 10000 - 1228.0
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2781, 2798], dtype=int32)>
+Gamma factor: 10000 - 1248.0
+taueE: 0.5 - tauI 2.5
+wE: 300 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2765, 2843], dtype=int32)>
+Gamma factor: 10000 - 1232.0
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2829, 2802], dtype=int32)>
+Gamma factor: 10000 - 1293.0
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2895, 2717], dtype=int32)>
+Gamma factor: 10000 - 1254.0
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2791, 2791], dtype=int32)>
+Gamma factor: 10000 - 1228.0
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2709, 2750], dtype=int32)>
+Gamma factor: 10000 - 1271.0
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2884, 2835], dtype=int32)>
+Gamma factor: 10000 - 1282.0
+taueE: 0.5 - tauI 0.5
+wE: 400 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2901, 2782], dtype=int32)>
+Gamma factor: 10000 - 1258.0
+taueE: 0.5 - tauI 1
+wE: 400 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2835, 2732], dtype=int32)>
+Gamma factor: 10000 - 1254.0
+taueE: 0.5 - tauI 1
+wE: 400 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2799, 2861], dtype=int32)>
+Gamma factor: 10000 - 1290.0
+taueE: 0.5 - tauI 1
+wE: 400 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2933, 2768], dtype=int32)>
+Gamma factor: 10000 - 1207.0
+taueE: 0.5 - tauI 1
+wE: 400 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2845, 2765], dtype=int32)>
+Gamma factor: 10000 - 1260.0
+taueE: 0.5 - tauI 1
+wE: 400 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2801, 2745], dtype=int32)>
+Gamma factor: 10000 - 1276.0
+taueE: 0.5 - tauI 1
+wE: 400 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2803, 2740], dtype=int32)>
+Gamma factor: 10000 - 1319.0
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2741, 2803], dtype=int32)>
+Gamma factor: 10000 - 1299.0
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2764, 2800], dtype=int32)>
+Gamma factor: 10000 - 1292.0
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2766, 2687], dtype=int32)>
+Gamma factor: 10000 - 1275.0
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2672, 2702], dtype=int32)>
+Gamma factor: 10000 - 1189.0
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2746, 2839], dtype=int32)>
+Gamma factor: 10000 - 1250.0
+taueE: 0.5 - tauI 1.5
+wE: 400 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2901, 2706], dtype=int32)>
+Gamma factor: 10000 - 1292.0
+taueE: 0.5 - tauI 2
+wE: 400 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2886, 2826], dtype=int32)>
+Gamma factor: 10000 - 1253.0
+taueE: 0.5 - tauI 2
+wE: 400 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2817, 2701], dtype=int32)>
+Gamma factor: 10000 - 1284.0
+taueE: 0.5 - tauI 2
+wE: 400 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2800, 2793], dtype=int32)>
+Gamma factor: 10000 - 1305.0
+taueE: 0.5 - tauI 2
+wE: 400 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2859, 2751], dtype=int32)>
+Gamma factor: 10000 - 1301.0
+taueE: 0.5 - tauI 2
+wE: 400 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2751, 2849], dtype=int32)>
+Gamma factor: 10000 - 1217.0
+taueE: 0.5 - tauI 2
+wE: 400 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2797, 2724], dtype=int32)>
+Gamma factor: 10000 - 1256.0
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 400
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2790, 2799], dtype=int32)>
+Gamma factor: 10000 - 1289.0
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 500
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2875, 2779], dtype=int32)>
+Gamma factor: 10000 - 1298.0
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 600
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2833, 2767], dtype=int32)>
+Gamma factor: 10000 - 1303.0
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 700
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2801, 2730], dtype=int32)>
+Gamma factor: 10000 - 1226.0
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 800
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2773, 2837], dtype=int32)>
+Gamma factor: 10000 - 1243.0
+taueE: 0.5 - tauI 2.5
+wE: 400 - wI 900
+model count =  <MOTOR_source_spike_monitor.count: array([0, 0], dtype=int32)>
+target count =  <MOTOR_target_spike_monitor.count: array([2887, 2717], dtype=int32)>
+Gamma factor: 10000 - 1280.0
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 400
+Gamma factor: 3.4180813256476412 - 1247.0
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 500
+Gamma factor: 3.4481700891579865 - 1230.0
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 600
+Gamma factor: 3.446785662607727 - 1213.0
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 700
+Gamma factor: 3.4499347376864256 - 1294.0
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 800
+Gamma factor: 3.4491762054203243 - 1241.0
+taueE: 0.5 - tauI 0.5
+wE: 500 - wI 900
+Gamma factor: 3.4564701726658686 - 1267.0
+taueE: 0.5 - tauI 1
+wE: 500 - wI 400
+Gamma factor: 3.4552313412079414 - 1270.0
+taueE: 0.5 - tauI 1
+wE: 500 - wI 500
+Gamma factor: 3.45417603099541 - 1271.0
+taueE: 0.5 - tauI 1
+wE: 500 - wI 600
+Gamma factor: 3.4463777681464416 - 1271.0
+taueE: 0.5 - tauI 1
+wE: 500 - wI 700
+Gamma factor: 3.455017699793016 - 1244.0
+taueE: 0.5 - tauI 1
+wE: 500 - wI 800
+Gamma factor: 3.4445536010449276 - 1310.0
+taueE: 0.5 - tauI 1
+wE: 500 - wI 900
+Gamma factor: 3.4546023216188084 - 1256.0
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 400
+Gamma factor: 3.423439355377436 - 1248.0
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 500
+Gamma factor: 3.4351180285652267 - 1305.0
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 600
+Gamma factor: 3.459898666275914 - 1280.0
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 700
+Gamma factor: 3.458104600720814 - 1286.0
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 800
+Gamma factor: 3.4498889674827042 - 1306.0
+taueE: 0.5 - tauI 1.5
+wE: 500 - wI 900
+Gamma factor: 3.458958896712284 - 1241.0
+taueE: 0.5 - tauI 2
+wE: 500 - wI 400
+Gamma factor: 3.4378318066320808 - 1276.0
+taueE: 0.5 - tauI 2
+wE: 500 - wI 500
+Gamma factor: 3.443555891127559 - 1237.0
+taueE: 0.5 - tauI 2
+wE: 500 - wI 600
+Gamma factor: 3.4404647130678954 - 1235.0
+taueE: 0.5 - tauI 2
+wE: 500 - wI 700
+Gamma factor: 3.4367591104487905 - 1194.0
+taueE: 0.5 - tauI 2
+wE: 500 - wI 800
+Gamma factor: 3.4437305224971633 - 1217.0
+taueE: 0.5 - tauI 2
+wE: 500 - wI 900
+Gamma factor: 3.44636192912857 - 1257.0
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 400
+Gamma factor: 3.4287422080644583 - 1251.0
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 500
+Gamma factor: 3.4458025588138215 - 1198.0
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 600
+Gamma factor: 3.4482064073477385 - 1233.0
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 700
+Gamma factor: 3.441926551455012 - 1230.0
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 800
+Gamma factor: 3.451755956826856 - 1286.0
+taueE: 0.5 - tauI 2.5
+wE: 500 - wI 900
+Gamma factor: 3.446269579734461 - 1235.0
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 400
+Gamma factor: 3.352618334436995 - 1247.0
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 500
+Gamma factor: 3.360859482981242 - 1262.0
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 600
+Gamma factor: 3.3328888049835053 - 1223.0
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 700
+Gamma factor: 3.3614873278646513 - 1321.0
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 800
+Gamma factor: 3.3322544259207545 - 1330.0
+taueE: 0.5 - tauI 0.5
+wE: 600 - wI 900
+Gamma factor: 3.37134947837464 - 1253.0
+taueE: 0.5 - tauI 1
+wE: 600 - wI 400
+Gamma factor: 3.30172377528086 - 1227.0
+taueE: 0.5 - tauI 1
+wE: 600 - wI 500
+Gamma factor: 3.329486914887072 - 1288.0
+taueE: 0.5 - tauI 1
+wE: 600 - wI 600
+Gamma factor: 3.313412985164691 - 1268.0
+taueE: 0.5 - tauI 1
+wE: 600 - wI 700
+Gamma factor: 3.308124868311272 - 1305.0
+taueE: 0.5 - tauI 1
+wE: 600 - wI 800
+Gamma factor: 3.368731668936995 - 1218.0
+taueE: 0.5 - tauI 1
+wE: 600 - wI 900
+Gamma factor: 3.370191140153886 - 1327.0
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 400
+Gamma factor: 3.3826807625961113 - 1232.0
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 500
+Gamma factor: 3.387610176711562 - 1229.0
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 600
+Gamma factor: 3.3512936954651282 - 1235.0
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 700
+Gamma factor: 3.3280251789078923 - 1252.0
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 800
+Gamma factor: 3.372333870936676 - 1216.0
+taueE: 0.5 - tauI 1.5
+wE: 600 - wI 900
+Gamma factor: 3.3611319220689886 - 1279.0
+taueE: 0.5 - tauI 2
+wE: 600 - wI 400
+Gamma factor: 3.374840066884472 - 1279.0
+taueE: 0.5 - tauI 2
+wE: 600 - wI 500
+Gamma factor: 3.4009140393390975 - 1250.0
+taueE: 0.5 - tauI 2
+wE: 600 - wI 600
+Gamma factor: 3.3527546233882615 - 1322.0
+taueE: 0.5 - tauI 2
+wE: 600 - wI 700
+Gamma factor: 3.3872681625310355 - 1233.0
+taueE: 0.5 - tauI 2
+wE: 600 - wI 800
+Gamma factor: 3.328795431573603 - 1363.0
+taueE: 0.5 - tauI 2
+wE: 600 - wI 900
+Gamma factor: 3.377614888014655 - 1239.0
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 400
+Gamma factor: 3.367446249839546 - 1224.0
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 500
+Gamma factor: 3.386248931906315 - 1306.0
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 600
+Gamma factor: 3.3615205241123856 - 1185.0
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 700
+Gamma factor: 3.3592231293264976 - 1209.0
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 800
+Gamma factor: 3.3642013145490015 - 1272.0
+taueE: 0.5 - tauI 2.5
+wE: 600 - wI 900
+Gamma factor: 3.3706913499894426 - 1292.0
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 400
+Gamma factor: 3.2243207408344823 - 1268.0
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 500
+Gamma factor: 3.18299136993454 - 1267.0
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 600
+Gamma factor: 3.0064685610882043 - 1229.0
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 700
+Gamma factor: 3.189272134672276 - 1293.0
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 800
+Gamma factor: 3.2413834480513612 - 1249.0
+taueE: 0.5 - tauI 0.5
+wE: 700 - wI 900
+Gamma factor: 3.142487055372917 - 1247.0
+taueE: 0.5 - tauI 1
+wE: 700 - wI 400
+Gamma factor: 3.0997780450253147 - 1302.0
+taueE: 0.5 - tauI 1
+wE: 700 - wI 500
+Gamma factor: 3.086628330957387 - 1222.0
+taueE: 0.5 - tauI 1
+wE: 700 - wI 600
+Gamma factor: 3.222522920390425 - 1288.0
+taueE: 0.5 - tauI 1
+wE: 700 - wI 700
+Gamma factor: 3.174839782354999 - 1247.0
+taueE: 0.5 - tauI 1
+wE: 700 - wI 800
+Gamma factor: 3.1998067121492886 - 1282.0
+taueE: 0.5 - tauI 1
+wE: 700 - wI 900
+Gamma factor: 3.0347072643437683 - 1242.0
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 400
+Gamma factor: 3.1727002918989697 - 1292.0
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 500
+Gamma factor: 3.174798747420642 - 1293.0
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 600
+Gamma factor: 3.173477588559922 - 1343.0
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 700
+Gamma factor: 3.196415409635253 - 1295.0
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 800
+Gamma factor: 3.2343854545886406 - 1224.0
+taueE: 0.5 - tauI 1.5
+wE: 700 - wI 900
+Gamma factor: 3.2897152070452216 - 1276.0
+taueE: 0.5 - tauI 2
+wE: 700 - wI 400
+Gamma factor: 3.2879765834256567 - 1265.0
+taueE: 0.5 - tauI 2
+wE: 700 - wI 500
+Gamma factor: 3.1719028991758957 - 1293.0
+taueE: 0.5 - tauI 2
+wE: 700 - wI 600
+Gamma factor: 3.250703399284413 - 1195.0
+taueE: 0.5 - tauI 2
+wE: 700 - wI 700
+Gamma factor: 3.150364242704283 - 1241.0
+taueE: 0.5 - tauI 2
+wE: 700 - wI 800
+Gamma factor: 3.254432319181066 - 1192.0
+taueE: 0.5 - tauI 2
+wE: 700 - wI 900
+Gamma factor: 3.1870655245975565 - 1290.0
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 400
+Gamma factor: 3.198724308423013 - 1268.0
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 500
+Gamma factor: 3.181425484562956 - 1228.0
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 600
+Gamma factor: 3.1681088300160956 - 1290.0
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 700
+Gamma factor: 3.2536103298446037 - 1277.0
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 800
+Gamma factor: 3.17931879596923 - 1267.0
+taueE: 0.5 - tauI 2.5
+wE: 700 - wI 900
+Gamma factor: 3.3078865282888836 - 1285.0
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 400
+Gamma factor: 2.286999993280172 - 1265.0
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 500
+Gamma factor: 2.614430152700342 - 1261.0
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 600
+Gamma factor: 2.3716433457871493 - 1246.0
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 700
+Gamma factor: 2.4861286063717367 - 1251.0
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 800
+Gamma factor: 2.439188485792264 - 1254.0
+taueE: 0.5 - tauI 0.5
+wE: 800 - wI 900
+Gamma factor: 2.353957981579888 - 1234.0
+taueE: 0.5 - tauI 1
+wE: 800 - wI 400
+Gamma factor: 2.5167377036153864 - 1266.0
+taueE: 0.5 - tauI 1
+wE: 800 - wI 500
+Gamma factor: 2.4342269255981916 - 1251.0
+taueE: 0.5 - tauI 1
+wE: 800 - wI 600
+Gamma factor: 2.7458350006949512 - 1249.0
+taueE: 0.5 - tauI 1
+wE: 800 - wI 700
+Gamma factor: 2.899842918108294 - 1273.0
+taueE: 0.5 - tauI 1
+wE: 800 - wI 800
+Gamma factor: 2.538006907323942 - 1277.0
+taueE: 0.5 - tauI 1
+wE: 800 - wI 900
+Gamma factor: 2.4632041575613033 - 1259.0
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 400
+Gamma factor: 2.8282631816038535 - 1307.0
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 500
+Gamma factor: 2.82856708355043 - 1222.0
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 600
+Gamma factor: 2.586275889801615 - 1254.0
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 700
+Gamma factor: 2.7643015781663305 - 1282.0
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 800
+Gamma factor: 2.926845443884903 - 1278.0
+taueE: 0.5 - tauI 1.5
+wE: 800 - wI 900
+Gamma factor: 2.6485878167543433 - 1282.0
+taueE: 0.5 - tauI 2
+wE: 800 - wI 400
+Gamma factor: 2.699409469651613 - 1199.0
+taueE: 0.5 - tauI 2
+wE: 800 - wI 500
+Gamma factor: 2.727422711510479 - 1288.0
+taueE: 0.5 - tauI 2
+wE: 800 - wI 600
+Gamma factor: 2.7263906882317075 - 1257.0
+taueE: 0.5 - tauI 2
+wE: 800 - wI 700
+Gamma factor: 2.7983257873556626 - 1289.0
+taueE: 0.5 - tauI 2
+wE: 800 - wI 800
+Gamma factor: 2.63928787156136 - 1251.0
+taueE: 0.5 - tauI 2
+wE: 800 - wI 900
+Gamma factor: 2.888753155152555 - 1205.0
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 400
+Gamma factor: 2.8739546402520024 - 1294.0
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 500
+Gamma factor: 2.706310881697984 - 1225.0
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 600
+Gamma factor: 2.8230849492611414 - 1257.0
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 700
+Gamma factor: 2.8554467183427343 - 1178.0
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 800
+Gamma factor: 2.7433605706713333 - 1254.0
+taueE: 0.5 - tauI 2.5
+wE: 800 - wI 900
+Gamma factor: 2.7346879427989106 - 1321.0
+Final Candidate
+[1 0 0 0] 0.0
+1 300 0.5 400
+***********  DONE  ***********
