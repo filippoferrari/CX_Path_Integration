@@ -42,7 +42,7 @@ CL1_spike_rates = 50 # Hz
 
 TB1_spike_rates = 50 # Hz
 
-CPU_MEMORY_starting_value = 40 # Hz
+CPU_MEMORY_starting_value = 50 #Hz
 
 ###############################################################################
 ###                             EQUATIONS
@@ -101,16 +101,12 @@ neuron_params = {
     'gL' : [1*10**-6 * siemens],
     'gE' : '(randn() * 1.5 + 4) * 10.*nS',
     'gI' : '(randn() * 12 + 20) * 10.*nS',
-    # 'tauE' : [1.5 * ms],
-    # 'tauI' : [1.5 * ms]
-    'tauE' : [1.5 * ms],
-    'tauI' : [2.5 * ms]
+    'tauE' : [2 * ms],
+    'tauI' : [2 * ms]
 }
 
 synapses_params = {
-    # 'wE' : [600 * nS],
-    # 'wI' : [900 * nS]
-    'wE' : [350 * nS],
+    'wE' : [300 * nS], 
     'wI' : [800 * nS]
 }
 

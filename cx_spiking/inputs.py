@@ -76,6 +76,48 @@ def compute_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
     return headings
 
 
+def compute_cos_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
+    r'''
+    Convert headings from Stone's simulator to spike rates
+    that can be fed into a brian2 PoissonGroup
+
+    Parameters
+    ----------
+    h: headings
+        headings generated from Stone's simulator
+    N: number of directions
+        8 representing the cardinal directions (N, NE, E, SE, S, SW, W, NW)
+    sigma: standard deviation 
+        of a Gaussian distribution
+    vmin: hertz
+        minimum value for rescaling the rates
+    vmax: hertz
+        maximum value for rescaling the rates
+
+    Returns
+    -------
+    headings: numpy array(n_steps * n_neurons)
+        each row represents the rate for the neurons
+    '''
+    T_outbound = h.shape[0]
+    headings = np.zeros((T_outbound, N))
+
+    # Normal(mu, sigma) is equivalent to vonMises(mu, 1./sigma**2)
+    kappa = 1. / sigma**2
+    # Fixed locations of angles
+    x = np.linspace(0-np.pi, 0+np.pi, N+1, endpoint=True)
+
+    for step in range(T_outbound):
+        samples = scipy.stats.vonmises.pdf(x, kappa, loc=h[step])
+        headings[step,:] = np.roll(samples[:N], -int(np.ceil(N/2)))
+
+    # Normalize between 5-100 Hz, the headings represent rate
+    if vmin >= 0 and vmax > 0 and vmax > vmin:
+        headings = normalise_range(headings, vmin=vmin, vmax=vmax)
+
+    return headings
+
+
 def compute_headings_old(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
     T_outbound = h.shape[0]
 
