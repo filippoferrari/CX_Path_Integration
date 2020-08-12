@@ -69,6 +69,7 @@ class CX_SPIKING(object):
         self.neural_populations = self.construct_neural_populations(neuron_eqs, threshold_eqs, reset_eqs)
 
         self.populations_spike_monitors = self.create_populations_spike_monitors()
+
         self.synapses = self.construct_synapses()
 
         ######################################
@@ -82,7 +83,7 @@ class CX_SPIKING(object):
         ######################################
         self.bee_coords = np.zeros((self.T, 2))
 
-        self.update_bee_position_net_op = NetworkOperation(self.extract_heading, dt=self.time_step*ms, 
+        self.update_bee_position_net_op = NetworkOperation(self.update_bee_position, dt=self.time_step*ms, 
                                                            when='end', order=4, name='update_bee_position')
         self.network_operations.append(self.update_bee_position_net_op)
 
@@ -103,7 +104,9 @@ class CX_SPIKING(object):
 
         if steps < 0  or steps > self.T_outbound:
             steps = self.T_outbound
-       
+
+        print(f'Run network for {steps} steps')
+      
         self.net.run(steps * self.time_step * ms, report='text')
 
         self.net.store(store_name)
@@ -116,10 +119,11 @@ class CX_SPIKING(object):
         self.net['CPU4_accumulator'].active = False
         self.net['CPU4_accumulator_inbound'].active = True
 
-        print(steps)
         if steps < 0 or steps > self.T_inbound:
             steps = self.T_inbound
-        print(steps)
+
+        print(f'Run network for {steps} steps')
+
         self.net.run(steps * self.time_step * ms, report='text')
 
         if store_name:
@@ -133,7 +137,6 @@ class CX_SPIKING(object):
 
 
     def construct_inputs(self, headings, flow):
-
         self.headings_hz = headings*Hz
         self.P_HEADING = PoissonGroup(self.N_TL2, rates=self.headings_hz[0,:], name='P_HEADING')
 
@@ -418,11 +421,11 @@ class CX_SPIKING(object):
 
 
         self.update_inputs_net_op = NetworkOperation(self.update_inputs, dt=self.time_step*ms, 
-                                                    when='start', order=3, name='update_inputs')
+                                                     when='start', order=3, name='update_inputs')
 
 
         self.set_rates = NetworkOperation(self.set_rates, dt=self.time_step*ms, 
-                                        when='start', order=4, name='set_rates')
+                                          when='start', order=4, name='set_rates')
 
 
         return [self.extract_heading_net_op, self.extract_velocity_net_op, 
