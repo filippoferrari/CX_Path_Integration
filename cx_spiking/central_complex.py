@@ -27,6 +27,7 @@ class CX_SPIKING(object):
                  acceleration=0.3, 
                  drag=0.15,
                  rotation_factor=0.01,
+                 max_velocity = 12,
                  time_step=20,
                  T_outbound=1500,
                  T_inbound=1500):
@@ -46,6 +47,7 @@ class CX_SPIKING(object):
         self.decay_inbound = decay_inbound
 
         self.rotation_factor = rotation_factor
+        self.max_velocity = max_velocity
 
         self.cpu4_method = cpu4_method
 
@@ -105,7 +107,7 @@ class CX_SPIKING(object):
         if steps < 0  or steps > self.T_outbound:
             steps = self.T_outbound
 
-        print(f'Run network for {steps} steps')
+        print(f'Run network outbound for {steps} steps')
       
         self.net.run(steps * self.time_step * ms, report='text')
 
@@ -122,7 +124,7 @@ class CX_SPIKING(object):
         if steps < 0 or steps > self.T_inbound:
             steps = self.T_inbound
 
-        print(f'Run network for {steps} steps')
+        print(f'Run network inbound for {steps} steps')
 
         self.net.run(steps * self.time_step * ms, report='text')
 
@@ -217,9 +219,11 @@ class CX_SPIKING(object):
         self.S_CPU1B_MOTOR = nc.connect_synapses(self.G_CPU1B, self.G_MOTOR, self.W_CPU1B_MOTOR, model=synapses_model, 
                                                  params=synapses_params, on_pre=synapses_eqs_ex, name='S_CPU1B_MOTOR')
 
-        return [self.S_P_HEADING_TL2, self.S_P_FLOW_TN2, self.S_TL2_CL1, self.S_CL1_TB1, self.S_TN2_CPU4,
+        return [self.S_P_HEADING_TL2, self.S_P_FLOW_TN2, 
+                self.S_TL2_CL1, self.S_CL1_TB1, self.S_TN2_CPU4,
                 self.S_TB1_TB1, self.S_TB1_CPU4, self.S_TB1_CPU1A, self.S_TB1_CPU1B, 
-                self.S_CPU4_M_PONTINE, self.S_CPU4_M_CPU1A, self.S_PONTINE_CPU1A, self.S_PONTINE_CPU1B,
+                self.S_CPU4_M_PONTINE, self.S_CPU4_M_CPU1A, self.S_CPU4_M_CPU1B,
+                self.S_PONTINE_CPU1A, self.S_PONTINE_CPU1B,
                 self.S_CPU1A_MOTOR, self.S_CPU1B_MOTOR]
     
 
@@ -334,8 +338,6 @@ class CX_SPIKING(object):
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], #9
         ])
         self.W_CPU4_PONTINE = np.eye(self.N_CPU4)
-
-        # Not sure about these
         self.W_CPU1A_MOTOR = np.array([
             [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
@@ -365,6 +367,10 @@ class CX_SPIKING(object):
 
 
     def make_angle(self, theta):
+        '''
+        Return an angle in [-pi,pi]
+        from Stone et al.
+        '''
         return (theta + np.pi) % (2.0 * np.pi) - np.pi
 
 
@@ -434,8 +440,6 @@ class CX_SPIKING(object):
 
 
     def extract_heading(self, t):
-        global ref_angles, heading_angles
-
         timestep = self.get_agent_timestep(t, self.time_step)
         
         if t < self.time_step*ms:
@@ -455,8 +459,6 @@ class CX_SPIKING(object):
 
 
     def extract_velocity(self, t):
-        global velocities, max_velocity
-        
         timestep = self.get_agent_timestep(t, self.time_step)
 
         if t < self.time_step*ms:
@@ -492,8 +494,6 @@ class CX_SPIKING(object):
 
 
     def CPU4_accumulator_inbound_method1(self, t):
-        global CPU4_memory, CPU4_memory_history, CPU4_memory_stimulus
-        
         timestep = self.get_agent_timestep(t, self.time_step)
         
         if t < self.time_step*ms:
@@ -535,8 +535,7 @@ class CX_SPIKING(object):
 
         #### velocity
         velocity = np.array(self.velocities[timestep,:])
-        updated_v = self.get_next_velocity(new_heading, velocity, rotation, 
-                                           self.acceleration, self.drag)
+        updated_v = self.get_next_velocity(new_heading, velocity, self.acceleration, self.drag)
         self.new_velocities[timestep,:] = updated_v
         new_flow = cx_spiking.inputs.compute_flow(new_heading, updated_v, baseline=50, 
                                                 vmin=0, vmax=50, inbound=True)
