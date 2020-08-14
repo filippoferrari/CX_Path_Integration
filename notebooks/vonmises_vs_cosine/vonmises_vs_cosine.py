@@ -41,7 +41,7 @@ decay_inbound_2 = 1
 rotation_factor = 0.1
 
 
-for experiment in range(100):
+for experiment in range(1):
     h, v, = cx_spiking.inputs.generate_route(T_outbound=1500, vary_speed=True)#, route_file=route_file, load_route=True)
 
     ######################################
@@ -84,7 +84,7 @@ for experiment in range(100):
     to_save['cx_log'] = cx_log
     to_save['spiking_cx_vm'] = spiking_cx_vm.extract_data()
     to_save['spiking_cx_cos'] = spiking_cx_cos.extract_data()
-    with open(os.path.join(os.environ.get('MSC_PROJECT'), f'notebooks/vonmises_vs_cosine/exp_{experiment}_cpu4_1.pickle'), 'wb') as fh:
+    with open(os.path.join(os.environ.get('MSC_PROJECT'), f'notebooks/vonmises_vs_cosine/experiments/exp_{experiment}_cpu4_1.pickle'), 'wb') as fh:
         pickle.dump(to_save, fh, protocol=3)
 
     #######################
