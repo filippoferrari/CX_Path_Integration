@@ -26,6 +26,8 @@ T_inbound = 1500
 T = T_outbound+T_inbound
 noise = 0.1
 
+numpy.random.seed(1556895)
+
 for experiment in range(100):
     h, v, = cx_spiking.inputs.generate_route(T_outbound=1500, vary_speed=True)#, route_file=route_file, load_route=True)
 
