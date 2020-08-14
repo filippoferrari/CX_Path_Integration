@@ -83,8 +83,10 @@ for experiment in range(1):
                                 only_tuned_network=True)
 
     spiking_cx_vm.run_outbound()
+    spiking_cx_vm.run_inbound()
     spiking_cx_cos.run_outbound()
-    
+    spiking_cx_cos.run_inbound()
+
     to_save = {}
     to_save['spiking_cx_vm'] = spiking_cx_vm.extract_data()
     to_save['spiking_cx_cos'] = spiking_cx_cos.extract_data()
@@ -110,7 +112,9 @@ for experiment in range(1):
                                 only_tuned_network=True)
 
     spiking_cx_vm.run_outbound()
+    spiking_cx_vm.run_inbound()
     spiking_cx_cos.run_outbound()
+    spiking_cx_cos.run_inbound()
 
     to_save = {}
     to_save['spiking_cx_vm'] = spiking_cx_vm.extract_data()
