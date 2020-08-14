@@ -222,7 +222,7 @@ def plot_raster_plot(spm, title=None, figsize=(15,5), savefig_=None):
 
 
 
-def plot_inputs(spiking_cx, h, v):
+def plot_inputs_outbound(spiking_cx, h, v):
     plt.figure(figsize=(15,6))
     plt.plot((h[:spiking_cx.T_outbound] * 4 / np.pi + 0.5) % 8 , '.r', markersize=4)
     plt.plot((h[:spiking_cx.T_outbound] * 4 / np.pi + 0.5) % 8 + 8 , '.r', markersize=4)
@@ -235,7 +235,7 @@ def plot_inputs(spiking_cx, h, v):
     plt.ylabel('Neuron index')
     plt.yticks(np.arange(0, spiking_cx.N_TL2) + 0.5, np.arange(1, spiking_cx.N_TL2+1))
     colorbar(p, 'impulses/s')
-    plt.title('Heading conversion to spikes using von Mises')
+    plt.title(f'Heading conversion to spikes using {spiking_cx.headings_method}')
     plt.show()
 
     plt.figure(figsize=(15,6))
@@ -250,6 +250,34 @@ def plot_inputs(spiking_cx, h, v):
     plt.title('Flow conversion to spikes')
     plt.show()
 
+
+def plot_inputs_inbound(spiking_cx, h, v):
+    plt.figure(figsize=(15,6))
+    plt.plot((h[spiking_cx.T_outbound:] * 4 / np.pi + 0.5) % 8 , '.r', markersize=4)
+    plt.plot((h[spiking_cx.T_outbound:] * 4 / np.pi + 0.5) % 8 + 8 , '.r', markersize=4)
+
+    plt.axhline(8, color='k')
+
+    p = plt.pcolormesh(spiking_cx.headings_hz[spiking_cx.T_outbound:,:].T/Hz, rasterized=True)
+
+    plt.xlabel('Simulation step')
+    plt.ylabel('Neuron index')
+    plt.yticks(np.arange(0, spiking_cx.N_TL2) + 0.5, np.arange(1, spiking_cx.N_TL2+1))
+    colorbar(p, 'impulses/s')
+    plt.title(f'Heading conversion to spikes using {spiking_cx.headings_method}')
+    plt.show()
+
+    plt.figure(figsize=(15,6))
+    plt.plot(spiking_cx.flow_hz[spiking_cx.T_outbound:,0]/Hz /100, 'r')
+    plt.plot(spiking_cx.flow_hz[spiking_cx.T_outbound:,1]/Hz /100+1, 'r')
+    plt.axhline(1, color='k')
+    plt.xlabel('Simulation step')
+    plt.ylabel('Neuron index')
+    plt.yticks(np.arange(0, spiking_cx.N_TN2) + 0.5, np.arange(1, spiking_cx.N_TN2+1))
+    p = plt.pcolormesh(spiking_cx.flow_hz[spiking_cx.T_outbound:,:].T/Hz)
+    colorbar(p, 'impulses/s')
+    plt.title('Flow conversion to spikes')
+    plt.show()
 
 
 def plot_populations_outbound(spiking_cx, cx_log, figsize=(15,5)):
@@ -277,28 +305,30 @@ def plot_populations(spiking_cx, cx_log, xlim, figsize=(15,5)):
                             title='CPU4',  figsize=figsize, xlim=xlim)
 
     plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_CPU4_MEMORY, spiking_cx.time_step, 
-                            title='CPU4_memory',  figsize=figsize, xlim=xlim)
+                            title='CPU4_memory', colorbar_title='Normalised impulses/s', figsize=figsize, xlim=xlim)
 
-    plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_PONTINE, spiking_cx.time_step, 
-                            title='PONTINE over cpu4 memory',  figsize=figsize, xlim=xlim)
+    if not spiking_cx.only_tuned_network:
+        plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_PONTINE, spiking_cx.time_step, 
+                                title='PONTINE over cpu4 memory', colorbar_title='Normalised impulses/s', figsize=figsize, xlim=xlim)
 
-    plot_rate_cx_log_spikes(cx_log.cpu1[1:-1,:], 1, spiking_cx.SPM_CPU1A, spiking_cx.time_step,
-                            title='CPU1A',  figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.cpu1[1:-1,:], 1, spiking_cx.SPM_CPU1A, spiking_cx.time_step,
+                                title='CPU1A',  figsize=figsize, xlim=xlim)
 
-    plot_rate_cx_log_spikes(cx_log.cpu1[[0,-1],:], 1, spiking_cx.SPM_CPU1B, spiking_cx.time_step, 
-                            title='CPU1B ',  figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.cpu1[[0,-1],:], 1, spiking_cx.SPM_CPU1B, spiking_cx.time_step, 
+                                title='CPU1B ',  figsize=figsize, xlim=xlim)
 
-    motors = cx_spiking.inputs.compute_motors(cx_log.cpu1)
-    plot_motors_cx_log_spikes(motors, motors.max(), spiking_cx.SPM_MOTOR, spiking_cx.time_step, 
-                              min_rate=motors.min(), 
-                              title='MOTOR',  figsize=figsize, xlim=xlim)
+        motors = cx_spiking.inputs.compute_motors(cx_log.cpu1)
+        plot_motors_cx_log_spikes(motors, motors.max(), spiking_cx.SPM_MOTOR, spiking_cx.time_step, 
+                                min_rate=motors.min(), 
+                                title='MOTOR',  figsize=figsize, xlim=xlim)
 
 
 def plot_memory_outbound(spiking_cx, cx_log, figsize=(15,5)):
     plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1], label='code')
     plt.plot(cx_log.memory[:,spiking_cx.T_outbound-1] * spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1].max(), label='stone (rescaled)')
     plt.legend()
-    plt.xlabel('neuron index')
+    plt.xlabel('Neuron index')
+    plt.xticks(np.arange(0, N_CPU4), np.arange(1, N_CPU4+1))
     plt.ylabel('impulses/s')
     plt.title('CPU4 accumulation - end of outbound')
     plt.show()
@@ -306,10 +336,10 @@ def plot_memory_outbound(spiking_cx, cx_log, figsize=(15,5)):
     plt.figure(figsize=(15,5))
     ranges = range(spiking_cx.CPU4_memory_history.shape[1]//2)
     for r in ranges:
-        plt.plot(spiking_cx.CPU4_memory_history[:spiking_cx.T_outbound,r], alpha=0.6, label=r)#, label=names[idx])
+        plt.plot(spiking_cx.CPU4_memory_history[:spiking_cx.T_outbound,r], alpha=0.6, label=r+1)#, label=names[idx])
     plt.legend(bbox_to_anchor=(1.09, 1), title='Neuron index')
     #plt.xlim([1400,1500])
-    plt.title('CPU4 accumulation L')
+    plt.title('CPU4 accumulation L - outbound')
     plt.ylabel('impulses/s')
     plt.xlabel('Simulation steps')
     plt.show()
@@ -317,10 +347,10 @@ def plot_memory_outbound(spiking_cx, cx_log, figsize=(15,5)):
     plt.figure(figsize=figsize)
     ranges = range(spiking_cx.CPU4_memory_history.shape[1]//2)
     for r in ranges:
-        plt.plot(spiking_cx.CPU4_memory_history[:spiking_cx.T_outbound,r+8], alpha=0.6, label=r+8)#, label=names[idx])
+        plt.plot(spiking_cx.CPU4_memory_history[:spiking_cx.T_outbound,r+8], alpha=0.6, label=r+1+8)#, label=names[idx])
     plt.legend(bbox_to_anchor=(1.09, 1), title='Neuron index')
     #plt.xlim([1400,1500])
-    plt.title('CPU4 accumulation R')
+    plt.title('CPU4 accumulation R - outbound')
     plt.ylabel('impulses/s')
     plt.xlabel('Simulation steps')
     plt.show()
@@ -330,17 +360,18 @@ def plot_memory_inbound(spiking_cx, cx_log, figsize=(15,5)):
     plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T-1], label='code')
     plt.plot(cx_log.memory[:,spiking_cx.T-1] * spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1:spiking_cx.T-1].max(), label='stone (rescaled)')
     plt.legend()
-    plt.xlabel('neuron index')
+    plt.xlabel('Neuron index')
+    plt.xticks(np.arange(0, N_CPU4), np.arange(1, N_CPU4+1))
     plt.ylabel('impulses/s')
-    plt.title('CPU4 accumulation - end of outbound')
+    plt.title('CPU4 accumulation - end of inbound')
     plt.show()
 
     plt.figure(figsize=(15,5))
     ranges = range(spiking_cx.CPU4_memory_history.shape[1]//2)
     for r in ranges:
-        plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound:,r], alpha=0.6, label=r)#, label=names[idx])
+        plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound:,r], alpha=0.6, label=r+1)#, label=names[idx])
     plt.legend(bbox_to_anchor=(1.09, 1), title='Neuron index')
-    plt.title('CPU4 accumulation L')
+    plt.title('CPU4 accumulation L - inbound')
     plt.ylabel('impulses/s')
     plt.xlabel('Simulation steps')
     plt.show()
@@ -348,9 +379,9 @@ def plot_memory_inbound(spiking_cx, cx_log, figsize=(15,5)):
     plt.figure(figsize=figsize)
     ranges = range(spiking_cx.CPU4_memory_history.shape[1]//2)
     for r in ranges:
-        plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound:,r+8], alpha=0.6, label=r+8)#, label=names[idx])
+        plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound:,r+8], alpha=0.6, label=r+1+8)#, label=names[idx])
     plt.legend(bbox_to_anchor=(1.09, 1), title='Neuron index')
-    plt.title('CPU4 accumulation R')
+    plt.title('CPU4 accumulation R - inbound')
     plt.ylabel('impulses/s')
     plt.xlabel('Simulation steps')
     plt.show()

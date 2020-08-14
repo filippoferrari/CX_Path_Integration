@@ -63,11 +63,11 @@ def compute_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
     # Normal(mu, sigma) is equivalent to vonMises(mu, 1./sigma**2)
     kappa = 1. / sigma**2
     # Fixed locations of angles
-    x = np.linspace(0-np.pi, 0+np.pi, N+1, endpoint=True)
+    x = np.linspace(0, 2*np.pi, N, endpoint=False)
 
     for step in range(T_outbound):
         samples = scipy.stats.vonmises.pdf(x, kappa, loc=h[step])
-        headings[step,:] = np.roll(samples[:N], -int(np.ceil(N/2)))
+        headings[step,:] = samples[:N]
 
     # Normalize between 5-100 Hz, the headings represent rate
     if vmin >= 0 and vmax > 0 and vmax > vmin:
@@ -102,48 +102,17 @@ def compute_cos_headings(h, N=8, sigma=0.8, vmin=5, vmax=100):
     T_outbound = h.shape[0]
     headings = np.zeros((T_outbound, N))
 
-    # Normal(mu, sigma) is equivalent to vonMises(mu, 1./sigma**2)
-    kappa = 1. / sigma**2
     # Fixed locations of angles
-    x = np.linspace(0-np.pi, 0+np.pi, N+1, endpoint=True)
+    tl2_prefs = np.tile(np.linspace(0, 2*np.pi, N//2, endpoint=False), 2)
 
     for step in range(T_outbound):
-        samples = scipy.stats.vonmises.pdf(x, kappa, loc=h[step])
-        headings[step,:] = np.roll(samples[:N], -int(np.ceil(N/2)))
+        headings[step,:] = np.cos(h[step] - tl2_prefs) + 1 
 
     # Normalize between 5-100 Hz, the headings represent rate
     if vmin >= 0 and vmax > 0 and vmax > vmin:
         headings = normalise_range(headings, vmin=vmin, vmax=vmax)
 
     return headings
-
-
-def compute_headings_old(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
-    T_outbound = h.shape[0]
-
-    rv = scipy.stats.norm(loc=loc, scale=scale)
-    x = np.linspace(rv.ppf(0.01), rv.ppf(0.99), N, endpoint=True)
-    pdf = rv.pdf(x)
-
-    # Split the [-pi,pi] interval into bins
-    bins = np.linspace(-np.pi, np.pi, N+1)
-
-    # -1 required since the returned bins are 1-indexed
-    digitized = np.digitize(h, bins) - 1
-    
-    headings = np.zeros((len(h), N))
-
-    for t in range(T_outbound):
-        # Shift angle
-        # angle_shift = N//2 + digitized[t]
-        angle_shift = digitized[t]
-        headings[t,:] = np.roll(pdf, angle_shift)
-    
-    # Normalize between 5-100 Hz, the headings represents rate
-    if vmin >= 0 and vmax > 0 and vmax > vmin:
-        headings = normalise_range(headings, vmin=vmin, vmax=vmax)
-    
-    return headings, digitized    
 
 
 def compute_flow(heading, velocity, preferred_angle=np.pi/4, baseline=50, vmin=0, vmax=50, inbound=False):
@@ -234,29 +203,34 @@ def compute_motors(cpu1):
 
 
 
-# def decode_cpu4(cpu4):
-#     """Shifts both CPU4 by +1 and -1 column to cancel 45 degree flow
-#     preference. When summed single sinusoid should point home."""
-#     cpu4_reshaped = cpu4.reshape(2, -1)
-#     cpu4_shifted = np.vstack([np.roll(cpu4_reshaped[0], 1),
-#                               np.roll(cpu4_reshaped[1], -1)])
-#     return cpu4_shifted
-
-
-# def decode_position(cpu4_reshaped, cpu4_mem_gain=1):
-#     """Decode position from sinusoid in to polar coordinates.
-#     Amplitude is distance, Angle is angle from nest outwards.
-#     Without offset angle gives the home vector.
-#     Input must have shape of (2, -1)"""
-#     signal = np.sum(cpu4_reshaped, axis=0)
-#     fund_freq = np.fft.fft(signal)[1]
-#     angle = -np.angle(np.conj(fund_freq))
-#     distance = np.absolute(fund_freq) / cpu4_mem_gain
-#     return angle, distance
 
 
 
+# def compute_headings_old(h, N=8, loc=0, scale=0.8, vmin=5, vmax=100):
+#     T_outbound = h.shape[0]
 
-# HOW TO DECODE ANGLE
-# decode_position(decode_cpu4(CPU4_memory_history[T_outbound-1,:]), 1)
-# math.atan2(bee_coords[T_outbound-1,1], bee_coords[T_outbound-1,0])
+#     rv = scipy.stats.norm(loc=loc, scale=scale)
+#     x = np.linspace(rv.ppf(0.01), rv.ppf(0.99), N, endpoint=True)
+#     pdf = rv.pdf(x)
+
+#     # Split the [-pi,pi] interval into bins
+#     bins = np.linspace(-np.pi, np.pi, N+1)
+
+#     # -1 required since the returned bins are 1-indexed
+#     digitized = np.digitize(h, bins) - 1
+    
+#     headings = np.zeros((len(h), N))
+
+#     for t in range(T_outbound):
+#         # Shift angle
+#         # angle_shift = N//2 + digitized[t]
+#         angle_shift = digitized[t]
+#         headings[t,:] = np.roll(pdf, angle_shift)
+    
+#     # Normalize between 5-100 Hz, the headings represents rate
+#     if vmin >= 0 and vmax > 0 and vmax > vmin:
+#         headings = normalise_range(headings, vmin=vmin, vmax=vmax)
+    
+#     return headings, digitized    
+
+

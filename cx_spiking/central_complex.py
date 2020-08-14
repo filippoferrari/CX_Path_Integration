@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from brian2 import ms, Hz, Network, PoissonGroup, NeuronGroup, Synapses, NetworkOperation
 import scipy
 
@@ -17,20 +18,25 @@ class CX_SPIKING(object):
                  neuron_eqs,
                  threshold_eqs,
                  reset_eqs, 
-                 headings,
-                 flow,
-                 cpu4_method,
+                 sim_headings,
+                 sim_velocities,
                  mem_gain_outbound,
                  decay_outbound,
                  mem_gain_inbound,
                  decay_inbound,
                  acceleration=0.3, 
                  drag=0.15,
+                 speed_multiplier = 0,
                  rotation_factor=0.01,
                  max_velocity = 12,
                  time_step=20,
                  T_outbound=1500,
-                 T_inbound=1500):
+                 T_inbound=1500,
+                 headings_method='vonmises',
+                 cpu4_method=1, 
+                 only_tuned_network=False,
+                 follow_stone_rotation=False,
+                 cx_log=None):
 
         ######################################
         ### PARAMETERS
@@ -53,14 +59,39 @@ class CX_SPIKING(object):
 
         self.acceleration = acceleration
         self.drag = drag
+        self.speed_multiplier = speed_multiplier
+
+        self.follow_stone_rotation = follow_stone_rotation
+        if cx_log:
+            self.cx_log = cx_log
+        if self.follow_stone_rotation and not cx_log:
+            print('To follow rotation you need to provide a rate-based cx_log')
 
         self.populations_size()
+
 
         ######################################
         ### INPUTS 
         ######################################
-        self.inputs = self.construct_inputs(headings, flow)
+        self.headings_method = headings_method
+        if self.headings_method == 'vonmises':
+            headings = self.construct_headings_vonmises(sim_headings, sim_velocities)
+        elif self.headings_method == 'cosine':
+            headings = self.construct_headings_cosine(sim_headings, sim_velocities)
+        else:
+            print('No headings_method selected')
+            return
+        flow = self.construct_flow(sim_headings, sim_velocities)
+        self.inputs = [headings, flow]
         self.inputs_spike_monitors = self.create_inputs_spike_monitors()
+
+
+        ######################################
+        ### MEMORY 
+        ######################################
+        memory_accumulator, spm_memory_accumulator = self.initialise_memory_accumulator()
+        self.inputs.append(memory_accumulator)
+        self.inputs_spike_monitors.append(spm_memory_accumulator)
 
 
         ######################################
@@ -97,7 +128,10 @@ class CX_SPIKING(object):
                 self.synapses,
                 self.network_operations)
         self.net = net
+        if only_tuned_network:
+            self.only_tuned_network()
         self.net.store('initialised')
+
 
     def run_outbound(self, steps=-1, store_name='outbound'):
         self.net.restore('initialised')
@@ -114,11 +148,15 @@ class CX_SPIKING(object):
         self.net.store(store_name)
 
 
-    def run_inbound(self, steps=-1, restore_name='outbound', store_name=None):
+    def run_inbound(self, steps=-1, follow_stone_inbound=False,
+                    restore_name='outbound', store_name=None):
         self.net.restore(restore_name)
 
-        self.net['update_inputs'].active = True
-        self.net['CPU4_accumulator'].active = False
+        if follow_stone_inbound:
+            self.net['update_inputs'].active = False
+        else:
+            self.net['update_inputs'].active = True
+        self.net['CPU4_accumulator_outbound'].active = False
         self.net['CPU4_accumulator_inbound'].active = True
 
         if steps < 0 or steps > self.T_inbound:
@@ -138,18 +176,77 @@ class CX_SPIKING(object):
         pass
 
 
-    def construct_inputs(self, headings, flow):
+    def extract_data(self):
+        out = {}
+        for m in self.populations_spike_monitors:
+            out[m.name] = m.get_states()
+        for m in self.inputs_spike_monitors:
+            out[m.name] = m.get_states()
+        out['CPU4_memory_history'] = self.CPU4_memory_history
+        out['rotations'] = self.rotations
+        out['new_heading_dir'] = self.new_heading_dir
+        out['new_velocities'] = self.new_velocities
+        out['bee_coords'] = self.bee_coords
+        return out
+
+        
+    def decode_cpu4_state(self, step):
+        decoded_cpu4 = self.decode_cpu4(self.CPU4_memory_history[step-1,:])
+        cpu4_angle, distance = self.decode_position(decoded_cpu4, self.mem_gain_outbound)
+        tb1_angle = math.atan2(self.bee_coords[step-1,1], self.bee_coords[step-1,0])
+        return tb1_angle, cpu4_angle, distance
+
+
+    def only_tuned_network(self):
+        populations = ['PONTINE', 'CPU1A', 'CPU1B', 'MOTOR']
+        synapses = ['S_TB1_CPU1A', 'S_TB1_CPU1B', 
+                    'S_CPU4_M_PONTINE', 'S_CPU4_M_CPU1A', 'S_CPU4_M_CPU1B', 
+                    'S_PONTINE_CPU1A', 'S_PONTINE_CPU1B', 
+                    'S_CPU1A_MOTOR', 'S_CPU1B_MOTOR']
+        monitors = ['SPM_CPU1A', 'SPM_CPU1B', 'SPM_PONTINE', 'SPM_MOTOR']
+
+        to_deactivate = populations + synapses + monitors
+        for d in to_deactivate:
+            self.net[d].active = False
+
+
+    def construct_headings_vonmises(self, h, v):
+        headings = cx_spiking.inputs.compute_headings(h, N=self.N_TL2//2, vmin=5, vmax=100)
+        headings = np.tile(headings, 2)
+
         self.headings_hz = headings*Hz
         self.P_HEADING = PoissonGroup(self.N_TL2, rates=self.headings_hz[0,:], name='P_HEADING')
+
+        return self.P_HEADING
+
+
+    def construct_headings_cosine(self, h, v):
+        headings = cx_spiking.inputs.compute_cos_headings(h, N=self.N_TL2, vmin=5, vmax=100)
+
+        self.headings_hz = headings*Hz
+        self.P_HEADING = PoissonGroup(self.N_TL2, rates=self.headings_hz[0,:], name='P_HEADING')
+
+        return self.P_HEADING
+
+
+    def construct_flow(self, h, v):
+        # Convert velocity into optical flow responses
+        flow = cx_spiking.inputs.compute_flow(h, v, baseline=50, vmin=0, vmax=50)
+        # flow = np.concatenate((flow, np.zeros((self.T_inbound, flow.shape[1]))), axis=0)
 
         self.flow_hz = flow*Hz
         self.P_FLOW = PoissonGroup(self.N_TN2, rates=self.flow_hz[0,:], name='P_FLOW')
 
-        #global CPU4_memory_stimulus
+        return self.P_FLOW
+
+
+    def initialise_memory_accumulator(self):
         self.CPU4_memory_stimulus = CPU_MEMORY_starting_value * np.ones((self.T, self.N_CPU4)) * Hz
         self.P_CPU4_MEMORY = PoissonGroup(self.N_CPU4, rates=self.CPU4_memory_stimulus[0,:], name='P_CPU4_MEMORY')
 
-        return [self.P_HEADING, self.P_FLOW, self.P_CPU4_MEMORY]
+        self.SPM_CPU4_MEMORY = SpikeMonitor(self.P_CPU4_MEMORY, name='SPM_P_CPU4_MEMORY')
+
+        return [self.P_CPU4_MEMORY, self.SPM_CPU4_MEMORY]
 
 
     def construct_neural_populations(self, neuron_eqs, threshold_eqs, reset_eqs):
@@ -245,9 +342,8 @@ class CX_SPIKING(object):
     def create_inputs_spike_monitors(self):
         self.SPM_HEADING = SpikeMonitor(self.P_HEADING, name='SPM_HEADING')
         self.SPM_FLOW = SpikeMonitor(self.P_FLOW, name='SPM_FLOW')
-        self.SPM_CPU4_MEMORY = SpikeMonitor(self.P_CPU4_MEMORY, name='SPM_P_CPU4_MEMORY')
 
-        return [self.SPM_HEADING, self.SPM_FLOW, self.SPM_CPU4_MEMORY]
+        return [self.SPM_HEADING, self.SPM_FLOW]
 
 
     def populations_size(self):
@@ -420,11 +516,18 @@ class CX_SPIKING(object):
                                                         when='start', order=1, name='extract_velocity')
 
         if cpu4_method == 1:
-            self.CPU4_accumulator_net_op = NetworkOperation(self.CPU4_accumulator_method1, dt=self.time_step*ms, 
-                                                            when='start', order=2, name='CPU4_accumulator')
+            self.CPU4_accumulator_net_op = NetworkOperation(self.CPU4_accumulator_outbound_method1, dt=self.time_step*ms, 
+                                                            when='start', order=2, name='CPU4_accumulator_outbound')
             self.CPU4_accumulator_inbound_net_op = NetworkOperation(self.CPU4_accumulator_inbound_method1, dt=self.time_step*ms, 
                                                                     when='start', order=2, name='CPU4_accumulator_inbound')
-
+        elif cpu4_method == 2:
+            self.CPU4_accumulator_net_op = NetworkOperation(self.CPU4_accumulator_outbound_method2, dt=self.time_step*ms, 
+                                                            when='start', order=2, name='CPU4_accumulator_outbound')
+            self.CPU4_accumulator_inbound_net_op = NetworkOperation(self.CPU4_accumulator_inbound_method2, dt=self.time_step*ms, 
+                                                                    when='start', order=2, name='CPU4_accumulator_inbound')
+        else:
+            print('Choose cpu4_method to be 1 or 2')
+            return
 
         self.update_inputs_net_op = NetworkOperation(self.update_inputs, dt=self.time_step*ms, 
                                                      when='start', order=3, name='update_inputs')
@@ -444,7 +547,6 @@ class CX_SPIKING(object):
         
         if t < self.time_step*ms:
             self.heading_angles[timestep] = self.compute_peak([0,0,0,1,1,0,0,0], self.ref_angles)
-            self.G_TB1.spike_count = 0
             return
 
         neurons_responses = self.G_TB1.spike_count
@@ -455,7 +557,7 @@ class CX_SPIKING(object):
         else:
             self.heading_angles[timestep] = self.heading_angles[timestep-1]
         
-        self.G_TB1.spike_count = 0
+        # self.G_TB1.spike_count = 0
 
 
     def extract_velocity(self, t):
@@ -463,17 +565,16 @@ class CX_SPIKING(object):
 
         if t < self.time_step*ms:
             self.velocities[timestep] = [0,0]
-            self.G_TN2.spike_count = 0
             return
         neurons_responses = self.G_TN2.spike_count
 
         neurons_responses = np.clip(neurons_responses, 0, self.max_velocity)
         self.velocities[timestep] = neurons_responses / self.max_velocity
 
-        self.G_TN2.spike_count = 0
+        # self.G_TN2.spike_count = 0
 
 
-    def CPU4_accumulator_method1(self, t):
+    def CPU4_accumulator_outbound_method1(self, t):
         timestep = self.get_agent_timestep(t, self.time_step)
         
         if t < self.time_step*ms:
@@ -490,7 +591,7 @@ class CX_SPIKING(object):
 
         self.CPU4_memory_stimulus[timestep,:] = self.CPU4_memory * Hz
         
-        self.G_CPU4.spike_count = 0
+        # self.G_CPU4.spike_count = 0
 
 
     def CPU4_accumulator_inbound_method1(self, t):
@@ -504,42 +605,107 @@ class CX_SPIKING(object):
         mem_update = neurons_responses 
         self.CPU4_memory = self.CPU4_memory_history[timestep-1,:]
         self.CPU4_memory += mem_update * self.mem_gain_inbound
-        self.CPU4_memory -= self.decay_inbound #* (1./(mem_update+0.1))
+        self.CPU4_memory -= self.decay_inbound * (1./(mem_update+0.1))
         self.CPU4_memory = np.clip(self.CPU4_memory, 0, np.inf)
         self.CPU4_memory_history[timestep,:] = self.CPU4_memory
 
         self.CPU4_memory_stimulus[timestep,:] = self.CPU4_memory * Hz
         
-        self.G_CPU4.spike_count = 0
+        # self.G_CPU4.spike_count = 0
+
+
+    def CPU4_accumulator_outbound_method2(self, t):
+        timestep = self.get_agent_timestep(t, self.time_step)
+        
+        if t < self.time_step*ms:
+            return
+
+        TN2_responses = np.dot(self.W_TN2_CPU4, self.G_TN2.spike_count)
+        TB1_responses = np.dot(self.W_TB1_CPU4, self.G_TB1.spike_count)
+
+        # TN2_responses_[timestep,:] = self.G_TN2.spike_count
+        # TB1_responses_[timestep,:] = self.G_TB1.spike_count
+
+        neurons_responses = TN2_responses - TB1_responses
+        # print(neurons_responses, TN2_responses, TB1_responses)
+        mem_update = np.clip(neurons_responses, 0, np.inf)
+        # mem_updates[timestep,:] = mem_update
+        self.CPU4_memory = self.CPU4_memory_history[timestep-1,:]
+        self.CPU4_memory += mem_update * self.mem_gain_outbound
+        self.CPU4_memory -= self.decay_outbound * self.mem_gain_outbound
+        self.CPU4_memory = np.clip(self.CPU4_memory, 0, np.inf)
+        self.CPU4_memory_history[timestep,:] = self.CPU4_memory
+
+        
+        self.CPU4_memory_stimulus[timestep,:] = self.CPU4_memory * Hz
+        
+        # self.G_TN2.spike_count = 0
+        # self.G_TB1.spike_count = 0
+
+
+    def CPU4_accumulator_inbound_method2(self, t):
+        timestep = self.get_agent_timestep(t, self.time_step)
+
+        if t < self.time_step*ms:
+            return
+
+        TN2_responses = np.dot(self.W_TN2_CPU4, self.G_TN2.spike_count)
+        TB1_responses = np.dot(self.W_TB1_CPU4, self.G_TB1.spike_count)
+
+        # TN2_responses_[timestep,:] = self.G_TN2.spike_count
+        # TB1_responses_[timestep,:] = self.G_TB1.spike_count
+
+        neurons_responses = TN2_responses - TB1_responses
+        mem_update = np.clip(neurons_responses, 0, np.inf)
+        # mem_updates[timestep,:] = mem_update
+        self.CPU4_memory = self.CPU4_memory_history[timestep-1,:]
+        self.CPU4_memory += mem_update * self.mem_gain_inbound
+        self.CPU4_memory -= self.decay_inbound * self.mem_gain_inbound
+        self.CPU4_memory = np.clip(self.CPU4_memory, 0, np.inf)
+        self.CPU4_memory_history[timestep,:] = self.CPU4_memory
+
+        
+        self.CPU4_memory_stimulus[timestep,:] = self.CPU4_memory * Hz
+        
+        # self.G_TN2.spike_count = 0
+        # self.G_TB1.spike_count = 0
 
 
     def update_inputs(self, t):
         timestep = self.get_agent_timestep(t, self.time_step)
 
         #### motor response - rotation
-        motor_responses = self.G_MOTOR.spike_count
-        rotation = np.sign(motor_responses[0] - motor_responses[1])
-        self.G_MOTOR.spike_count = 0
+        if self.follow_stone_rotation:
+            rotation = np.sign(self.cx_log.motor[timestep])
+        else:
+            motor_responses = self.G_MOTOR.spike_count
+            rotation = np.sign(motor_responses[0] - motor_responses[1])
+            #self.G_MOTOR.spike_count = 0
         
         #### heading
         # previous heading
         prev_heading = np.array([self.heading_angles[timestep]])
         # compute spikes based on old heading and rotation using fixed angle "step" of 22.5 degrees 
         new_heading = self.make_angle(prev_heading + self.rotation_factor) # mean and median rotation found from rate model
-        self.new_heading_dir[timestep] = new_heading
-        self.rotations[timestep] = rotation * self.rotation_factor
-        new_headings = cx_spiking.inputs.compute_headings(new_heading, N=self.N_TL2//2, vmin=5, vmax=100)
-        new_headings = np.tile(new_headings, 2) 
+        if self.headings_method == 'cosine':
+            new_headings = cx_spiking.inputs.compute_cos_headings(new_heading, N=self.N_TL2, vmin=5, vmax=100)
+        else:
+            new_headings = cx_spiking.inputs.compute_headings(new_heading, N=self.N_TL2//2, vmin=5, vmax=100)
+            new_headings = np.tile(new_headings, 2) 
         # save new heading
         self.headings_hz[timestep,:] = new_headings * Hz
 
         #### velocity
         velocity = np.array(self.velocities[timestep,:])
         updated_v = self.get_next_velocity(new_heading, velocity, self.acceleration, self.drag)
-        self.new_velocities[timestep,:] = updated_v
         new_flow = cx_spiking.inputs.compute_flow(new_heading, updated_v, baseline=50, 
                                                 vmin=0, vmax=50, inbound=True)
         self.flow_hz[timestep,:] = new_flow * Hz
+
+        # book keeping
+        self.rotations[timestep] = rotation * self.rotation_factor
+        self.new_heading_dir[timestep] = new_heading
+        self.new_velocities[timestep,:] = updated_v
 
 
     def set_rates(self, t):
@@ -551,6 +717,10 @@ class CX_SPIKING(object):
         self.P_FLOW.rates = self.flow_hz[timestep,:]
         self.P_CPU4_MEMORY.rates = self.CPU4_memory_stimulus[timestep,:]
 
+        self.G_TN2.spike_count = 0
+        self.G_TB1.spike_count = 0
+        self.G_CPU4.spike_count = 0
+        self.G_MOTOR.spike_count = 0
 
     def update_bee_position(self, t):
         timestep = self.get_agent_timestep(t, self.time_step)
@@ -559,14 +729,14 @@ class CX_SPIKING(object):
             return
 
         # Compute speed component
-        speed = 1 + np.clip(np.linalg.norm(self.velocities[timestep]), 0, 1) 
+        speed = 1 + self.speed_multiplier * np.clip(np.linalg.norm(self.velocities[timestep]), 0, 1) 
 
         angle = self.heading_angles[timestep]
 
         # x should be cos and y should be sin 
         # keep compatibility with stone's code (plotter.py : line 79)
-        x_comp = np.sin(angle) #* speed
-        y_comp = np.cos(angle) #* speed
+        x_comp = np.sin(angle) * speed
+        y_comp = np.cos(angle) * speed
 
         bee_x = self.bee_coords[timestep-1,0] + x_comp
         bee_y = self.bee_coords[timestep-1,1] + y_comp
@@ -583,3 +753,32 @@ class CX_SPIKING(object):
         plt.legend()
         plt.axis('scaled')
         plt.show()
+
+
+    def decode_cpu4(self, CPU4_memory):
+        '''
+        Shifts both CPU4 by +1 and -1 column to cancel 45 degree flow
+        preference. When summed single sinusoid should point home.
+        
+        From Stone et al.
+        '''
+        cpu4_reshaped = CPU4_memory.reshape(2, -1)
+        cpu4_shifted = np.vstack([np.roll(cpu4_reshaped[0], 1),
+                                  np.roll(cpu4_reshaped[1], -1)])
+        return cpu4_shifted
+
+
+    def decode_position(self, cpu4_reshaped, cpu4_mem_gain=1):
+        '''
+        Decode position from sinusoid in to polar coordinates.
+        Amplitude is distance, Angle is angle from nest outwards.
+        Without offset angle gives the home vector.
+        Input must have shape of (2, -1)
+                
+        From Stone et al.
+        '''
+        signal = np.sum(cpu4_reshaped, axis=0)
+        fund_freq = np.fft.fft(signal)[1]
+        angle = -np.angle(np.conj(fund_freq))
+        distance = np.absolute(fund_freq) / cpu4_mem_gain
+        return angle, distance
