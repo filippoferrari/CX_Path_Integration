@@ -57,6 +57,13 @@ for experiment in range(1):
                                                    cx=cx,
                                                    route=(h[:T_outbound], v[:T_outbound]))
 
+    to_save = {}
+    to_save['h'] = h
+    to_save['v'] = v
+    to_save['cx_log'] = cx_log
+    with open(os.path.join(os.environ.get('MSC_PROJECT'), f'notebooks/vonmises_vs_cosine/experiments/route_{experiment}.pickle'), 'wb') as fh:
+        pickle.dump(to_save, fh, protocol=3)
+
     #######################
     #### CPU4 METHOD 1
     #######################
@@ -77,11 +84,8 @@ for experiment in range(1):
 
     spiking_cx_vm.run_outbound()
     spiking_cx_cos.run_outbound()
-
+    
     to_save = {}
-    to_save['h'] = h
-    to_save['v'] = v
-    to_save['cx_log'] = cx_log
     to_save['spiking_cx_vm'] = spiking_cx_vm.extract_data()
     to_save['spiking_cx_cos'] = spiking_cx_cos.extract_data()
     with open(os.path.join(os.environ.get('MSC_PROJECT'), f'notebooks/vonmises_vs_cosine/experiments/exp_{experiment}_cpu4_1.pickle'), 'wb') as fh:
@@ -107,10 +111,8 @@ for experiment in range(1):
 
     spiking_cx_vm.run_outbound()
     spiking_cx_cos.run_outbound()
+
     to_save = {}
-    to_save['h'] = h
-    to_save['v'] = v
-    to_save['cx_log'] = cx_log
     to_save['spiking_cx_vm'] = spiking_cx_vm.extract_data()
     to_save['spiking_cx_cos'] = spiking_cx_cos.extract_data()
     with open(os.path.join(os.environ.get('MSC_PROJECT'), f'notebooks/vonmises_vs_cosine/experiments/exp_{experiment}_cpu4_2.pickle'), 'wb') as fh:
