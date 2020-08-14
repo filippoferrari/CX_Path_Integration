@@ -168,7 +168,7 @@ S_TN2_CPU4 = nc.connect_synapses(G_TN2, G_CPU4, W_TN2_CPU4, model=synapses_model
 
 #### Target
 
-CPU4_spike_rates = 60 # Hz
+CPU4_spike_rates = 50 # Hz
 #CPU1A_spike_rates = 
 #CPU1B_spike_rates
 
