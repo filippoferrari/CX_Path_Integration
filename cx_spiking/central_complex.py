@@ -183,13 +183,14 @@ class CX_SPIKING(object):
         for m in self.inputs_spike_monitors:
             out[m.name] = m.get_states()
         out['CPU4_memory_history'] = self.CPU4_memory_history
+        out['heading_angles'] = self.heading_angles
         out['rotations'] = self.rotations
         out['new_heading_dir'] = self.new_heading_dir
         out['new_velocities'] = self.new_velocities
         out['bee_coords'] = self.bee_coords
         return out
 
-        
+
     def decode_cpu4_state(self, step):
         decoded_cpu4 = self.decode_cpu4(self.CPU4_memory_history[step-1,:])
         cpu4_angle, distance = self.decode_position(decoded_cpu4, self.mem_gain_outbound)
