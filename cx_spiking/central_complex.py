@@ -571,8 +571,8 @@ class CX_SPIKING(object):
             return
         neurons_responses = self.G_TN2.spike_count
 
-        neurons_responses = np.clip(neurons_responses, 0, self.max_velocity)
-        self.velocities[timestep] = neurons_responses / self.max_velocity
+        #neurons_responses = np.clip(neurons_responses, 0, self.max_velocity)
+        self.velocities[timestep] = neurons_responses #/ self.max_velocity
 
         # self.G_TN2.spike_count = 0
 
