@@ -477,8 +477,8 @@ class CX_SPIKING(object):
         # so [0,2,0,0,1,0,0,1] will be [-1.963, -1.963, 0.392, 2.748] and then compute
         # circular mean between [-pi, pi]
         tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons_responses[i])]
-        # -pi/8 because we center the neurons at the center of their pi/4 receptive fields
-        peak = scipy.stats.circmean(tmp, low=-np.pi, high=np.pi) - np.pi/8
+        # -pi/8 because the TB1 cells encode the opposite angle to the one the bee is facing
+        peak = scipy.stats.circmean(tmp, low=0, high=2*np.pi) - np.pi
         return self.make_angle(peak)
 
 
@@ -492,7 +492,9 @@ class CX_SPIKING(object):
 
     def network_operations_utilities(self):
         # Record headings
-        self.ref_angles = np.linspace(-np.pi+np.pi/8, np.pi+np.pi/8, self.N_TB1, endpoint=False)
+        #self.ref_angles = np.linspace(-np.pi+np.pi/8, np.pi+np.pi/8, self.N_TB1, endpoint=False)
+        self.ref_angles = np.linspace(0, 2*np.pi, self.N_TB1, endpoint=False)
+
         self.heading_angles = np.zeros(self.T)
 
         # Record velocities
@@ -722,6 +724,7 @@ class CX_SPIKING(object):
         self.G_TB1.spike_count = 0
         self.G_CPU4.spike_count = 0
         self.G_MOTOR.spike_count = 0
+
 
     def update_bee_position(self, t):
         timestep = self.get_agent_timestep(t, self.time_step)
