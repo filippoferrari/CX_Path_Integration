@@ -168,3 +168,4 @@ dmypy.json
 !notebooks/data/route.npz
 !optimisation_scripts/plots/*
 */fitted_model_*
+*.pickle
