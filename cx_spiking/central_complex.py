@@ -62,8 +62,8 @@ class CX_SPIKING(object):
         self.speed_multiplier = speed_multiplier
 
         self.follow_stone_rotation = follow_stone_rotation
-        if self.follow_stone_rotation:
-            self.rotation_factor = 1
+        # if self.follow_stone_rotation:
+        #     self.rotation_factor = 1
         if cx_log:
             self.cx_log = cx_log
         if self.follow_stone_rotation and not cx_log:
@@ -194,9 +194,10 @@ class CX_SPIKING(object):
 
 
     def decode_cpu4_state(self, step):
+        tb1_angle = math.atan2(self.bee_coords[step-1,0], self.bee_coords[step-1,1])
         decoded_cpu4 = self.decode_cpu4(self.CPU4_memory_history[step-1,:])
         cpu4_angle, distance = self.decode_position(decoded_cpu4, self.mem_gain_outbound)
-        tb1_angle = math.atan2(self.bee_coords[step-1,1], self.bee_coords[step-1,0])
+        cpu4_angle = self.make_angle(-cpu4_angle)
         return tb1_angle, cpu4_angle, distance
 
 
@@ -691,7 +692,7 @@ class CX_SPIKING(object):
         # previous heading
         prev_heading = np.array([self.heading_angles[timestep]])
         # compute spikes based on old heading and rotation using fixed angle "step" 
-        new_heading = self.make_angle(prev_heading + rotation * self.rotation_factor*10) 
+        new_heading = self.make_angle(prev_heading + rotation * self.rotation_factor) 
         if self.headings_method == 'cosine':
             new_headings = cx_spiking.inputs.compute_cos_headings(new_heading, N=self.N_TL2, vmin=5, vmax=100)
         else:
