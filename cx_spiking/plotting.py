@@ -143,7 +143,7 @@ def plot_rate_cx_log(matrix, max_rate, figsize=(10,5), savefig_=None):
     plt.show()
 
 
-def colorbar(mappable, title=''):
+def colorbar(mappable, title='', fontsize=14):
     from mpl_toolkits.axes_grid1 import make_axes_locatable
     import matplotlib.pyplot as plt
     last_axes = plt.gca()
@@ -152,62 +152,82 @@ def colorbar(mappable, title=''):
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size="3%", pad=0.03)
     cbar = fig.colorbar(mappable, cax=cax)
-    cbar.set_label(title)
+    cbar.set_label(title, fontsize=fontsize)
+    cbar.ax.tick_params(labelsize=fontsize-2)
     plt.sca(last_axes)
     return cbar
 
 
 def plot_rate_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, 
-                            title=None, colorbar_title='impulses/s', figsize=(10,5), savefig_=None, xlim=[]):
+                            title=None, colorbar_title='impulses/s', fontsize=16,
+                            figsize=(10,5), savefig_=None, xlim=[]):
     plt.figure(figsize=figsize)
     p = plt.pcolormesh(max_rate*matrix, vmin=min_rate, vmax=max_rate*matrix.max(),
                    cmap='viridis', rasterized=True)
 
-    plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
-    plt.yticks(np.arange(0,matrix.shape[0],2)+0.5, np.arange(0,matrix.shape[0], 2))
-    colorbar(p, colorbar_title)
+    plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '|r', markersize=4)
+    if matrix.shape[0] > 8:
+        plt.yticks(np.arange(0,matrix.shape[0],2)+0.5, np.arange(1,matrix.shape[0]+1, 2), fontsize=fontsize-2)
+    else:
+        plt.yticks(np.arange(0,matrix.shape[0])+0.5, np.arange(1,matrix.shape[0]+1), fontsize=fontsize-2)
+    plt.xticks(np.arange(0, 1501, 100) + 0.5, 
+               [1,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500], fontsize=fontsize-2)
+
+    colorbar(p, colorbar_title, fontsize=fontsize-2)
+    plt.xlabel('Simulation step', fontsize=fontsize)
+    plt.ylabel('Neuron index', fontsize=fontsize)
+
     if len(xlim):
         plt.xlim(xlim)
     if title:
-        plt.title(title)
+        plt.title(title, fontsize=fontsize)
     if savefig_:
-        plt.savefig(savefig_)
+        plt.savefig(savefig_, 
+                    bbox_inches='tight')
     plt.show()
 
 
 def plot_motors_cx_log_spikes(matrix, max_rate, monitor, time_step, min_rate=0, 
-                              title=None, colorbar_title='impulses/s', figsize=(10,5), savefig_=None, xlim=[]):
+                              title=None, colorbar_title='impulses/s', figsize=(10,5), fontsize=16,  savefig_=None, xlim=[]):
     plt.figure(figsize=figsize)
     p = plt.pcolormesh(matrix, vmin=min_rate, vmax=max_rate,
                    cmap='viridis', rasterized=True)
 
-    plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '.r')
-    colorbar(p, colorbar_title)
+    plt.plot(monitor.t/ms / time_step, monitor.i+0.5, '|r', markersize=4)
+    plt.yticks(np.arange(0,matrix.shape[0])+0.5, np.arange(1,matrix.shape[0]+1), fontsize=fontsize-2)
+    plt.xticks(np.arange(0, 1501, 100) + 0.5, 
+               [1,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500], fontsize=fontsize-2)
+
+    colorbar(p, colorbar_title, fontsize=fontsize-2)
+    plt.xlabel('Simulation step', fontsize=fontsize)
+    plt.ylabel('Neuron index', fontsize=fontsize)
     if len(xlim):
         plt.xlim(xlim)
     if title:
-        plt.title(title)
+        plt.title(title, fontsize=fontsize)
     if savefig_:
-        plt.savefig(savefig_)
+        plt.savefig(savefig_, 
+                    bbox_inches='tight')
     plt.show()
 
 
 def plot_gamma_factors(gamma_factors, tau_s, w_s,  
-                       title='', xlabel='wE (nS)', ylabel='tauE (ms)', 
+                       title='', xlabel=r'$w_E$ [nS]', ylabel=r'$\tau_E$ [ms]', 
+                       fontsize=16,
                        figsize=(11,7), savefig_=None):
     c = np.argwhere(gamma_factors == np.min(gamma_factors))[0]
     
     plt.figure(figsize=figsize)
-    plt.pcolormesh(gamma_factors,cmap='viridis', rasterized=True)
+    p = plt.pcolormesh(gamma_factors,cmap='viridis', rasterized=True)
     plt.plot(c[1]+0.5, c[0]+0.5, 'rx')
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.yticks(np.arange(len(tau_s))+0.5, tau_s)
-    plt.xticks(np.arange(len(w_s))+0.5, w_s)
-    plt.colorbar()
+    plt.title(title, fontsize=fontsize)
+    plt.xlabel(xlabel, fontsize=fontsize)
+    plt.ylabel(ylabel, fontsize=fontsize)
+    plt.yticks(np.arange(len(tau_s))+0.5, tau_s, fontsize=fontsize-2)
+    plt.xticks(np.arange(len(w_s))+0.5, w_s, fontsize=fontsize-2)
+    colorbar(p, title=r'$\Gamma$ Factor', fontsize=fontsize-2)
     if savefig_:
-        plt.savefig(savefig_)
+        plt.savefig(savefig_, bbox_inches='tight')
     plt.show()
 
 
@@ -280,32 +300,57 @@ def plot_inputs_inbound(spiking_cx, h, v):
     plt.show()
 
 
-def plot_populations_outbound(spiking_cx, cx_log, figsize=(15,5)):
-    plot_populations(spiking_cx, cx_log, xlim=[0, spiking_cx.T_outbound], figsize=figsize)
+def plot_populations_outbound(spiking_cx, cx_log, figsize=(15,5), savefig_=False):
+    plot_populations(spiking_cx, cx_log, xlim=[0, spiking_cx.T_outbound+1], figsize=figsize, savefig_=savefig_)
 
 
 def plot_populations_inbound(spiking_cx, cx_log, figsize=(15,5)):
     plot_populations(spiking_cx, cx_log, xlim=[spiking_cx.T_outbound, spiking_cx.T], figsize=figsize)
 
 
-def plot_populations(spiking_cx, cx_log, xlim, figsize=(15,5)):
-    plot_rate_cx_log_spikes(cx_log.tn2, TN2_spike_rates_max, spiking_cx.SPM_TN2, spiking_cx.time_step, 
-                            title='TN2',  figsize=figsize, xlim=xlim)
+def plot_populations(spiking_cx, cx_log, xlim, fontsize=16, figsize=(15,5), savefig_=False):
+    if savefig_:
+        plot_rate_cx_log_spikes(cx_log.tn2, TN2_spike_rates_max, spiking_cx.SPM_TN2, spiking_cx.time_step,  min_rate=TN2_spike_rates_min,
+                                title='TN2',  figsize=figsize, xlim=xlim, fontsize=fontsize,
+                                savefig_=os.path.join(os.environ.get('MSC_PROJECT'), 'notebooks/dissertation_plots/tn2_outbound.pdf'))
 
-    plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, spiking_cx.SPM_TL2, spiking_cx.time_step, 
-                            title='TL2',  figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, spiking_cx.SPM_TL2, spiking_cx.time_step, 
+                                title='TL2',  figsize=figsize, xlim=xlim, fontsize=fontsize,
+                                savefig_=os.path.join(os.environ.get('MSC_PROJECT'), 'notebooks/dissertation_plots/tl2_outbound.pdf'))
 
-    plot_rate_cx_log_spikes(cx_log.cl1, CL1_spike_rates, spiking_cx.SPM_CL1, spiking_cx.time_step, 
-                            title='CL1',  figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.cl1, CL1_spike_rates, spiking_cx.SPM_CL1, spiking_cx.time_step, 
+                                title='CL1',  figsize=figsize, xlim=xlim, fontsize=fontsize,
+                                savefig_=os.path.join(os.environ.get('MSC_PROJECT'), 'notebooks/dissertation_plots/cl1_outbound.pdf'))
 
-    plot_rate_cx_log_spikes(cx_log.tb1, TB1_spike_rates, spiking_cx.SPM_TB1, spiking_cx.time_step, 
-                            title='TB1',  figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.tb1, TB1_spike_rates, spiking_cx.SPM_TB1, spiking_cx.time_step, 
+                                title='TB1',  figsize=figsize, xlim=xlim, fontsize=fontsize,
+                                savefig_=os.path.join(os.environ.get('MSC_PROJECT'), 'notebooks/dissertation_plots/tb1_outbound.pdf'))
 
-    plot_rate_cx_log_spikes(cx_log.cpu4, CPU4_spike_rates, spiking_cx.SPM_CPU4, spiking_cx.time_step, 
-                            title='CPU4',  figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.cpu4, CPU4_spike_rates, spiking_cx.SPM_CPU4, spiking_cx.time_step, 
+                                title='CPU4',  figsize=figsize, xlim=xlim, fontsize=fontsize,
+                                savefig_=os.path.join(os.environ.get('MSC_PROJECT'), 'notebooks/dissertation_plots/cpu4_outbound.pdf'))
 
-    plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_CPU4_MEMORY, spiking_cx.time_step, 
-                            title='CPU4_memory', colorbar_title='Normalised impulses/s', figsize=figsize, xlim=xlim)
+        plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_CPU4_MEMORY, spiking_cx.time_step, 
+                                title='CPU4 memory', colorbar_title='Normalised impulses/s', figsize=figsize, xlim=xlim, fontsize=fontsize,
+                                savefig_=os.path.join(os.environ.get('MSC_PROJECT'), 'notebooks/dissertation_plots/cpu4_memory_outbound.pdf'))
+    else:
+        plot_rate_cx_log_spikes(cx_log.tn2, TN2_spike_rates_max, spiking_cx.SPM_TN2, spiking_cx.time_step,  min_rate=TN2_spike_rates_min,
+                                title='TN2',  figsize=figsize, xlim=xlim, fontsize=fontsize)
+
+        plot_rate_cx_log_spikes(cx_log.tl2, TL2_spike_rates, spiking_cx.SPM_TL2, spiking_cx.time_step, 
+                                title='TL2',  figsize=figsize, xlim=xlim, fontsize=fontsize)
+
+        plot_rate_cx_log_spikes(cx_log.cl1, CL1_spike_rates, spiking_cx.SPM_CL1, spiking_cx.time_step, 
+                                title='CL1',  figsize=figsize, xlim=xlim, fontsize=fontsize)
+
+        plot_rate_cx_log_spikes(cx_log.tb1, TB1_spike_rates, spiking_cx.SPM_TB1, spiking_cx.time_step, 
+                                title='TB1',  figsize=figsize, xlim=xlim, fontsize=fontsize)
+
+        plot_rate_cx_log_spikes(cx_log.cpu4, CPU4_spike_rates, spiking_cx.SPM_CPU4, spiking_cx.time_step, 
+                                title='CPU4',  figsize=figsize, xlim=xlim, fontsize=fontsize)
+
+        plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_CPU4_MEMORY, spiking_cx.time_step, 
+                                title='CPU4 memory', colorbar_title='Normalised impulses/s', figsize=figsize, xlim=xlim, fontsize=fontsize)
 
     if not spiking_cx.only_tuned_network:
         plot_rate_cx_log_spikes(cx_log.memory, 1, spiking_cx.SPM_PONTINE, spiking_cx.time_step, 
@@ -324,13 +369,14 @@ def plot_populations(spiking_cx, cx_log, xlim, figsize=(15,5)):
 
 
 def plot_memory_outbound(spiking_cx, cx_log, figsize=(15,5)):
-    plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1], label='code')
-    plt.plot(cx_log.memory[:,spiking_cx.T_outbound-1] * spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1].max(), label='stone (rescaled)')
+    plt.figure(figsize=figsize)
+    plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1], label='CPU4')
+    plt.plot(cx_log.memory[:,spiking_cx.T_outbound-1] * spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1].max(), label='Stone (rescaled)')
     plt.legend()
     plt.xlabel('Neuron index')
     plt.xticks(np.arange(0, N_CPU4), np.arange(1, N_CPU4+1))
     plt.ylabel('impulses/s')
-    plt.title('CPU4 accumulation - end of outbound')
+    plt.title('CPU4 accumulation - End of outbound')
     plt.show()
 
     plt.figure(figsize=(15,5))
@@ -357,16 +403,17 @@ def plot_memory_outbound(spiking_cx, cx_log, figsize=(15,5)):
 
 
 def plot_memory_inbound(spiking_cx, cx_log, figsize=(15,5)):
-    plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T-1], label='code')
-    plt.plot(cx_log.memory[:,spiking_cx.T-1] * spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1:spiking_cx.T-1].max(), label='stone (rescaled)')
+    plt.figure(figsize=figsize)
+    plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T-1], label='CPU4')
+    plt.plot(cx_log.memory[:,spiking_cx.T-1] * spiking_cx.CPU4_memory_history[spiking_cx.T_outbound-1:spiking_cx.T-1].max(), label='Stone (rescaled)')
     plt.legend()
     plt.xlabel('Neuron index')
     plt.xticks(np.arange(0, N_CPU4), np.arange(1, N_CPU4+1))
     plt.ylabel('impulses/s')
-    plt.title('CPU4 accumulation - end of inbound')
+    plt.title('CPU4 accumulation - End of inbound')
     plt.show()
 
-    plt.figure(figsize=(15,5))
+    plt.figure(figsize=figsize)
     ranges = range(spiking_cx.CPU4_memory_history.shape[1]//2)
     for r in ranges:
         plt.plot(spiking_cx.CPU4_memory_history[spiking_cx.T_outbound:,r], alpha=0.6, label=r+1)#, label=names[idx])
@@ -385,6 +432,36 @@ def plot_memory_inbound(spiking_cx, cx_log, figsize=(15,5)):
     plt.ylabel('impulses/s')
     plt.xlabel('Simulation steps')
     plt.show()
+
+
+def plot_bee_path(bee_coords, T_outbound, T_inbound=True, figsize=(8,8)):
+    plt.figure(figsize=figsize)
+    plt.text(0, 0, 'N', fontsize=12, fontweight='heavy', color='k', ha='center', va='center')
+    plt.plot(bee_coords[:T_outbound,0], bee_coords[:T_outbound,1], color='purple', lw=1, label='Outbound')
+    if T_inbound:
+        plt.plot(bee_coords[T_outbound:,0], bee_coords[T_outbound:,1], color='green', lw=1, label='Return')
+    plt.legend()
+    plt.axis('scaled')
+    plt.show()
+
+
+
+def compute_real_path(headings, steps=1500):
+    bee_coords = np.zeros((steps,2))
+    for timestep in range(1,steps):
+        angle = headings[timestep]
+
+        # x should be cos and y should be sin 
+        # keep compatibility with stone's code (plotter.py : line 79)
+        x_comp = np.sin(angle)
+        y_comp = np.cos(angle)
+
+        bee_x = bee_coords[timestep-1,0] + x_comp
+        bee_y = bee_coords[timestep-1,1] + y_comp
+        bee_coords[timestep,0] = bee_x 
+        bee_coords[timestep,1] = bee_y 
+    return bee_coords
+
 
 
 # def plot_memory_accumulation(spiking_cx, xlim, title='CPU4 accumulation', figsize=(15,5)):

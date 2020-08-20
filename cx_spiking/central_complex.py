@@ -62,6 +62,8 @@ class CX_SPIKING(object):
         self.speed_multiplier = speed_multiplier
 
         self.follow_stone_rotation = follow_stone_rotation
+        if self.follow_stone_rotation:
+            self.rotation_factor = 1
         if cx_log:
             self.cx_log = cx_log
         if self.follow_stone_rotation and not cx_log:
@@ -477,7 +479,7 @@ class CX_SPIKING(object):
         # so [0,2,0,0,1,0,0,1] will be [-1.963, -1.963, 0.392, 2.748] and then compute
         # circular mean between [-pi, pi]
         tmp = [angle for i, angle in enumerate(ref_angles) for neuron in range(neurons_responses[i])]
-        # -pi/8 because the TB1 cells encode the opposite angle to the one the bee is facing
+        # -pi because the TB1 cells encode the opposite angle to the one the bee is facing
         peak = scipy.stats.circmean(tmp, low=0, high=2*np.pi) - np.pi
         return self.make_angle(peak)
 
@@ -536,13 +538,13 @@ class CX_SPIKING(object):
                                                      when='start', order=3, name='update_inputs')
 
 
-        self.set_rates = NetworkOperation(self.set_rates, dt=self.time_step*ms, 
+        self.set_rates_net_op = NetworkOperation(self.set_rates, dt=self.time_step*ms, 
                                           when='start', order=4, name='set_rates')
 
 
         return [self.extract_heading_net_op, self.extract_velocity_net_op, 
                 self.CPU4_accumulator_net_op, self.CPU4_accumulator_inbound_net_op, 
-                self.update_inputs_net_op, self.set_rates]
+                self.update_inputs_net_op, self.set_rates_net_op]
 
 
     def extract_heading(self, t):
@@ -679,7 +681,7 @@ class CX_SPIKING(object):
 
         #### motor response - rotation
         if self.follow_stone_rotation:
-            rotation = np.sign(self.cx_log.motor[timestep])
+            rotation = self.cx_log.motor[timestep]
         else:
             motor_responses = self.G_MOTOR.spike_count
             rotation = np.sign(motor_responses[0] - motor_responses[1])
@@ -688,8 +690,8 @@ class CX_SPIKING(object):
         #### heading
         # previous heading
         prev_heading = np.array([self.heading_angles[timestep]])
-        # compute spikes based on old heading and rotation using fixed angle "step" of 22.5 degrees 
-        new_heading = self.make_angle(prev_heading + self.rotation_factor) # mean and median rotation found from rate model
+        # compute spikes based on old heading and rotation using fixed angle "step" 
+        new_heading = self.make_angle(prev_heading + rotation * self.rotation_factor*10) 
         if self.headings_method == 'cosine':
             new_headings = cx_spiking.inputs.compute_cos_headings(new_heading, N=self.N_TL2, vmin=5, vmax=100)
         else:
