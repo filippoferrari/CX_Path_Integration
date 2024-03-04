@@ -1,3 +1,3 @@
-# CX_Path_Integration
+# A Spiking Neuron Model for Path Integration in the Bee Brain
 
-Spiking Central Complex Path Integration Network
+MSc Dissertation Project 
